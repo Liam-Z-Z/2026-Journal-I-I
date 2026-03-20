@@ -1,0 +1,52 @@
+%% ============================================================
+%% Section 1: Introduction
+%% Written LAST to ensure accurate framing and cross-referencing
+%% ============================================================
+
+\section{Introduction}
+\label{sec:introduction}
+
+%% --- P1: The Rise of AIGC (~300 words) ---
+
+The release of ChatGPT in November 2022 marked the beginning of a generative AI revolution that has fundamentally transformed the digital landscape. In under three years, generative models have advanced from producing passable but detectable text to generating photorealistic images, pixel-perfect video, and voice clones indistinguishable from reality---all at near-zero marginal cost. We define \emph{AI-Generated Content} (AIGC) as any content---text, images, audio, video, or code---produced by generative artificial intelligence systems, encompassing both the outputs of large language models (LLMs) and multi-modal generative architectures.
+
+The pace of capability milestones has been extraordinary. In text generation, frontier LLMs---GPT-4~\cite{gpt4}, Claude~\cite{anthropic2025claude}, Gemini~\cite{gemini2024}, Llama~\cite{llama3}, and DeepSeek-V3~\cite{deepseekv3}---now match or exceed human performance on professional writing, graduate-level reasoning, and competitive programming benchmarks. In image synthesis, latent diffusion models and Diffusion Transformers---Stable Diffusion~3~\cite{esser2024sd3}, DALL-E~3~\cite{dalle3}, Midjourney~V6, and Flux~\cite{flux2024}---produce photorealistic outputs that human observers correctly identify only 53--61\% of the time~\cite{microsoft2025human}. In audio, neural codec models such as VALL-E~\cite{wang2023valle} and commercial platforms like ElevenLabs enable high-fidelity voice cloning from as little as three seconds of reference audio. In video, OpenAI's Sora~\cite{brooks2024sora}, Google Veo~2, and Kuaishou Kling~2.0 generate temporally consistent, high-resolution video that has already been weaponized for financial fraud~\cite{brightside2025phishing}. The adoption scale is commensurate: ChatGPT reached 100~million users within two months of launch, the global generative AI market is projected to exceed \$200~billion by 2030, and estimates suggest a rapidly growing fraction of new internet content is now AI-generated~\cite{graphite2025aicontent}.
+
+%% --- P2: The Urgency of Security and Safety Challenges (~350 words) ---
+
+This transformative capability carries a dual nature. While AIGC delivers unprecedented benefits across education, healthcare, finance, media, and software engineering, it simultaneously introduces severe \emph{security} and \emph{safety} challenges that demand urgent attention.
+
+On the \textbf{security} dimension, generative AI has created novel attack vectors: adversarial manipulation via prompt injection and jailbreaking (Section~\ref{sec:threat-adversarial}), data poisoning and backdoor attacks on training pipelines (Section~\ref{sec:threat-model}), supply chain vulnerabilities in open-weight model ecosystems, and---most critically---the emergence of agentic exploitation, where autonomous AI agents with tool-invocation privileges execute multi-step attacks in real computing environments (Section~\ref{sec:cap-autonomy}). On the \textbf{safety} dimension, AIGC enables the industrial-scale production of deepfakes (Section~\ref{sec:threat-deepfake}), hyper-personalized disinformation campaigns (Section~\ref{sec:threat-infoop}), non-consensual intimate imagery (Section~\ref{sec:threat-ncii}), systematic bias amplification (Section~\ref{sec:threat-bias}), and privacy leakage through training data memorization.
+
+The urgency of these risks is grounded in landmark events. In January 2024, a finance worker at Arup transferred \$25~million to fraudsters after attending a video conference populated entirely by AI-generated deepfakes of senior executives~\cite{brightside2025phishing}. An estimated 82.6\% of phishing emails in 2025 were AI-generated, surpassing elite human red teams in efficacy~\cite{knowbe4_2025,hoxhunt2025}. The 2024 ``super election year''---with over 70 nations holding elections---saw documented AI interference across Taiwan, Indonesia, India, the United States, and the European Union~\cite{restofworld2024tracker}. The international community has responded with unprecedented urgency: the AI Safety Summit series (Bletchley Park 2023 $\to$ Seoul 2024 $\to$ Paris 2025 $\to$ New Delhi 2026), the International AI Safety Reports chaired by Yoshua Bengio~\cite{aisafetyreport2025,aisafetyreport2026}, and the EU AI Act (Regulation 2024/1689)~\cite{euaiact2024} all reflect a growing recognition that AIGC risks have crossed the threshold from hypothetical concern to operational crisis.
+
+%% --- P3: Contributions and Positioning (~350 words) ---
+
+Several existing surveys address aspects of this landscape. Gupta et al.~(2023) survey deepfake generation and detection but do not cover text-based threats or agentic systems. Barrett et al.~(2023) examine AI-enabled influence operations without addressing model-level attacks or technical countermeasures. The OWASP Top~10 for LLM Applications~\cite{owasp2025} catalogs vulnerabilities but is organized as a practitioner checklist rather than an academic taxonomy. Most recently, the International AI Safety Reports~\cite{aisafetyreport2025,aisafetyreport2026} provide authoritative risk assessments but deliberately refrain from surveying technical countermeasures in depth. None of these works systematically covers the full spectrum from content-generation risks through autonomous agentic exploitation, nor bridges technical analysis with governance and ethical perspectives.
+
+This survey makes four contributions:
+\begin{enumerate}[nosep,leftmargin=1.5em]
+    \item \textbf{Security + Safety dual-dimensional threat taxonomy.} We propose a structured taxonomy (Section~\ref{sec:threats}) covering content weaponization, model-level attacks, adversarial manipulation, misinformation and deepfakes, and ethical risks---distinguishing security threats (adversarial compromise of AI systems) from safety threats (harmful outputs and societal impacts).
+    \item \textbf{Evolution analysis from content generation to agentic exploitation.} To our knowledge, this is the first AIGC security survey to systematically cover the attack surface evolution from prompt injection through indirect prompt injection to agentic exploitation via the Model Context Protocol (MCP) ecosystem (Sections~\ref{sec:cap-autonomy} and~\ref{sec:threat-adversarial}).
+    \item \textbf{Cross-disciplinary analysis spanning technology, policy, and ethics.} We bridge technical countermeasures (Section~\ref{sec:countermeasures}) with governance frameworks across the EU, US, and China (Section~\ref{sec:governance}), and ethical considerations including bias, copyright, and accountability (Section~\ref{sec:threat-ethics}).
+    \item \textbf{Full-modality coverage incorporating 2025--2026 developments.} We cover text, image, audio, and video across all sections, with emphasis on the most recent advances including reasoning models, MCP ecosystem security, and emerging regulatory instruments.
+\end{enumerate}
+
+%% --- P4: Paper Organization (~200 words) ---
+
+The remainder of this paper is organized as follows. Section~\ref{sec:capabilities} examines the generative AI capabilities that make current security and safety challenges unprecedentedly severe, organized by four threat-relevant properties: high-fidelity generation, low-cost production, controllability, and autonomous agency. Section~\ref{sec:threats} presents the paper's core threat taxonomy, covering content weaponization, model-level attacks, adversarial manipulation (including the novel attack surface evolution ladder from prompt injection to agentic exploitation), misinformation and deepfakes, and ethical and societal risks. Section~\ref{sec:governance} analyzes the governance landscape, comparing regulatory frameworks across the EU, US, and China alongside international cooperation mechanisms and industry self-regulation practices. Section~\ref{sec:countermeasures} surveys technical countermeasures spanning AIGC detection, watermarking and content provenance, alignment techniques, adversarial defense mechanisms, and agentic AI security. Section~\ref{sec:future} identifies six open research frontiers: securing autonomous agents, unified multi-modal detection, provably robust watermarking, privacy-preserving generation, international governance harmonization, and dynamic evaluation frameworks. Section~\ref{sec:conclusions} concludes with a synthesis of key insights and a call for cross-disciplinary collaboration. Figure~\ref{fig:structure} illustrates the paper's structure and logical dependencies.
+
+\begin{figure}[htbp]
+\centering
+\fcolorbox{green!50}{green!5}{\parbox{0.95\linewidth}{\centering\textbf{Figure~1: Paper structure and logical dependencies}\\[6pt]
+\small
+\begin{tabular}{ccccc}
+\fbox{§2 Capabilities} & $\longrightarrow$ & \fbox{§3 Threats} & $\longrightarrow$ & \fbox{§6 Future} \\
+& & $\downarrow$ & & $\uparrow$ \\
+& & \fbox{§4 Governance} & & \\
+& & $\downarrow$ & & $\uparrow$ \\
+& & \fbox{§5 Countermeasures} & $\longrightarrow$ & \\
+\end{tabular}
+}}
+\label{fig:structure}
+\end{figure}

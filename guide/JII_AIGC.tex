@@ -1,0 +1,789 @@
+––\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+%% Custom commands for outline annotations
+\newcommand{\wordcount}[1]{\hfill\textcolor{gray}{\small[\,#1\,]}}
+\newcommand{\outline}[1]{\textcolor{black}{#1}}
+\newcommand{\note}[1]{\par\noindent\fcolorbox{blue!40}{blue!5}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{{\small\textbf{Writing Note:} #1}}}\par\medskip}
+\newcommand{\figplaceholder}[1]{\par\medskip\noindent\fcolorbox{green!50}{green!5}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\centering\textbf{#1}}}\par\medskip}
+\newcommand{\tableplaceholder}[1]{\par\medskip\noindent\fcolorbox{orange!50}{orange!5}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{\centering\textbf{#1}}}\par\medskip}
+
+\journal{Journal of Information and Intelligence}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Security and Safety of AI-Generated Content}
+
+\author{Zelin Zhang}
+
+% \affiliation{organization={Queen's University},
+%             addressline={99 University Ave}, 
+%             city={Kingston},
+%             postcode={K7L 3N6}, 
+%             state={ON},
+%             country={Canada}}
+
+\begin{abstract}
+The rapid advancement of generative artificial intelligence has enabled the production of highly realistic text, images, audio, video, and code at unprecedented scale and minimal cost. While AI-Generated Content (AIGC) delivers transformative benefits across education, healthcare, finance, media, and software engineering, it simultaneously introduces severe security and safety challenges. This survey provides a systematic and comprehensive analysis of AIGC security and safety, spanning the full spectrum from content-level risks to autonomous agentic exploitation. We first examine the threat-relevant capabilities of modern generative models that make these risks uniquely urgent. We then propose a structured threat taxonomy covering content weaponization, model-level attacks, adversarial manipulation of AI systems including agentic exploitation via the Model Context Protocol (MCP) ecosystem, misinformation and deepfakes, and ethical and societal risks. We review the evolving governance landscape, comparing regulatory frameworks across the European Union, the United States, China, and international initiatives, alongside industry self-regulation practices. On the technical countermeasure front, we survey state-of-the-art approaches in AIGC detection, robust watermarking and content provenance, AI alignment and defense mechanisms, and the emerging field of agentic AI security. Finally, we identify key open challenges and future research directions. By bridging technical, policy, and ethical perspectives, this survey aims to provide a unified reference for researchers and practitioners working to ensure the responsible development and deployment of generative AI.
+\end{abstract}
+
+\begin{keyword}
+AI-generated content \sep generative AI \sep AI safety \sep AI security \sep deepfake \sep watermarking \sep AI alignment \sep prompt injection \sep jailbreak \sep agentic AI security \sep AI governance
+\end{keyword}
+
+\end{frontmatter}
+
+%% ============================================================
+\section{Introduction} \wordcount{$\sim$1,200 words}
+\label{sec:introduction}
+%% ============================================================
+
+\note{This section should be written LAST, after all other sections are complete, to ensure accurate framing and cross-referencing.}
+
+\paragraph{P1 --- The Rise of AIGC ($\sim$300 words).}
+\outline{%
+From ChatGPT (2022) to the current landscape (2025), generative AI has undergone a transformative revolution. Define AI-Generated Content (AIGC) as content---text, images, audio, video, and code---produced by generative AI systems. Highlight capability milestones across modalities: text (GPT-4, Claude, Gemini, DeepSeek), images (DALL-E~3, Midjourney~V6, Flux), audio (VALL-E, ElevenLabs), video (Sora, Veo~2, Kling). Cite adoption scale data: user numbers, market size, percentage of internet content that is AI-generated.
+}
+
+\paragraph{P2 --- The Urgency of Security and Safety Challenges ($\sim$350 words).}
+\outline{%
+Establish the dual nature of AIGC: transformative benefits vs.\ unprecedented risks. Introduce the \emph{Security} dimension (adversarial attacks, data poisoning, prompt injection, supply chain attacks) and the \emph{Safety} dimension (deepfakes, misinformation, bias amplification, privacy leakage). Ground urgency with 2--3 landmark events from 2024--2025: Hong Kong deepfake video-conference \$25M fraud, AI-phishing surge, election interference incidents. Reference international attention: AI Safety Summit series (Bletchley Park $\to$ Seoul $\to$ Paris), International AI Safety Report (2025, 2026).
+}
+
+\paragraph{P3 --- Contributions and Positioning ($\sim$350 words).}
+\outline{%
+Compare with 3--4 existing surveys; identify their respective foci and gaps. State this paper's four-fold contribution:
+\begin{enumerate}[nosep,leftmargin=1.5em]
+    \item Security + Safety dual-dimensional threat taxonomy.
+    \item Evolution analysis from content generation risks to autonomous agentic exploitation---first AIGC security survey to systematically cover agentic exploitation and MCP ecosystem security.
+    \item Cross-disciplinary analysis spanning technology, policy, and ethics.
+    \item Full-modality coverage incorporating 2025--2026 latest developments.
+\end{enumerate}
+}
+
+\paragraph{P4 --- Paper Organization ($\sim$200 words).}
+\outline{%
+One-paragraph roadmap summarizing Sections~\ref{sec:capabilities}--\ref{sec:conclusions}.
+}
+
+\figplaceholder{Figure~1: Paper structure and logical dependencies (flow diagram)}
+
+\newpage
+%% ============================================================
+\section{Generative AI Capabilities and Threat-Relevant Properties} \wordcount{$\sim$1,500 words}
+\label{sec:capabilities}
+%% ============================================================
+
+\note{This section is NOT a generative model survey. Its sole purpose is to answer: ``Why do current generative AI capabilities make security and safety challenges unprecedentedly severe?'' Organized by \textbf{security-relevant capability properties}, not by modality. Do not write model development history or model-vs-model comparisons.}
+
+
+\subsection{High-Fidelity Multi-Modal Generation} \wordcount{$\sim$500 words}
+\label{sec:cap-fidelity}
+
+\outline{%
+Present evidence that generation quality has crossed the ``human-indistinguishable'' threshold across modalities:
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{Text:} LLM fluency and persuasiveness. Mention GPT-4, Claude, Gemini, Llama, DeepSeek as representative systems.
+    \item \textbf{Image:} Latent Diffusion Models achieving photorealistic quality. Mention SD3, DALL-E~3, Midjourney~V6, Flux.
+    \item \textbf{Audio:} Neural codec models enabling voice cloning from seconds of reference audio. Mention VALL-E, ElevenLabs, F5-TTS.
+    \item \textbf{Video:} DiT (Diffusion Transformer) architecture enabling realistic video generation. Mention Sora, Veo~2, Kling, HunyuanVideo.
+\end{itemize}
+\emph{Security implication:} High fidelity makes detection harder and deception easier across all content types.
+}
+
+
+\subsection{Low-Cost Scalable Production} \wordcount{$\sim$300 words}
+\label{sec:cap-scale}
+
+\outline{%
+Discuss how the barrier-to-entry for generating high-quality synthetic content has collapsed:
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Open-source model proliferation: Llama~3, Stable Diffusion, Whisper.
+    \item Consumer-grade hardware sufficiency for running models locally.
+    \item Near-zero marginal cost via API access.
+\end{itemize}
+\emph{Security implication:} Attacker cost and skill requirements are dramatically reduced; large-scale content fabrication becomes trivial.
+}
+
+
+\subsection{Controllability and Personalization} \wordcount{$\sim$300 words}
+\label{sec:cap-control}
+
+\outline{%
+Explain how fine-grained control enables targeted attacks:
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Controllable generation techniques: ControlNet, IP-Adapter, LoRA fine-tuning.
+    \item Identity cloning: replicating specific individuals' voice, face, or writing style.
+    \item Style imitation with minimal reference data.
+\end{itemize}
+\emph{Security implication:} Enables highly customized, targeted attack content (e.g., CEO voice impersonation for fraud, personalized phishing).
+}
+
+
+\subsection{Autonomy and Tool Use} \wordcount{$\sim$450 words}
+\label{sec:cap-autonomy}
+
+\note{KEY NARRATIVE PIVOT. Sections~2.1--2.3 concern AI as a \emph{content producer}. This section marks the fundamental shift: when AI systems acquire autonomous action capabilities, the threat paradigm escalates from ``AI generates harmful content'' to ``AI autonomously executes harmful actions.''}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Reasoning models (o1/o3, DeepSeek-R1) enabling multi-step planning.
+    \item AI agents: autonomous planning + tool invocation + environment interaction.
+    \item Long context windows (100K--1M tokens) enabling complex task processing.
+    \item MCP ecosystem explosion: 15,000+ servers enabling standardized agent-tool integration.
+    \item Deep integration with external systems: file systems, databases, APIs, web browsers.
+\end{itemize}
+\emph{Security implication:} Attack surface expands from model input/output to the \emph{entire computing environment}. The consequences of a successful attack escalate from ``bad text'' to ``unauthorized actions in the real world.''
+}
+
+\tableplaceholder{Table~1: Capability--Threat Mapping\\[3pt]
+\small Columns: Capability $\mid$ Representative Models $\mid$ Threat Implications}
+
+\newpage
+%% ============================================================
+\section{Threat Landscape of AIGC} \wordcount{$\sim$3,500 words}
+\label{sec:threats}
+%% ============================================================
+
+\note{This chapter ONLY discusses threats, attacks, and risks. \textbf{No defense solutions} (reserved for \S\ref{sec:countermeasures}). \textbf{No policy/regulation} (reserved for \S\ref{sec:governance}). This is the paper's \textbf{core taxonomy}---a key academic contribution.}
+
+
+\subsection{Content Weaponization} \wordcount{$\sim$700 words}
+\label{sec:threat-weapon}
+
+\subsubsection{Malicious Content Generation}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item AI-generated phishing emails: cite statistical evidence on increased click-through rates and detection bypass rates.
+    \item AI-assisted malware generation: LLM-produced obfuscated code, polymorphic malware, exploit code.
+    \item Weaponized LLMs: WormGPT, FraudGPT, DarkGPT (underground market models).
+    \item Forged documents: academic credentials, legal documents, news articles.
+    \item Cite 2--3 real-world cases from 2024--2025.
+\end{itemize}
+}
+
+\subsubsection{Non-Consensual Synthetic Content}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item AI-generated NCII (Non-Consensual Intimate Images): severity, scale, and disproportionate impact on women and minors.
+    \item Targeted synthetic defamation against specific individuals.
+\end{itemize}
+}
+
+
+\subsection{Model-Level Attacks} \wordcount{$\sim$600 words}
+\label{sec:threat-model}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{Data Poisoning:} Backdoor implantation mechanism; ``as few as 250 malicious documents can effectively implant a backdoor'' (2025 International AI Safety Report); attacks on LLMs and image generation models.
+    \item \textbf{Backdoor Attacks:} Trigger types and activation mechanisms; manifestation in generative tasks (e.g., generating specific harmful content upon trigger).
+    \item \textbf{Model Extraction:} Replicating model capabilities via API queries; economic impact on closed-source providers.
+    \item \textbf{Supply Chain Attacks:} Malicious model weights on Hugging Face; safety fine-tuning removal (open-source guardrails removable with minimal fine-tuning); open-source vs.\ closed-source security trade-offs.
+\end{itemize}
+}
+
+
+\subsection{Adversarial Manipulation: From Prompt Injection to Agentic Exploitation} \wordcount{$\sim$900 words}
+\label{sec:threat-adversarial}
+
+\note{Present the \textbf{attack surface evolution ladder}: Level~1 Direct Prompt Injection (chatbot) $\to$ Level~2 Jailbreak (bypassing guardrails) $\to$ Level~3 Indirect Prompt Injection (RAG) $\to$ Level~4 Agentic Exploitation (agent + MCP). This escalation narrative is an original contribution.}
+
+\subsubsection{Prompt Injection} \wordcount{$\sim$200 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{Direct prompt injection:} Embedding malicious instructions in user input to override system instructions.
+    \item Clarify distinction from jailbreak: prompt injection hijacks system behavior; jailbreak bypasses safety guardrails.
+\end{itemize}
+}
+
+\subsubsection{Jailbreak Attacks --- A Taxonomy} \wordcount{$\sim$300 words}
+
+\outline{%
+Propose a 5-category taxonomy (an original contribution of this paper):
+\begin{enumerate}[nosep,leftmargin=1.5em,label=(\alph*)]
+    \item \textbf{Template-based:} Predefined role/scenario bypasses---DAN, AIM, role-play prompts.
+    \item \textbf{Optimization-based:} Gradient-optimized adversarial suffixes---GCG (Greedy Coordinate Gradient), AutoDAN.
+    \item \textbf{Multi-turn conversational:} Gradual boundary erosion across dialogue turns.
+    \item \textbf{Multi-modal:} Bypassing text safety filters via image/audio channels.
+    \item \textbf{Encoding-based:} Base64, ROT13, cipher-based encoding to evade input filters.
+\end{enumerate}
+For each category: representative method name + one-sentence mechanism description.
+}
+
+\subsubsection{Indirect Prompt Injection and Agentic Exploitation} \wordcount{$\sim$300 words}
+
+\outline{%
+\begin{enumerate}[nosep,leftmargin=1.5em,label=(\alph*)]
+    \item \textbf{IPI in RAG Systems} ($\sim$80 words): Malicious documents/webpages inject instructions upon retrieval. Fundamental distinction: attacker needs no direct model access.
+    
+    \item \textbf{IPI in Agentic Systems --- The Escalation} ($\sim$120 words): 
+    \emph{Key argument:} In agentic settings, IPI consequences escalate from ``generating incorrect output'' to ``executing malicious actions.''
+    \begin{itemize}[nosep,leftmargin=1em]
+        \item Agents possess tool permissions: file R/W, API calls, shell commands, email sending.
+        \item Unsupervised execution under ``always allow'' settings.
+        \item Real-world cases: zero-click RCE through MCP-based IDEs (CVE-2025-59944); AI browsers manipulated by hidden prompts (ChatGPT Atlas, Perplexity Comet); Palo Alto Unit~42 wild IDPI attacks.
+    \end{itemize}
+    
+    \item \textbf{MCP Ecosystem Vulnerabilities} ($\sim$100 words):
+    \begin{itemize}[nosep,leftmargin=1em]
+        \item 43\% of MCP implementations contain command injection flaws.
+        \item Critical CVEs: CVE-2025-6514 (CVSS~9.6), CVE-2025-49596 (CVSS~9.4).
+        \item Cross-server composition attacks: individually safe servers become vulnerable in combination.
+        \item Classic software vulnerabilities recurring in AI ecosystem: SQLi $\to$ stored prompt injection.
+        \item OWASP 2025 Top~10: prompt injection ranked \#1.
+    \end{itemize}
+\end{enumerate}
+}
+
+\subsubsection{Current Attack--Defense Landscape} \wordcount{$\sim$100 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item ``Sophisticated attacks succeed $\sim$50\% of the time within 10 attempts'' (2025 AI Safety Report).
+    \item OpenAI acknowledges prompt injection ``may never be fully solved.''
+    \item Emphasize the arms-race dynamic between attackers and defenders.
+\end{itemize}
+}
+
+
+\subsection{Misinformation, Disinformation, and Deepfakes} \wordcount{$\sim$800 words}
+\label{sec:threat-misinfo}
+
+\subsubsection{Deepfakes} \wordcount{$\sim$300 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Face-swap, voice cloning, video deepfakes --- technical evolution from GAN-based to diffusion-based.
+    \item Key 2024--2025 cases: Hong Kong deepfake video-conference \$25M fraud; political figure deepfakes (1--2 examples); AI voice cloning for telecom fraud.
+    \item Scalability: generation cost approaching zero; anyone can create convincing deepfakes.
+\end{itemize}
+}
+
+\subsubsection{AI-Powered Information Operations} \wordcount{$\sim$300 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Automated large-scale fake news generation.
+    \item AI-driven bot farms and coordinated inauthentic behavior.
+    \item 2024 global election year: AI's documented role in campaigns and interference attempts.
+    \item Fake academic content: paper mills, AI-generated papers and reviews.
+    \item Cite: ``AI-generated content is as effective as human-written content at changing beliefs'' (2026 AI Safety Report).
+\end{itemize}
+}
+
+\subsubsection{Information Ecosystem Degradation} \wordcount{$\sim$200 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item ``AI slop'': proliferation of low-quality AI content flooding the internet.
+    \item Model collapse: AI content fed back into training causes progressive model degradation.
+    \item Liar's dividend: the mere existence of deepfakes casts doubt on \emph{authentic} content.
+    \item Long-term erosion of public discourse and epistemic trust.
+\end{itemize}
+}
+
+
+\subsection{Ethical and Societal Risks} \wordcount{$\sim$600 words}
+\label{sec:threat-ethics}
+
+\subsubsection{Bias Amplification} \wordcount{$\sim$200 words}
+
+\outline{%
+Training data biases amplified in AIGC. Stereotyping in image generation (e.g., CEO = male). Evaluation benchmarks: BOLD, BBQ, WinoBias.
+}
+
+\subsubsection{Psychological and Social Impact} \wordcount{$\sim$200 words}
+
+\outline{%
+AI companions and emotional dependency (Character.ai incidents). Adolescent-specific risks: exposure to harmful content, identity confusion. Creator displacement anxiety across art, writing, and music.
+}
+
+\subsubsection{Copyright, Authenticity, and Accountability} \wordcount{$\sim$200 words}
+
+\outline{%
+Training data copyright litigation: NYT v.\ OpenAI, Getty v.\ Stability AI. AI-generated content copyright attribution (US Copyright Office position: ``no human author = no copyright''). Authenticity crisis affecting journalism, judiciary, and academia. Accountability dilemma: developer vs.\ deployer vs.\ end-user.
+}
+
+\figplaceholder{Figure~2: AIGC Threat Taxonomy Tree (hierarchical diagram)}
+
+\tableplaceholder{Table~2: Threat Type $\times$ Affected Modality $\times$ Severity $\times$ Defense Maturity}
+
+\newpage
+%% ============================================================
+\section{Governance and Regulation} \wordcount{$\sim$1,800 words}
+\label{sec:governance}
+%% ============================================================
+
+\note{Only covers institutions, legislation, standards, and industry practices. Does NOT expand on technical principles (e.g., C2PA implementation $\to$ \S\ref{sec:watermark}). Does NOT re-describe threats (cross-reference \S\ref{sec:threats}).}
+
+
+\subsection{Government Policies} \wordcount{$\sim$1,050 words}
+\label{sec:gov-policy}
+
+\subsubsection{European Union} \wordcount{$\sim$350 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{EU AI Act} (adopted 2024, phased implementation): Risk-tiered framework (unacceptable / high / limited / minimal risk). Article~50 transparency obligations---deepfake labeling effective Aug~2, 2025. Penalties up to \euro{}35M or 7\% of global revenue.
+    \item \textbf{Code of Practice on Transparency of AI-Generated Content} (first draft Dec 2025): Multi-layer marking (metadata + implicit watermarks + visible labels). Interim ``AI'' icon proposal.
+    \item Digital Services Act (DSA): platform obligations for AI-generated content.
+    \item GDPR and AI training data.
+\end{itemize}
+}
+
+\subsubsection{United States} \wordcount{$\sim$250 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Federal: Executive Order on AI Safety (Oct 2023) + subsequent policy adjustments under new administration.
+    \item NIST AI Risk Management Framework (AI RMF).
+    \item State-level: deepfake laws in California, Texas, New York.
+    \item Congressional progress: overview of relevant bills.
+\end{itemize}
+}
+
+\subsubsection{China} \wordcount{$\sim$250 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Interim Measures for the Management of Generative AI Services (Aug 2023).
+    \item Deep Synthesis Regulations (Jan 2023): labeling, identity verification.
+    \item Algorithm filing system.
+    \item TC260 ``Basic Security Requirements for Generative AI Services'' (draft): 5 categories, 29 security risks.
+\end{itemize}
+}
+
+\subsubsection{International Cooperation} \wordcount{$\sim$200 words}
+
+\outline{%
+UK AI Safety Institute $\to$ AI Security Institute. International AI Safety Report (2025, 2026). AI Safety Summit series: Bletchley Park $\to$ Seoul $\to$ Paris $\to$ India. G7 Hiroshima AI Process. One-paragraph comparative analysis: EU (rule-based) vs.\ US (principle-based) vs.\ China (application-specific).
+}
+
+
+\subsection{Industry Practices} \wordcount{$\sim$750 words}
+\label{sec:gov-industry}
+
+\subsubsection{Model Provider Safety Frameworks} \wordcount{$\sim$300 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Frontier AI Safety Frameworks: 12 companies published or updated in 2025.
+    \item FLI AI Safety Index 2025 results: Anthropic \#1, OpenAI \#2; no company scored above D in Existential Safety.
+    \item Red teaming practices: human + automated.
+    \item Acceptable Use Policies + Model Cards / System Cards.
+\end{itemize}
+}
+
+\subsubsection{Platform Governance and Standards} \wordcount{$\sim$250 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Major platform AI content policies (Meta, Google, TikTok, X).
+    \item C2PA / Content Credentials (overview; technical implementation in \S\ref{sec:watermark}).
+    \item Industry alliances: Partnership on AI, Frontier Model Forum, OECD AI Principles.
+\end{itemize}
+}
+
+\subsubsection{Agentic AI Governance Gap} \wordcount{$\sim$100 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Current Frontier AI Safety Frameworks primarily address model-level safety, insufficient coverage of agent deployment scenarios.
+    \item MCP lacked built-in security standards (Anthropic initially ``left security to the user'').
+    \item Emerging standards: OWASP Top~10 for LLMs 2025, MCP security best practices guides.
+    \item Standardization severely lagging behind deployment velocity.
+\end{itemize}
+}
+
+\tableplaceholder{Table~3: Cross-Jurisdiction AIGC Policy Comparison\\[3pt]
+\small Columns: Jurisdiction $\mid$ Key Legislation $\mid$ Core Mechanism $\mid$ Implementation Stage $\mid$ Penalty}
+
+\newpage
+%% ============================================================
+\section{Technical Countermeasures} \wordcount{$\sim$3,050 words}
+\label{sec:countermeasures}
+%% ============================================================
+
+\note{Only covers technical solutions. Does NOT repeat threat descriptions from \S\ref{sec:threats} (use cross-references such as ``To counter the threats identified in \S X, ...'').}
+
+
+\subsection{AIGC Detection} \wordcount{$\sim$1,100 words}
+\label{sec:detect}
+
+\subsubsection{AI-Generated Text Detection} \wordcount{$\sim$350 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{Zero-shot methods:} DetectGPT (curvature estimation), Fast-DetectGPT.
+    \item \textbf{Trained classifiers:} RoBERTa-based (OpenAI detector), GPTZero, Turnitin AI detection.
+    \item \textbf{Challenges:} Paraphrase attacks; cross-model generalization; multilingual detection; human-AI hybrid text; detector staleness after model updates.
+    \item \textbf{Benchmarks:} RAID, MULTITuDE, M4.
+\end{itemize}
+}
+
+\subsubsection{AI-Generated Image Detection} \wordcount{$\sim$300 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Frequency-domain analysis: GAN spectral artifacts.
+    \item CNN/ViT binary classifiers.
+    \item GAN fingerprinting: each GAN leaves a unique ``fingerprint.''
+    \item Diffusion-specific: DIRE (Diffusion Reconstruction Error).
+    \item Robustness challenge: accuracy drops significantly after JPEG compression, cropping, social media re-encoding.
+\end{itemize}
+}
+
+\subsubsection{Audio and Video Detection} \wordcount{$\sim$250 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{Speech:} ASVSpoof challenge series (2024, 2025). Spectral, prosodic, and vocal tract features.
+    \item \textbf{Video:} Frame-level vs.\ video-level detection; temporal consistency analysis. FaceForensics++ benchmark.
+    \item \textbf{New challenge:} Diffusion-based video generation (Sora-class) vs.\ traditional face-swap deepfakes---existing detectors may not transfer.
+\end{itemize}
+}
+
+\subsubsection{Cross-Modal Challenges} \wordcount{$\sim$200 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Common bottlenecks across modalities.
+    \item False positive harm: wrongly accusing human creators of using AI.
+    \item Detection vs.\ generation arms race: detectors must continuously adapt.
+    \item Absence of unified cross-modal detection frameworks.
+\end{itemize}
+}
+
+\tableplaceholder{Table~4: Detection Method Comparison\\[3pt]
+\small Columns: Modality $\mid$ Method Category $\mid$ Mechanism $\mid$ Strengths $\mid$ Limitations $\mid$ Representative Works}
+
+
+\subsection{Watermarking and Content Provenance} \wordcount{$\sim$1,000 words}
+\label{sec:watermark}
+
+\subsubsection{Text Watermarking} \wordcount{$\sim$350 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{KGW scheme:} Green/red list mechanism (Kirchenbauer et al., 2023)---biasing token selection toward green-list tokens during generation; detection via statistical test.
+    \item \textbf{Improvements:} Unigram watermark, multi-bit watermarking, SemStamp (semantic-level).
+    \item \textbf{Post-hoc watermarking:} Methods that do not require generation process modification.
+    \item \textbf{Trade-off:} Text quality vs.\ watermark strength vs.\ robustness.
+    \item \textbf{Attacks:} Paraphrasing, translation, truncation.
+    \item 2024--2025 advances.
+\end{itemize}
+}
+
+\subsubsection{Image Watermarking} \wordcount{$\sim$300 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{Diffusion-native:} Stable Signature (decoder embedding); Tree-Ring Watermarks (initial noise embedding); Gaussian Shading.
+    \item \textbf{Encoder-decoder:} HiDDeN, StegaStamp.
+    \item \textbf{Robustness evaluation:} JPEG, scaling, cropping, regeneration attacks.
+\end{itemize}
+}
+
+\subsubsection{Content Provenance} \wordcount{$\sim$200 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item C2PA standard technical implementation: digital signatures + metadata + manifest.
+    \item Deployment status and participating organizations.
+    \item Blockchain-based approaches (brief mention).
+    \item Limitations: metadata tampering; cross-platform propagation loss.
+\end{itemize}
+}
+
+\subsubsection{Challenges and Limitations} \wordcount{$\sim$150 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Fundamental tension: robustness vs.\ imperceptibility.
+    \item Open-source model watermarks can be removed (decoder retraining).
+    \item Lack of cross-provider standardization.
+    \item Voluntary vs.\ legally mandated watermarking.
+\end{itemize}
+}
+
+\tableplaceholder{Table~5: Watermarking Scheme Comparison\\[3pt]
+\small Columns: Modality $\mid$ Method $\mid$ Embedding Stage $\mid$ Bit Capacity $\mid$ Robustness $\mid$ Model Modification Required $\mid$ Representative Works}
+
+
+\subsection{Alignment, Defense, and Agentic Security} \wordcount{$\sim$1,050 words}
+\label{sec:alignment}
+
+\subsubsection{Alignment Techniques} \wordcount{$\sim$300 words}
+
+\outline{%
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item RLHF pipeline overview $\to$ DPO $\to$ KTO $\to$ Constitutional AI $\to$ RLAIF.
+    \item Multi-objective alignment: helpful + harmless + honest.
+    \item Pluralistic alignment: handling cultural differences in defining ``safe behavior.''
+    \item Limitations: reward hacking, annotator bias.
+    \item Cross-reference \S\ref{sec:gov-industry} red teaming as evaluation methodology.
+\end{itemize}
+}
+
+\subsubsection{Defense Against Adversarial Manipulation} \wordcount{$\sim$300 words}
+
+\outline{%
+Opening: ``To counter the adversarial manipulation strategies categorized in \S\ref{sec:threat-adversarial}, researchers have developed multi-layered defense mechanisms...''
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{Input layer:} Prompt classification/filtering, perplexity-based filtering.
+    \item \textbf{System layer:} Instruction hierarchy, privilege separation between system and user instructions.
+    \item \textbf{Output layer:} Safety classifier, output filtering.
+    \item \textbf{Model layer:} Safety fine-tuning, circuit breakers, refusal training, representation engineering.
+    \item Defense-in-depth architecture: no single layer is sufficient alone.
+    \item Evaluation benchmarks: HarmBench, JailbreakBench.
+    \item Current status: ``sophisticated attacks still succeed $\sim$50\% of the time''---defenses are far from complete.
+\end{itemize}
+}
+
+\subsubsection{Securing Agentic AI Systems} \wordcount{$\sim$450 words}
+
+\outline{%
+Opening: ``To secure against the agentic threats identified in \S\ref{sec:threat-adversarial}, a new class of defenses targeting the agent--tool interaction layer is emerging...''
+
+\medskip\noindent\textbf{(a) Architecture-Level Defenses} ($\sim$150 words):
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Trust boundaries: strict separation of system instructions vs.\ external data.
+    \item Context isolation: prevent retrieved content from executing as instructions.
+    \item Least privilege: restrict agent tool access scope and action permissions.
+    \item Privilege separation: distinguish read/write; require explicit user confirmation for high-risk actions.
+    \item Reference: Google layered defense strategy; OWASP LLM01:2025 guidance.
+\end{itemize}
+
+\medskip\noindent\textbf{(b) MCP-Specific Security} ($\sim$150 words):
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Input validation: parameterized queries to prevent SQLi $\to$ stored prompt injection chains.
+    \item Tool call validation: security checks before each tool invocation.
+    \item Authentication: session tokens, origin verification (cite MCP Inspector fix as case study).
+    \item Secure configuration: avoid exposing MCP servers to public internet.
+    \item Emerging standards: MCP protocol 2025 updates, Wiz white paper, Adversa MCP vulnerability database.
+\end{itemize}
+
+\medskip\noindent\textbf{(c) Monitoring and Observability} ($\sim$100 words):
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Agent behavior audit trails.
+    \item Anomaly detection: identifying tool-call patterns deviating from expected behavior.
+    \item Human-in-the-loop: confirmation mechanisms for high-risk operations.
+    \item Current gap: only 47\% of organizations have implemented GenAI-specific security controls.
+\end{itemize}
+
+\medskip\noindent\textbf{(d) Open Challenges} ($\sim$50 words):
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item Tool name collision / tool poisoning defense.
+    \item Cross-agent trust chain management.
+    \item OpenAI's admission: ``a frontier research problem that may never be fully solved.''
+    \item Transition to \S\ref{sec:future}.
+\end{itemize}
+}
+
+\figplaceholder{Figure~3: Layered Defense Architecture for AIGC Security\\[3pt]
+\small (Detection $\leftrightarrow$ Watermarking $\leftrightarrow$ Alignment $\leftrightarrow$ Agentic Security $\leftrightarrow$ Governance)}
+
+\newpage
+%% ============================================================
+\section{Future Research Directions} \wordcount{$\sim$850 words}
+\label{sec:future}
+%% ============================================================
+
+\note{Each direction must specify: (a) current gap, (b) why it matters, (c) possible research paths. Do not repeat summaries of existing methods.}
+
+
+\subsection{Securing Autonomous AI Agents} \wordcount{$\sim$200 words}
+
+\outline{%
+\emph{Gap:} Existing security frameworks (OWASP, NIST) are just beginning to cover agentic scenarios. \emph{Why most urgent:} Agents are already deployed in production, but security practices are severely lagging. \emph{Research directions:} (a)~Formal agent trust models (trust boundary formalization). (b)~Secure orchestration across agents and MCP servers. (c)~Runtime verification of agent behavior. (d)~Secure multi-agent collaboration protocols. Convergence with traditional software security: adapting sandboxing, capability-based security to agentic settings.
+}
+
+\subsection{Unified Multi-Modal Detection Frameworks} \wordcount{$\sim$120 words}
+
+\outline{%
+\emph{Gap:} Most detectors are single-modality. Cross-modal unified detection (text + image + audio + video) remains unexplored. Transfer learning across modalities. Foundation models for detection.
+}
+
+\subsection{Provably Robust Watermarking} \wordcount{$\sim$120 words}
+
+\outline{%
+\emph{Gap:} Current schemes rely on empirical evaluation, lacking theoretical security guarantees. Information-theoretic bounds on watermark capacity and robustness. Standardization across providers and modalities.
+}
+
+\subsection{Privacy-Preserving Generation} \wordcount{$\sim$120 words}
+
+\outline{%
+Memorization in generative models: verbatim training data leakage. Differential privacy for LLMs and diffusion models. Machine unlearning: selective knowledge removal for ``right to be forgotten.'' Privacy--utility trade-off.
+}
+
+\subsection{International Governance Harmonization} \wordcount{$\sim$120 words}
+
+\outline{%
+Cross-border AIGC governance frameworks. Jurisdictional conflicts and regulatory arbitrage. Standard fragmentation across regions. Need for mutual recognition mechanisms.
+}
+
+\subsection{Dynamic Evaluation Frameworks} \wordcount{$\sim$120 words}
+
+\outline{%
+Living benchmarks that evolve with model capabilities. Preventing benchmark contamination. Evaluation frameworks for agentic and multi-modal settings. Community-driven, continuously updated safety evaluation infrastructure.
+}
+
+
+%% ============================================================
+\section{Conclusions} \wordcount{$\sim$400 words}
+\label{sec:conclusions}
+%% ============================================================
+
+\outline{%
+Summarize the four-fold contribution. Present three core insights in prose form (not as a list):
+\begin{enumerate}[nosep,leftmargin=1.5em]
+    \item The arms race between generative capability and detection/defense continues to intensify, with neither side holding a decisive advantage.
+    \item Technical measures alone are insufficient; they must operate in concert with governance frameworks and ethical guidelines.
+    \item The shift from content-generation risks to agentic-execution risks represents the most urgent new frontier, demanding coordinated response across disciplines.
+\end{enumerate}
+Call for cross-disciplinary collaboration among academia, industry, and policymakers. No new content or references introduced.
+}
+
+
+%% ============================================================
+%%  BIBLIOGRAPHY (Seed references --- 23 entries)
+%% ============================================================
+
+\bibliographystyle{elsarticle-num-names}
+
+\begin{thebibliography}{00}
+
+\bibitem[Achiam et al.(2023)]{gpt4}
+  Achiam, J., et al.,
+  GPT-4 Technical Report,
+  arXiv:2303.08774, 2023.
+
+\bibitem[Rombach et al.(2022)]{ldm}
+  Rombach, R., et al.,
+  High-Resolution Image Synthesis with Latent Diffusion Models,
+  CVPR, 2022.
+
+\bibitem[Wang et al.(2023)]{valle}
+  Wang, C., et al.,
+  Neural Codec Language Models are Zero-Shot Text to Speech Synthesizers,
+  arXiv:2301.02111, 2023.
+
+\bibitem[Brooks et al.(2024)]{sora}
+  Brooks, T., et al.,
+  Video Generation Models as World Simulators,
+  OpenAI Technical Report, 2024.
+
+\bibitem[Zou et al.(2023)]{gcg}
+  Zou, A., et al.,
+  Universal and Transferable Adversarial Attacks on Aligned Language Models,
+  arXiv:2307.15043, 2023.
+
+\bibitem[Greshake et al.(2023)]{ipi}
+  Greshake, K., et al.,
+  Not What You've Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection,
+  AISec, 2023.
+
+\bibitem[Carlini et al.(2024)]{poisoning}
+  Carlini, N., et al.,
+  Poisoning Web-Scale Training Datasets is Practical,
+  IEEE S\&P, 2024.
+
+\bibitem[Shumailov et al.(2024)]{modelcollapse}
+  Shumailov, I., et al.,
+  AI Models Collapse When Trained on Recursively Generated Data,
+  Nature, 2024.
+
+\bibitem[OWASP(2025)]{owasp2025}
+  OWASP,
+  Top 10 for LLM Applications 2025,
+  2025.
+
+\bibitem[Unit42(2025)]{unit42ipi}
+  Palo Alto Networks Unit 42,
+  Fooling AI Agents: Web-Based Indirect Prompt Injection Observed in the Wild,
+  2025.
+
+\bibitem[Elastic Security Labs(2025)]{elasticmcp}
+  Elastic Security Labs,
+  MCP Tools: Attack Vectors and Defense Recommendations for Autonomous Agents,
+  2025.
+
+\bibitem[EU(2024)]{euaiact}
+  European Parliament,
+  Regulation (EU) 2024/1689 (EU AI Act),
+  Official Journal of the EU, 2024.
+
+\bibitem[Bengio et al.(2025)]{aisafetyreport2025}
+  Bengio, Y., et al.,
+  International AI Safety Report,
+  DSIT 2025/001, 2025.
+
+\bibitem[Bengio et al.(2026)]{aisafetyreport2026}
+  Bengio, Y., et al.,
+  International AI Safety Report 2026,
+  DSIT, 2026.
+
+\bibitem[Mitchell et al.(2023)]{detectgpt}
+  Mitchell, E., et al.,
+  DetectGPT: Zero-Shot Machine-Generated Text Detection using Probability Curvature,
+  ICML, 2023.
+
+\bibitem[R{\"o}ssler et al.(2019)]{faceforensics}
+  R{\"o}ssler, A., et al.,
+  FaceForensics++: Learning to Detect Manipulated Facial Images,
+  ICCV, 2019.
+
+\bibitem[Kirchenbauer et al.(2023)]{kgw}
+  Kirchenbauer, J., et al.,
+  A Watermark for Large Language Models,
+  ICML, 2023.
+
+\bibitem[Fernandez et al.(2023)]{stablesig}
+  Fernandez, P., et al.,
+  The Stable Signature: Rooting Watermarks in Latent Diffusion Models,
+  ICCV, 2023.
+
+\bibitem[Wen et al.(2023)]{treering}
+  Wen, Y., et al.,
+  Tree-Ring Watermarks: Fingerprints for Diffusion Images that are Invisible and Robust,
+  NeurIPS, 2023.
+
+\bibitem[Ouyang et al.(2022)]{rlhf}
+  Ouyang, L., et al.,
+  Training Language Models to Follow Instructions with Human Feedback,
+  NeurIPS, 2022.
+
+\bibitem[Rafailov et al.(2023)]{dpo}
+  Rafailov, R., et al.,
+  Direct Preference Optimization: Your Language Model is Secretly a Reward Model,
+  NeurIPS, 2023.
+
+\bibitem[Bai et al.(2022)]{constitutionalai}
+  Bai, Y., et al.,
+  Constitutional AI: Harmlessness from AI Feedback,
+  arXiv:2212.08073, 2022.
+
+\bibitem[OpenAI(2025)]{openaiipi}
+  OpenAI,
+  Understanding Prompt Injections: A Frontier Security Challenge,
+  OpenAI Blog, 2025.
+
+\end{thebibliography}
+
+\end{document}

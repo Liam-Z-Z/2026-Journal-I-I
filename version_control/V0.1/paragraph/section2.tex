@@ -1,0 +1,168 @@
+%% ============================================================
+%% Section 2: Generative AI Capabilities and Threat-Relevant Properties
+%% Source material: C01 (§2.1–2.3) + C02 (§2.4)
+%% ============================================================
+
+\section{Generative AI Capabilities and Threat-Relevant Properties}
+\label{sec:capabilities}
+
+The rapid evolution of generative artificial intelligence has fundamentally altered the digital threat landscape. Historically, generating highly convincing, personalized deceptive material required significant human labor, technical expertise, and financial resources---a natural friction that acted as a structural rate-limiter on the scale and sophistication of cyber threats. Recent advancements in generative AI have systematically dismantled these barriers. The current security crisis is driven by the convergence of four unprecedented capabilities: high-fidelity multi-modal generation that surpasses human detection thresholds, the collapse of production costs via open-weight models and ubiquitous compute, fine-grained controllability enabling hyper-personalized targeted attacks, and---most critically---the emergence of autonomous AI agents capable of executing multi-step actions in real computing environments. Sections~\ref{sec:cap-fidelity}--\ref{sec:cap-control} examine AI as a \emph{content producer}; Section~\ref{sec:cap-autonomy} marks the fundamental pivot to AI as an \emph{autonomous actor}, where the threat paradigm escalates from ``AI generates harmful content'' to ``AI autonomously executes harmful actions.''
+
+
+%% ------------------------------------------------------------
+\subsection{High-Fidelity Multi-Modal Generation}
+\label{sec:cap-fidelity}
+%% ------------------------------------------------------------
+
+Generation quality has crossed the ``human-indistinguishable'' threshold across all major content modalities, making detection progressively harder and deception progressively easier.
+
+\paragraph{Text.}
+Modern large language models (LLMs) produce text that is consistently indistinguishable from human writing in controlled experiments. Jakesch et al.\ demonstrated that humans cannot reliably distinguish GPT-generated political statements from human-authored ones, with AI-generated text proving equally persuasive~\cite{jakesch2023human}. A large-scale study by Uchendu et al.\ found that human participants detected AI-generated text only 53--56\% of the time across multiple generators---barely above chance~\cite{uchendu2023human}. Frontier LLMs---including GPT-4~\cite{gpt4}, Claude~\cite{anthropic2025claude}, Gemini~\cite{gemini2024}, Llama~\cite{llama3}, and DeepSeek-V3~\cite{deepseekv3}---now achieve human-level or superior performance on professional writing benchmarks, while emerging models such as GPT-5 and Claude Opus 4.6 further narrow any remaining gaps.
+
+\paragraph{Image.}
+The shift from Generative Adversarial Networks (GANs) to latent diffusion models~\cite{rombach2022ldm} and the subsequent adoption of the Diffusion Transformer (DiT) architecture~\cite{peebles2023dit} have enabled photorealistic image synthesis. Representative systems---Stable Diffusion~3~\cite{esser2024sd3}, DALL-E~3~\cite{dalle3}, Midjourney~V6, and Flux~\cite{flux2024}---produce outputs that consistently fool human observers. A 2025 Microsoft study found that participants correctly identified AI-generated images only 53--61\% of the time across conditions~\cite{microsoft2025human}, confirming that synthetic images have breached the human perceptual threshold. Automated detectors face similar challenges: the 2026 International AI Safety Report notes that robustness to post-processing (JPEG compression, cropping, social media re-encoding) remains a critical weakness~\cite{aisafetyreport2026}.
+
+\paragraph{Audio.}
+Neural codec language models have enabled high-fidelity voice cloning from minimal reference audio. VALL-E demonstrated zero-shot text-to-speech from a 3-second sample while preserving speaker emotion and acoustic environment~\cite{wang2023valle}. VALL-E~2 achieved human parity on the LibriSpeech benchmark~\cite{chen2024valle2}. Open-source alternatives such as F5-TTS~\cite{chen2024f5tts} and commercial platforms like ElevenLabs have further democratized access. The 2025 International AI Safety Report warns that current voice verification systems face error rates up to 23\% against high-quality synthetic speech, and cloned audio can be generated in under one second~\cite{aisafetyreport2025}.
+
+\paragraph{Video.}
+The application of DiT architectures to video generation has enabled temporally consistent, high-resolution video synthesis. OpenAI's Sora~\cite{brooks2024sora} demonstrated photorealistic video up to one minute in length. Subsequent systems---Google Veo~2, Kuaishou Kling~2.0, and Tencent HunyuanVideo~\cite{kong2024hunyuan}---have further advanced quality, with evaluation frameworks such as VBench-2.0~\cite{vbench2025} assessing 18 fine-grained dimensions including human fidelity, physical laws, and commonsense reasoning. The security implications are stark: deepfake-enabled video phishing surged by over 1,600\% in Q1~2025~\cite{vectra2025whaling}, and in February 2024 a finance worker at Arup transferred \$25~million to fraudsters after attending a video conference populated entirely by AI-generated deepfakes of senior executives~\cite{brightside2025phishing}.
+
+
+%% ------------------------------------------------------------
+\subsection{Low-Cost Scalable Production}
+\label{sec:cap-scale}
+%% ------------------------------------------------------------
+
+The high-fidelity capabilities described above would pose a manageable threat if confined to well-resourced actors. Instead, the barrier to entry for generating state-of-the-art synthetic content has collapsed entirely across three dimensions.
+
+\paragraph{Open-source model proliferation.}
+Meta's Llama family has been downloaded hundreds of millions of times, with the Llama~4 series providing open-weight models rivaling the best closed-source systems~\cite{llama3}. Hugging Face hosts millions of models, with analysis showing that 92.48\% of all downloads target optimized architectures under one billion parameters~\cite{hfstats2025}, indicating massive adoption of local, edge-based AI deployment. Critically, once downloaded, open-weight models can be freely modified: safety alignments and refusal mechanisms can be stripped via relatively simple fine-tuning, producing ``uncensored'' variants actively traded in underground communities~\cite{aisafetyreport2025}.
+
+\paragraph{Consumer-grade hardware sufficiency.}
+Advances in model quantization---compressing weights from 16-bit to 4-bit precision with minimal quality degradation---have dramatically reduced hardware requirements~\cite{localai2026}. An 8-billion parameter model now requires only 5--8~GB of VRAM, executable on entry-level gaming laptops. High-end consumer GPUs (NVIDIA RTX~4090/5090 with 24--32~GB VRAM) can run 32--35B parameter models at interactive speeds. Apple's unified memory architecture enables Mac systems with 96--128~GB to run 70B+ models locally~\cite{sitepoint2026mac}.
+
+\paragraph{Near-zero API costs.}
+API pricing has collapsed through aggressive competition. As of early 2026, DeepSeek V3.2 charges \$0.28 per million input tokens; Google's Gemini~2.0 Flash-Lite offers \$0.075 per million input tokens~\cite{tldl2026pricing}. A BEC campaign analyzing 1,000 target documents (approximately one million tokens) costs under \$1.50---enabling large-scale, hyper-personalized attacks at negligible marginal cost.
+
+The net effect is a dramatic worsening of cybersecurity's asymmetric economics: while defenders invest millions in enterprise security platforms, attackers access sophisticated AI tools for pennies or run them locally for the fixed cost of consumer hardware~\cite{zensec2025phishing}.
+
+
+%% ------------------------------------------------------------
+\subsection{Controllability and Personalization}
+\label{sec:cap-control}
+%% ------------------------------------------------------------
+
+The final content-generation capability amplifying security risks is fine-grained control over AI outputs, enabling targeted rather than generic attacks.
+
+\paragraph{Precision visual synthesis.}
+Three parameter-efficient fine-tuning (PEFT) technologies enable targeted visual control with minimal data. \textbf{LoRA} (Low-Rank Adaptation)~\cite{hu2022lora} injects trainable rank decomposition matrices while freezing pre-trained weights, allowing accurate visual cloning of specific individuals from as few as 10--20 reference images, producing adapter files of only 2--10~MB. \textbf{ControlNet}~\cite{zhang2023controlnet} provides strict spatial and geometric guidance via depth maps, edge detection, or skeletal poses extracted from reference photographs. \textbf{IP-Adapter}~\cite{ye2023ipadapter} injects visual features from a reference image via decoupled cross-attention layers, requiring as little as a single portrait photograph. By chaining these tools---ControlNet for posture, IP-Adapter for facial likeness from a single LinkedIn photo, LoRA for identity consistency---operators can clone and manipulate identities with perfect continuity across arbitrarily many fabricated scenes.
+
+\paragraph{Voice and stylometric cloning.}
+As established in Section~\ref{sec:cap-fidelity}, VALL-E~2 and F5-TTS require only 3--10 seconds of reference audio for high-fidelity voice cloning. Equally dangerous is stylometric identity cloning: in a study with MFA-trained writers, experts initially preferred human writing 82.7\% of the time against basic LLM imitation, but when models were fine-tuned on authors' complete works, experts \emph{preferred} the AI-generated writing 62\% of the time~\cite{chi2026creative}. Furthermore, modern LLMs with context windows up to 10~million tokens~\cite{llama4} can simply ingest a target's entire public writing history---articles, social media, leaked correspondence---and instantly adopt their stylometric fingerprint without fine-tuning.
+
+\paragraph{Security implication.}
+This controllability enables multi-channel, hyper-personalized attacks. Attackers deploy AI agents to map organizational hierarchies, then draft emails perfectly mimicking a CEO's writing style with references to ongoing internal projects. If questioned, they generate a voice-cloned phone call from a 3-second YouTube sample. In 2025, over 57\% of detected phishing emails were sent from legitimately compromised accounts using AI-generated replies to ongoing threads, evading traditional detection by exhibiting correct cryptographic signatures and zero stylistic anomalies~\cite{zensec2025phishing}.
+
+
+%% ------------------------------------------------------------
+\subsection{Autonomy and Tool Use}
+\label{sec:cap-autonomy}
+%% ------------------------------------------------------------
+
+The preceding subsections examined AI systems as producers of static content. This subsection marks a fundamental pivot: the convergence of reasoning-capable models, agentic architectures, million-token context windows, and standardized tool integration protocols has transformed LLMs from passive generators into \emph{autonomous agents capable of executing multi-step plans in real computing environments}. The security problem shifts from ``AI generates harmful content'' to ``AI autonomously executes harmful actions,'' expanding the attack surface from model input/output to the entire computing environment.
+
+\subsubsection{Reasoning Models and Multi-Step Planning}
+\label{sec:cap-reasoning}
+
+Autonomous action presupposes multi-step reasoning and planning. Chain-of-thought prompting~\cite{wei2022cot} demonstrated that including intermediate reasoning steps dramatically improves LLM performance on complex tasks, with subsequent extensions including self-consistency decoding~\cite{wang2023selfconsistency} and Tree of Thoughts~\cite{yao2023tot}, which achieved 74\% on the Game of~24 task compared to 4\% with standard chain-of-thought.
+
+In September 2024, OpenAI released o1, trained with large-scale reinforcement learning to perform extended internal reasoning~\cite{openai2024o1}. On the 2024 AIME, o1 scored 74.4\% versus GPT-4o's 12\%; on GPQA Diamond~\cite{rein2023gpqa}, it achieved 78.3\% where PhD experts average approximately 65\%. The pace of improvement accelerated dramatically: o3 (April 2025) achieved 96.7\% on AIME, 87.7\% on GPQA Diamond, and 71.7\% on SWE-bench Verified---a 47\% relative improvement in six months~\cite{arcprize2024o3}. On the ARC-AGI benchmark, o3 scored 87.5\%, surpassing the 85\% human performance threshold where GPT-4o had scored just 5\%.
+
+Open-source models rapidly followed. DeepSeek-R1, a 671B mixture-of-experts model trained via Group Relative Policy Optimization, matched or exceeded o1 across major benchmarks: 79.8\% on AIME, 97.3\% on MATH-500, and 49.2\% on SWE-bench Verified~\cite{deepseekr1}. A remarkable finding was that DeepSeek-R1-Zero, trained via pure reinforcement learning without supervised fine-tuning, spontaneously developed self-verification and reflection behaviors. Anthropic introduced extended thinking in Claude~3.7 Sonnet~\cite{anthropic2025thinking}, and Google followed with Gemini~2.5 Flash~\cite{google2025gemini25}.
+
+The security implications are profound: a model that can decompose ``exfiltrate the database credentials from this codebase'' into a sequence of file searches, pattern matching, and network requests---and execute that plan step by step---poses qualitatively different risks than one that can only generate a single block of text.
+
+
+\subsubsection{AI Agents: From Text Generators to Autonomous Actors}
+\label{sec:cap-agents}
+
+The agent paradigm---combining autonomous planning with tool invocation and environmental feedback---transforms capable reasoners into capable actors. Wang et al.\ define LLM-based agents through four modules: profile, memory, planning, and action~\cite{wang2024agentsurvey}. The foundational ReAct framework~\cite{yao2023react} interleaves reasoning traces with task-specific actions in a closed loop: \emph{observe $\to$ reason $\to$ act $\to$ observe}.
+
+The research prototypes of 2023 have become production systems deployed at scale. \textbf{Coding agents}---Claude Code (Anthropic, \$1B annualized revenue within six months of GA), OpenAI Codex, Google Jules, and Devin~\cite{cognition2024devin}---autonomously read codebases, edit files, execute shell commands, run test suites, and create pull requests. \textbf{Browser and computer-use agents}---Anthropic's Computer Use~\cite{anthropic2024computeruse}, OpenAI Operator (58.1\% on WebArena~\cite{zhou2023webarena}, 87\% on WebVoyager)---interact with graphical interfaces via simulated mouse and keyboard input. These agents possess capabilities that directly map to security-relevant actions: shell command execution, file system read/write, API calls to GitHub/Slack/Jira, database interaction, GUI control, and multi-agent orchestration.
+
+Agent benchmarks quantify both capability and vulnerability. SWE-bench Verified scores have risen from under 5\% in early 2024 to over 70\% by early 2026~\cite{jimenez2024swebench}. OSWorld~\cite{xie2024osworld} tests real-world computer tasks, with best models scoring 12.24\% at launch versus human 72.36\%. AgentBench~\cite{liu2024agentbench} evaluates LLMs across eight environments including operating systems, databases, and web browsing.
+
+
+\subsubsection{Long Context Windows as an Enabler of Complex Agency}
+\label{sec:cap-context}
+
+The practical utility of an agent is bounded by its working memory. Context windows have expanded by over two orders of magnitude in under two years: from GPT-4's 8,192 tokens (March 2023) to Gemini~1.5 Pro's 1-million-token window with $>$99.7\% recall~\cite{gemini15}, and Meta's Llama~4 Scout achieving 10~million tokens. Key technical enablers include Rotary Position Embedding (RoPE)~\cite{su2024roformer}, YaRN~\cite{peng2024yarn}, Ring Attention~\cite{liu2024ringattention}, and StreamingLLM~\cite{xiao2024streamingllm}.
+
+However, evaluation reveals important limitations. RULER demonstrated that near-perfect Needle-in-a-Haystack scores mask significant weaknesses on complex tasks: only 4 of 10 models effectively handled 32K sequences~\cite{hsieh2024ruler}. Liu et al.\ identified the ``Lost in the Middle'' effect, where models perform best when relevant information appears at the beginning or end of the context~\cite{liu2024lostmiddle}.
+
+For agentic systems, long context serves as expanded working memory: coding agents load entire codebases, browser agents maintain extended interaction histories, and multi-step plans accumulate observations and tool outputs across thousands of steps. The security implication is direct: an agent that can maintain coherent plans across extended interactions is far more capable of executing sophisticated, multi-step attack sequences~\cite{anthropic2024effective}.
+
+
+\subsubsection{The MCP Ecosystem: Standardizing the Agent--Tool Interface}
+\label{sec:cap-mcp}
+
+The Model Context Protocol (MCP), released by Anthropic in November 2024, has rapidly emerged as the standard for connecting AI systems to external tools and data sources~\cite{anthropic2024mcp}. Using JSON-RPC~2.0, MCP defines a client-host-server architecture where servers expose three primitives---tools, resources, and prompts---reducing the $N \times M$ integration problem to an $M+N$ solution.
+
+The ecosystem has grown explosively: from a handful of reference servers at launch to over 10,000 active public MCP servers by December~2025, with monthly SDK downloads exceeding 97~million~\cite{mcp2025anniversary}. Integrations span file systems, databases, version control, cloud services, communication platforms, and browser automation. Adoption became universal when OpenAI announced MCP support in March~2025, followed by Google DeepMind and Microsoft. In December~2025, Anthropic donated MCP to the Agentic AI Foundation under the Linux Foundation~\cite{anthropic2025aaif}.
+
+However, MCP introduces a fundamentally new attack surface. Tool descriptions---natural language text ingested into the model's context---become vectors for prompt injection. Invariant Labs disclosed \emph{tool poisoning attacks} in April~2025, demonstrating that malicious instructions embedded in MCP tool descriptions could manipulate agents into exfiltrating sensitive files~\cite{invariant2025toolpoisoning}. They further demonstrated \emph{cross-server attacks}, where a malicious server's description modifies agent behavior with respect to other trusted servers. CyberArk extended these findings, showing that the entire input schema and tool outputs constitute attack surfaces~\cite{cyberark2025atpa}. Supply chain attacks have materialized: CVE-2025-6514 compromised the \texttt{mcp-remote} npm package affecting 437,000+ environments, and CVE-2025-49596 in Anthropic's own MCP Inspector enabled remote code execution.
+
+Wang et al.'s MCPTox benchmark tested 45 real-world MCP servers across 20 LLM agents, finding that o1-mini exhibited a 72.8\% attack success rate, with \emph{more capable models being more susceptible}---an inverse scaling phenomenon where superior instruction-following abilities are exploited by attackers~\cite{wang2025mcptox}. Hasan et al.\ found that 66\% of 1,899 open-source MCP servers exhibit code smells and 5.5\% show MCP-specific poisoning vulnerabilities~\cite{hasan2025mcpglance}. Hou et al.\ provided the first systematic threat taxonomy, identifying 4 attacker types and 16 threat scenarios~\cite{hou2025mcplandscape}.
+
+
+\subsubsection{Security Implications: From Bounded Output to Unbounded Action}
+\label{sec:cap-implications}
+
+The convergence of reasoning, agency, long context, and standardized tool access creates a threat model that is qualitatively different from content-generation risks. The \textbf{attack surface} expands from model input/output to every tool, API, database, and communication channel the agent can access. The \textbf{consequence space} escalates from objectionable text to real-world operations: credential theft, unauthorized financial transactions, code execution on production systems, and lateral movement across infrastructure. As Dou et al.\ state: ``As LLMs evolve from static chatbots into autonomous agents capable of tool execution, the landscape of AI safety is shifting from content moderation to action security''~\cite{dou2026ajar}.
+
+Indirect prompt injection~\cite{greshake2023ipi}---originally demonstrated in chatbot contexts---becomes operational in agentic settings: adversarial instructions in retrieved documents can cause agents to execute commands, exfiltrate data, or send emails. AI agents instantiate the classic \emph{confused deputy} problem~\cite{hardy1988confused}: adversaries with lower privileges manipulate highly-privileged agents into misusing their access. The OWASP Top~10 for LLM Applications 2025 ranks prompt injection as the \#1 risk~\cite{owasp2025}, while the OWASP Top~10 for Agentic Applications codifies agentic-specific risks including excessive agency, unsafe tool invocation, and memory poisoning~\cite{owasp2025agentic}.
+
+Real-world incidents confirm the theoretical threat. CVE-2025-32711 (``EchoLeak''), a zero-click CVSS~9.3 vulnerability in Microsoft~365 Copilot, enabled silent exfiltration of API keys via document-based prompt injection. CVE-2025-53773, a CVSS~9.6 RCE vulnerability in GitHub Copilot, demonstrated that code-generating agents can themselves become attack vectors. The Gray Swan Arena challenge produced 62,000 breaches across 1.8~million attempts---\emph{every model was jailbroken}~\cite{grayswan2025arena}. The Cisco State of AI Security 2026 report found that 83\% of organizations plan to deploy agentic AI, but only 29\% feel confident in their ability to secure it~\cite{cisco2026aisecurity}.
+
+Three observations merit emphasis. First, the attack surface is no longer the model but the \emph{environment}---every database, API, and file system accessible to an agent is both a potential target and a potential injection vector. Second, the inverse scaling problem identified by MCPTox~\cite{wang2025mcptox} suggests that capability improvements alone will not solve the security problem and may actively exacerbate it. Third, the structural similarity between the confused deputy problem in operating systems security and indirect prompt injection in agentic systems indicates that decades of access control research may be applicable, but the non-deterministic nature of language-model-driven control flow introduces fundamental new challenges for traditional authorization frameworks.
+
+\begin{table}[htbp]
+\centering
+\caption{Capability--threat mapping: how generative AI properties create security risks.}
+\label{tab:cap-threat}
+\small
+\begin{tabular}{p{3.2cm}p{4.2cm}p{5.5cm}}
+\toprule
+\textbf{Capability} & \textbf{Representative Systems} & \textbf{Threat Implications} \\
+\midrule
+High-fidelity multi-modal generation &
+GPT-4/5, Claude, Gemini; SD3, DALL-E~3, Flux; VALL-E~2, F5-TTS; Sora, Veo~2, Kling &
+Detection difficulty: human accuracy $\sim$53--61\%; enables deepfake fraud, synthetic media at scale \\
+\addlinespace
+Low-cost scalable production &
+Llama~4 (open-weight); consumer GPUs; API pricing $<$\$0.30/M tokens &
+Attacker cost collapses; large-scale personalized attacks become economically trivial \\
+\addlinespace
+Controllability \& personalization &
+LoRA, ControlNet, IP-Adapter; voice cloning (3-sec samples); stylometric mimicry &
+Targeted identity cloning; multi-channel deception (email + voice + video) \\
+\addlinespace
+Reasoning \& planning &
+o1/o3, DeepSeek-R1, Claude extended thinking &
+Multi-step attack planning; complex task decomposition for exploitation sequences \\
+\addlinespace
+Autonomous agency &
+Claude Code, Codex, Devin; Computer Use, Operator &
+Autonomous action execution: file R/W, shell commands, API calls, database access \\
+\addlinespace
+Long context windows &
+Gemini 1.5 Pro (1M), Llama~4 Scout (10M) &
+Extended attack persistence; entire codebase/system comprehension \\
+\addlinespace
+Standardized tool integration (MCP) &
+10,000+ MCP servers; adopted by Anthropic, OpenAI, Google, Microsoft &
+Universal attack surface via tool poisoning; supply chain vulnerabilities; cross-server composition attacks \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l /home/zelin-zhang/Downloads/JII/version_control/V0.1/reference/section*.bib)",
+      "Bash(python3:*)",
+      "Bash(grep -ohP '\\\\\\\\cite\\\\{[^}]+\\\\}' paragraph/section*.tex)",
+      "Bash(cat *.bib)",
+      "Bash(grep -oP '^\\\\s*@\\\\w+\\\\{\\([^,]+\\),')",
+      "Bash(for key:*)",
+      "Bash(do grep:*)",
+      "Bash(git init:*)",
+      "Bash(git branch:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

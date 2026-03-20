@@ -1,0 +1,161 @@
+%% ============================================================
+%% Section 4: Governance and Regulation
+%% Source material: C10 (§4.1) + C11 (§4.2)
+%% ============================================================
+
+\section{Governance and Regulation}
+\label{sec:governance}
+
+The threats catalogued in Section~\ref{sec:threats} have prompted a global governance response characterized by divergent jurisdictional philosophies, rapid institutional proliferation, and a persistent gap between regulatory frameworks and technological deployment velocity. This section examines government policies, international cooperation, and industry self-regulation. Technical implementation details (e.g., C2PA architecture, watermarking algorithms) are deferred to Section~\ref{sec:countermeasures}.
+
+
+%% ------------------------------------------------------------
+\subsection{Government Policies}
+\label{sec:gov-policy}
+%% ------------------------------------------------------------
+
+\subsubsection{European Union}
+\label{sec:gov-eu}
+
+The EU pursues a prescriptive, rights-centric, rule-based approach anchored in multiple overlapping instruments.
+
+\paragraph{EU AI Act (Regulation 2024/1689).}
+The EU AI Act, entered into force August~1, 2024, establishes a risk-tiered framework classifying AI systems into four categories: \emph{unacceptable risk} (banned---e.g., social scoring, subliminal manipulation), \emph{high risk} (strict conformity assessments---e.g., AI in recruitment, critical infrastructure), \emph{limited risk} (transparency obligations---chatbots, deepfake generators), and \emph{minimal risk} (unregulated under the Act)~\cite{euaiact2024}. For AIGC, the most significant provisions reside in the limited-risk tier, which mandates transparency to ensure users recognize interactions with synthetic entities.
+
+Article~50 establishes stringent transparency requirements for synthetic content: providers must ensure AI-generated outputs are marked in machine-readable format and detectable as artificial; deployers must disclose deepfakes even when the underlying content is lawful~\cite{euaiact_art50}. The deepfake labeling obligations become fully enforceable on August~2, 2025, alongside governance rules for General Purpose AI (GPAI) models. Full application of the Act occurs August~2, 2026. Penalties reach up to \euro35~million or 7\% of global annual turnover~\cite{euaiact2024}.
+
+\paragraph{Code of Practice on Transparency.}
+The EU AI Office facilitated a Code of Practice on Transparency of AI-Generated Content to operationalize Article~50~\cite{eucode2025}. The first draft (December 2025) mandated multi-layered marking---C2PA metadata, imperceptible watermarks, and visible labels. The streamlined second draft (March 2026) proposed a uniform interactive ``EU Icon'' and free-of-charge detection APIs~\cite{eucode2026draft2}. Adherence serves as formal presumption of conformity with Article~50.
+
+\paragraph{DSA and GDPR.}
+The Digital Services Act (DSA) governs AIGC \emph{dissemination}, requiring Very Large Online Platforms ($>$45M EU users) to conduct systemic risk assessments encompassing AI-generated disinformation and deepfakes~\cite{dsa2024}. The GDPR continues to constrain AI training data: CNIL and EDPB guidance (2025--2026) stipulates that if personal data is demonstrably memorized by a model, the right to erasure applies, subject to a balancing test weighing privacy impact against retraining costs~\cite{cnil2025,edpb2024}. Models developed with unlawfully processed data may face destruction orders.
+
+
+\subsubsection{United States}
+\label{sec:gov-us}
+
+The US presents a fragmented landscape characterized by federal executive volatility, voluntary standards, and aggressive state-level gap-filling.
+
+\paragraph{Federal executive volatility.}
+Executive Order 14110 (October 2023) imposed safety reporting requirements on frontier AI developers, directed watermarking standards development, and mandated misinformation risk assessment~\cite{eo14110}. This was revoked by Executive Order 14179 (January 2025), which characterized the prior framework as ``onerous government control'' hindering innovation~\cite{eo14179}. The subsequent ``America's AI Action Plan'' (July 2025) shifted federal focus entirely toward deregulation, infrastructure expansion, and ``ideological neutrality'' in LLMs~\cite{aiactionplan2025}.
+
+\paragraph{NIST frameworks.}
+NIST provides voluntary technical governance through the AI Risk Management Framework (AI RMF 1.0), expanded via the Generative AI Profile (NIST-AI-600-1, 2024) addressing hallucinations, deepfakes, and provenance~\cite{nistrmf,nistgenai600}. The Cybersecurity Framework Profile for AI (NIST IR 8596, December 2025) integrates AI risks into CSF 2.0 across three pillars: securing AI systems, using AI for detection, and defending against adversarial AI use~\cite{nist8596}.
+
+\paragraph{State-level regulation.}
+California's SB~53 (effective January 2026) is the first US law targeting frontier model \emph{developers}, requiring public disclosure of catastrophic risk protocols and mandatory incident reporting~\cite{casb53}. Texas's TRAIGA (effective January 2026) prohibits AIGC for behavioral manipulation, discrimination, and non-consensual deepfakes~\cite{texastraiga}. New York mandates disclosures for political deepfakes. At the federal level, the DEFIANCE Act establishes civil remedies for deepfake NCII victims~\cite{defianceact}, the Take It Down Act (May 2025) criminalizes digital forgeries with 48-hour platform takedown mandates~\cite{takeitdown2025}, and the AI Fraud Deterrence Act doubles penalties for AI-assisted financial fraud~\cite{aifraudact}.
+
+
+\subsubsection{China}
+\label{sec:gov-china}
+
+China operates the most rapid, centrally administered AIGC governance framework, driven by dual mandates of market dominance and sovereign information control.
+
+\paragraph{Phased regulatory architecture.}
+The Deep Synthesis Management Provisions (effective January 2023) require real-name identity verification, content labeling, and content management systems for all deep-synthesis services~\cite{chinadeepsynthesis}. The Interim Measures for the Management of Generative AI Services (effective August 2023) mandate that public-facing AIGC services ensure training data legality, actively monitor outputs, and uphold ``core socialist values''~\cite{chinainterim2023}. Providers bear legal responsibility for model outputs.
+
+\paragraph{Algorithm filing system.}
+Under the Algorithmic Recommendation Management Provisions, any AI service with ``public opinion attributes or social mobilization capabilities'' must conduct internal risk assessment and file its algorithm with the Cyberspace Administration of China (CAC) before public deployment~\cite{chinaalgorithm}. This operates as a mandatory ex-ante licensing regime, granting the state complete visibility into the commercial AI landscape.
+
+\paragraph{TC260 security requirements.}
+TC260's ``Basic Security Requirements for Generative AI Services'' (TC260-003, 2024) define 31 specific security risks across five categories, with particular emphasis on ``corpus safety'' (training data integrity) and political compliance~\cite{tc260}. Developers must statistically demonstrate that generated samples do not contain enumerated risks to pass CAC filing. Active enforcement includes the ``Sword Pujiang'' action (late 2025) that delisted 54 non-compliant applications~\cite{chinaenforcement2025}.
+
+
+\subsubsection{International Cooperation}
+\label{sec:gov-intl}
+
+\paragraph{UK AI Security Institute.}
+The UK AI Safety Institute, rebranded as the AI Security Institute (AISI) in early 2025, conducts empirical evaluations of frontier models. Its December 2025 ``Frontier AI Trends Report'' found AI performance in sensitive domains doubling every eight months, with frontier models surpassing PhD-level baselines in chemistry and biology by up to 60\%~\cite{aisi2025trends}.
+
+\paragraph{International AI Safety Reports.}
+The International AI Safety Reports (2025, 2026), chaired by Yoshua Bengio with 100+ experts from 30 nations, provide authoritative scientific consensus~\cite{aisafetyreport2025,aisafetyreport2026}. The 2026 report documented a 92.7\% year-over-year increase in AI-assisted data exfiltration. The US declined to endorse the 2026 edition~\cite{time2026usretreat}.
+
+\paragraph{Summit trajectory.}
+The AI Safety Summit series---Bletchley Park (November 2023, frontier safety focus), Seoul (May 2024, innovation and inclusivity), Paris (February 2025, economic adoption and sustainability), New Delhi (February 2026, Global South access and democratization)---reveals a fracturing of priorities between safety-focused and innovation-focused camps, with the US and UK declining to sign the Paris declaration~\cite{bletchley2023,seoul2024,paris2025}.
+
+\paragraph{G7 and OECD.}
+The G7 Hiroshima AI Process produced the International Code of Conduct for Advanced AI Systems, urging pre-deployment risk assessments, content authentication, and IP respect~\cite{hiroshima2023}. The OECD AI Principles, updated May 2024 to address generative AI, elevated ``information integrity'' as a core concern and are now adhered to by 47 governments~\cite{oecdai2024}.
+
+\paragraph{Comparative analysis.}
+The global governance landscape has fractured into three paradigms: the \textbf{EU model} (prescriptive, rights-centric, rule-based---strong protection but high compliance friction), the \textbf{US model} (voluntary, market-driven, principle-based---innovation-facilitating but creating regulatory vacuum and state-level patchwork), and the \textbf{China model} (centrally administered, application-specific, ideology-entwined---agile but subordinating model capability to political control). International efforts represent attempts to bridge these irreconcilable philosophies.
+
+
+%% ------------------------------------------------------------
+\subsection{Industry Practices}
+\label{sec:gov-industry}
+%% ------------------------------------------------------------
+
+\subsubsection{Model Provider Safety Frameworks}
+\label{sec:gov-frameworks}
+
+The Seoul AI Safety Summit (May 2024) catalyzed a concentrated burst of self-regulation: twelve frontier AI companies published safety frameworks by December 2025~\cite{metr2025frameworks}. All share a common architecture of capability thresholds triggering escalating safeguards, but diverge significantly in specificity and governance.
+
+Anthropic's Responsible Scaling Policy (RSP v3.0, February 2026) defines AI Safety Levels (ASL-1 through ASL-4+) modeled on biosafety levels, with ASL-3 activated for CBRN-related risks requiring robust jailbreak resistance~\cite{anthropicrsp3}. OpenAI's Preparedness Framework v2.0 (April 2025) streamlines to two thresholds (``High'' and ``Critical'') but controversially removed persuasion risk tracking~\cite{openaiprepv2}. Google DeepMind's FSF v3.0 (September 2025) introduced Critical Capability Levels including explicit misalignment evaluation~\cite{googlefsf3}. Meta's framework takes an ``outcomes-led approach,'' evaluating whether models \emph{uniquely enable} catastrophic scenarios~\cite{metafrontier2025}. All frameworks remain \textbf{voluntary, self-enforced, and subject to self-assessed thresholds} with no independent verification.
+
+\paragraph{FLI AI Safety Index.}
+The Future of Life Institute's AI Safety Index (Winter 2025) provides the most systematic external assessment~\cite{fli2025winter}. Anthropic ranked first (C+, 2.67), followed by OpenAI (C+, 2.31) and Google DeepMind (C, 2.08); xAI, Meta, DeepSeek, and Alibaba Cloud received D or D- grades. Most strikingly, \textbf{no company scored above D in Existential Safety}---all are ``racing toward AGI without presenting any explicit plans for controlling such technology''~\cite{fli2025winter}.
+
+\paragraph{Red teaming.}
+Red teaming has matured into three modalities: \emph{human expert red teaming} (Anthropic's 38,961-attack dataset~\cite{ganguli2022redteam}; partnerships with NNSA and national AI Safety Institutes), \emph{automated tools} (Microsoft PyRIT~\cite{pyrit2024}, NVIDIA Garak~\cite{garak2024}), and \emph{external programs} (OpenAI bug bounty at \$100K maximum; DEF~CON 31 challenge with 2,244 hackers evaluating eight LLMs~\cite{defcon2023generativeredteam}).
+
+
+\subsubsection{Platform Governance and Standards}
+\label{sec:gov-platform}
+
+Major platforms have converged on \emph{labeling rather than removal} as the primary governance mechanism for AI-generated content.
+
+\textbf{Meta} evolved through ``Imagined with AI'' $\to$ ``Made with AI'' $\to$ ``AI Info'' labels (2023--2024), using C2PA and IPTC metadata for third-party content detection, while prohibiting generative AI ad tools for political ads~\cite{metalabeling2024}. \textbf{Google/YouTube} deploys SynthID watermarking across images, audio, text, and video, with over 10 billion pieces of content watermarked by May 2025; YouTube requires creators to disclose synthetic content~\cite{synthid2025}. \textbf{TikTok} is the most restrictive: automatic C2PA detection, complete ban on AI political ads, and removal of 51,000 synthetic media videos while labeling over 1.3 billion~\cite{tiktok2023labels}. \textbf{X} represents the opposite extreme with no significant AI-specific policy updates since 2020 and fewer than 9\% of Community Notes reaching the general audience~\cite{xpolicy2020}.
+
+\paragraph{C2PA and Content Credentials.}
+The Coalition for Content Provenance and Authenticity (C2PA), now at specification v2.2 (May 2025), has achieved broad adoption: hardware embedding (Leica M11-P, Google Pixel~10), AI tool integration (Adobe Firefly, DALL-E~3, Sora), and platform detection (Meta, Google, TikTok, LinkedIn)~\cite{c2pa2025}. The Content Authenticity Initiative has grown to over 5,000 members. CISA endorsed Content Credentials in January 2025. Despite momentum, metadata stripping during sharing and uneven ecosystem adoption remain fundamental challenges.
+
+\paragraph{Industry alliances.}
+The Partnership on AI (126 partners, 16 countries)~\cite{pai}, the Frontier Model Forum (\$10M+ AI Safety Fund)~\cite{fmf2023}, and the White House Voluntary AI Commitments (15 companies, July--September 2023)~\cite{whitehouse2023commitments} provide institutional scaffolding. The Seoul Declaration (10 countries plus EU) and Frontier AI Safety Commitments (16 companies) catalyzed the International Network of AI Safety Institutes. However, a one-year assessment found companies ``nowhere near where we need them to be in terms of good governance''~\cite{mitreview2024assessment}.
+
+
+\subsubsection{Agentic AI Governance Gap}
+\label{sec:gov-agentic}
+
+The governance gap for agentic AI is structural, not merely temporal. Current frontier safety frameworks, the NIST AI RMF, ISO/IEC 42001, and the EU AI Act contain \textbf{zero references to ``agent,'' ``agentic,'' or autonomous AI systems}~\cite{zenity2025blindspot}. This is a critical mismatch: AI agents introduce qualitatively different risks---autonomous real-world action, dynamic tool access, multi-step planning with cascading failures, persistent memory vulnerable to manipulation, and multi-agent delegation fragmenting accountability.
+
+The deployment timeline is stark. Anthropic launched Computer Use (October 2024), OpenAI's Operator followed (January 2025), Claude Code reached GA (May 2025, \$1B annualized revenue by November), and Codex accumulated 1.6M weekly users by March 2026~\cite{anthropic2024computeruse,openaicopilot}. \textbf{None launched under any agent-specific governance standard.} Consequences materialized when Anthropic disclosed that a Chinese state-sponsored actor used Claude Code for what it described as the first AI-orchestrated cyber espionage campaign, with AI executing 80--90\% of operations autonomously~\cite{anthropic2025gtg1002}.
+
+MCP exemplifies the ``deploy capability first, retrofit security later'' pattern. The original specification used ``SHOULD'' rather than ``MUST'' for security controls, and over 13,000 servers launched in 2025 alone, many without authentication~\cite{zenity2025mcp}. Security iteratively improved---OAuth 2.1 (March 2025), Resource Server classification (June 2025), enhanced authorization (November 2025)---but significant gaps persist for autonomous agent scenarios~\cite{aws2025mcpauth}.
+
+Emerging standards are chasing a moving target. The \textbf{OWASP Top~10 for Agentic Applications} (December 2025) codifies ten agent-specific risks~\cite{owasp2025agentic}. \textbf{Singapore's IMDA} published the world's first government agentic AI governance framework (January 2026)~\cite{imda2026agentic}. \textbf{NIST} launched its AI Agent Standards Initiative (February 2026)~\cite{nist2026agentstandards}. The Cloud Security Alliance published an Agentic Trust Framework applying Zero Trust to AI agents~\cite{csa2026agentic}. Yet standardization remains 16+ months behind deployment: the first agent products shipped October 2024, the first government frameworks arrived January 2026.
+
+\begin{table}[htbp]
+\centering
+\caption{Cross-jurisdiction AIGC governance comparison.}
+\label{tab:governance}
+\small
+\begin{tabular}{p{1.8cm}p{3.2cm}p{2.8cm}p{2.0cm}p{2.8cm}}
+\toprule
+\textbf{Jurisdiction} & \textbf{Key Legislation} & \textbf{Core Mechanism} & \textbf{Stage} & \textbf{Maximum Penalty} \\
+\midrule
+EU &
+AI Act (2024/1689); DSA; GDPR; Code of Practice &
+Risk-tiered regulation; mandatory deepfake labeling; ex-ante conformity &
+Phased (full by Aug 2026) &
+\euro35M or 7\% global turnover \\
+\addlinespace
+US &
+EO 14179; NIST AI RMF; SB~53 (CA); TRAIGA (TX); Take It Down Act &
+Voluntary federal standards; state patchwork; targeted federal bills &
+Fragmented &
+Varies by state/bill \\
+\addlinespace
+China &
+Deep Synthesis Provisions; Interim Measures; TC260-003 &
+Algorithm filing; corpus safety; real-name verification; political compliance &
+Fully operational &
+Service suspension; delisting \\
+\addlinespace
+International &
+AI Safety Reports; Hiroshima Code; OECD Principles; Summit declarations &
+Soft law; voluntary commitments; scientific consensus &
+Evolving &
+Non-binding \\
+\bottomrule
+\end{tabular}
+\end{table}

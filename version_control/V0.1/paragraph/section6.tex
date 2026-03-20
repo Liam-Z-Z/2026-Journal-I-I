@@ -1,0 +1,99 @@
+%% ============================================================
+%% Section 6: Future Research Directions
+%% Source material: C15 (§6)
+%% ============================================================
+
+\section{Future Research Directions}
+\label{sec:future}
+
+The preceding sections reveal a persistent gap between AI capabilities and the protective infrastructure designed to manage them. Six critical research frontiers remain largely unsolved, each characterized by a current gap, its significance, and concrete research paths forward.
+
+
+%% ------------------------------------------------------------
+\subsection{Securing Autonomous AI Agents}
+\label{sec:future-agents}
+%% ------------------------------------------------------------
+
+\emph{Gap:} AI agents that autonomously invoke tools, access external data, and delegate tasks introduce attack surfaces that no existing framework adequately addresses. OWASP's Top~10 for LLM Applications 2025 identifies ``Excessive Agency'' as a top risk~\cite{owasp2025}, and NIST launched a dedicated AI Agent Standards Initiative in February 2026~\cite{nist2026agentstandards}, signaling recognition that current frameworks are insufficient. Deng et al.\ provide the first comprehensive threat taxonomy for agentic systems~\cite{deng2025agentthreat}.
+
+\emph{Why most urgent:} Agents are already deployed in production generating billions in revenue, but security practices lag severely. Inter-agent trust exploitation achieves an 82.4\% attack success rate---far exceeding direct prompt injection at 41.2\%~\cite{darkside2025agents}.
+
+\emph{Research directions:}
+\begin{enumerate}[nosep,leftmargin=1.5em]
+    \item \textbf{Formal agent trust models.} No mathematically complete trust calculus exists for composing trust across delegation chains. Current proposals formalize trust as an operational variable with strength, scope, and revocability dimensions~\cite{trustparadox2025}, and explore decentralized identities (DIDs) and verifiable credentials for agents~\cite{rodriguez2025did}. Dynamic trust revocation with provable guarantees under adversarial conditions remains unsolved.
+    \item \textbf{Secure orchestration across agents and MCP servers.} An empirical study of 1,899 open-source MCP servers found 7.2\% harbor general vulnerabilities and 5.5\% exhibit MCP-specific tool poisoning~\cite{hasan2025mcpglance}. B\"uhler et al.\ propose AgentBox with manifest-based permissions and sandbox enforcement~\cite{buhler2025agentbox}. Critical gaps include MCP's lack of user-context propagation (enabling confused deputy attacks) and absent standardized cross-server authentication.
+    \item \textbf{Runtime verification of agent behavior.} AgentSpec introduces a lightweight DSL preventing $>$90\% of unsafe code executions~\cite{wang2025agentspec}. Pro2Guard extends this with probabilistic model checking to anticipate unsafe states~\cite{pro2guard2025}. No current system achieves both trajectory-based multi-step safety analysis and real-time enforcement without prohibitive overhead.
+    \item \textbf{Secure multi-agent collaboration.} Adapting sandboxing, information-flow control, and capability-based security to accommodate LLM non-determinism is a key open problem. Progent introduces the first privilege control framework for LLM agents, reducing ASR to 0\% on benchmarks~\cite{shi2025progent}. CELLMATE bridges the semantic gap between browser actions and privilege requirements~\cite{meng2025cellmate}. Mandatory access control assumes deterministic behavior incompatible with LLMs; no consensus exists on capability granularity for AI agents.
+\end{enumerate}
+
+
+%% ------------------------------------------------------------
+\subsection{Unified Multi-Modal Detection Frameworks}
+\label{sec:future-detection}
+%% ------------------------------------------------------------
+
+\emph{Gap:} Most detectors operate on a single modality independently. No single framework detects AI-generated content across text, image, audio, and video within a unified architecture. The closest attempt, BusterX++, covers only images and video~\cite{wen2025busterx}. Audio-visual detectors (AVFF~\cite{oorloff2024avff}) and image-text manipulation detectors (DGM$^4$~\cite{shao2023dgm4}) address paired modalities but not the full spectrum.
+
+\emph{Why it matters:} Real-world disinformation combines multiple modalities. Single-modality detectors miss cross-modal inconsistencies and can be circumvented by manipulating unmonitored modalities. State-of-the-art detectors suffer AUC drops of 45--50\% on in-the-wild content versus academic benchmarks~\cite{chandra2025deepfakeeval}.
+
+\emph{Research directions:} Foundation models show promise as detection backbones---CLIP's feature space encodes transferable ``realness'' properties~\cite{ojha2023univfd}. Cross-modal transfer learning for detection remains entirely unexplored: no study has identified universal artifacts shared across modalities. Research paths include developing modality-agnostic generation fingerprints, building unified foundation models pre-trained on multi-modal forensic tasks, and establishing shared artifact representations grounded in the common mathematical structure of diffusion and autoregressive generation.
+
+
+%% ------------------------------------------------------------
+\subsection{Provably Robust Watermarking}
+\label{sec:future-watermark}
+%% ------------------------------------------------------------
+
+\emph{Gap:} All practical watermarking schemes rely on empirical robustness evaluation. No deployed scheme has formal security proofs against adaptive adversaries, and a fundamental impossibility result constrains what is achievable.
+
+Zhang et al.\ prove that under natural assumptions---access to a quality oracle and a perturbation oracle---\textbf{strong watermarking is fundamentally impossible}: a generic quality-preserving random-walk attack removes watermarks from KGW and related schemes~\cite{zhang2024impossibility}. Pang et al.\ identify a critical robustness-spoofing tradeoff: robust watermarks are inherently vulnerable to spoofing attacks~\cite{pang2024nofree}. Jovanovi\'c et al.\ demonstrate watermark stealing via API queries~\cite{jovanovic2024stealing}.
+
+On the constructive side, Christ et al.\ achieve \emph{undetectable} watermarks based on one-way functions~\cite{christ2024undetectable}. Golowich and Moitra achieve both undetectability and edit-distance robustness~\cite{golowich2024editdistance}. Zhao et al.\ provide the first provably robust guarantees with exponentially decaying error rates~\cite{zhao2024provable}. Google's SynthID has been validated on $\sim$20 million chatbot responses~\cite{dathathri2024synthid}.
+
+\emph{What remains unsolved:} The impossibility result means all practical watermarks can theoretically be removed. Low-entropy text (factual answers, code) is fundamentally unwatermarkable. No cross-provider interoperable standard exists. Research paths include tightening information-theoretic bounds for realistic token generation, developing efficient cryptographic watermark instantiations, exploring semantic watermarks robust to paraphrase attacks, and establishing cross-provider standards complementary to C2PA.
+
+
+%% ------------------------------------------------------------
+\subsection{Privacy-Preserving Generation}
+\label{sec:future-privacy}
+%% ------------------------------------------------------------
+
+\emph{Gap:} Generative models memorize and can regurgitate training data, and all known defenses impose severe utility costs.
+
+Nasr et al.\ demonstrate that gigabytes of training data can be extracted from production models including ChatGPT, using a divergence attack causing emission at 150$\times$ the normal rate~\cite{nasr2025extraction}. Memorization grows log-linearly with model capacity, data duplication, and prompt context length~\cite{carlini2023quantifying}. For diffusion models, over 1,000 training images were extracted from Stable Diffusion~\cite{carlini2023extractingdiffusion}. Critically, blocking verbatim memorization provides a false sense of privacy---style-transfer prompts easily circumvent filters~\cite{ippolito2023verbatim}.
+
+Differential privacy faces fundamental scalability challenges. Tram\`er et al.'s ICML 2024 Best Paper critically challenges the public-pretraining-then-private-fine-tuning paradigm: web-scraped ``public'' data contains sensitive information, and DP pretraining from scratch at frontier scale remains computationally infeasible~\cite{tramer2024dpposition}.
+
+Machine unlearning offers no reliable solution. The TOFU benchmark demonstrates that no tested unlearning baseline makes models behave as if target data was never seen~\cite{maini2024tofu}. Even exact unlearning---retraining from scratch---still leaks sensitive information when adversaries access pre-unlearning checkpoints~\cite{unlearned2025}.
+
+\emph{Research paths:} Memorization-aware training procedures without full DP overhead; tight privacy auditing tools closing the gap between theoretical and empirical $\varepsilon$; unlearning verification with adversarial guarantees; inference-time privacy mechanisms offering new utility-privacy frontiers.
+
+
+%% ------------------------------------------------------------
+\subsection{International Governance Harmonization}
+\label{sec:future-governance}
+%% ------------------------------------------------------------
+
+\emph{Gap:} Three major regulatory regimes---the EU AI Act, China's generative AI regulations, and US executive actions---have adopted fundamentally different approaches, creating jurisdictional conflicts, regulatory arbitrage, and standards fragmentation with no operational mutual recognition mechanism.
+
+The EU mandates machine-readable watermarking by August 2026~\cite{euaiact2024}; China was the first to enact binding generative AI regulation~\cite{chinainterim2023}, requiring alignment with ``Core Socialist Values'' and mandatory AI content labeling; the US revoked its primary AI safety executive order within hours of a new administration~\cite{eo14179}. The Council of Europe adopted the first legally binding international AI treaty (CETS No.~225, May 2024), signed by the US, EU, and UK but not China~\cite{coe2024treaty}. The G7 Hiroshima Process produced international guiding principles~\cite{hiroshima2023}, and the UN established an Independent International Scientific Panel on AI~\cite{unga2025aipanel}.
+
+As UNU Rector Marwala warns: ``We are entering an era of AI governance arbitrage, in which the pace of innovation hinges more on how well actors navigate regulatory gaps than on technological breakthroughs''~\cite{marwala2026arbitrage}.
+
+\emph{What remains unsolved:} No mutual recognition mechanism for AI safety certifications is operational. Content labeling standards are fragmented across jurisdictions. National security carve-outs create blind spots. Research paths include interoperable technical standards for content provenance, mutual recognition frameworks analogous to pharmaceutical regulatory cooperation, cross-border regulatory sandboxes, and empirical metrics for comparing regulatory effectiveness.
+
+
+%% ------------------------------------------------------------
+\subsection{Dynamic Evaluation Frameworks}
+\label{sec:future-eval}
+%% ------------------------------------------------------------
+
+\emph{Gap:} Static benchmarks become obsolete through saturation and contamination. LLMs now exceed 90\% on benchmarks like MMLU and HellaSwag, and benchmark data increasingly appears in training sets. Evaluation methods for agentic and multi-modal systems remain immature.
+
+\emph{Living benchmarks.} LiveBench~\cite{white2024livebench} introduces monthly-updated questions where top models achieve under 70\% accuracy. Humanity's Last Exam contributes 2,500 expert-level questions with a dynamic rolling fork~\cite{phan2025humanitylastexam}. However, Sun et al.\ demonstrate a fundamental fidelity-resistance tradeoff: surface-level edits fail to prevent memorization, while deeper rewrites distort evaluation tasks~\cite{sun2025contamination}.
+
+\emph{Agentic evaluation.} AgentBench evaluates across 8 real-world environments~\cite{liu2024agentbench}. Agent-SafetyBench reveals that no tested agent achieves a safety score above 60\% across 349 interaction environments~\cite{zhang2024agentsafetybench}. Agent Security Bench formalizes attacks and defenses across 10 agentic scenarios~\cite{asb2025}.
+
+\emph{Community safety infrastructure.} MLCommons AILuminate v1.0 provides the first industry-standard safety benchmark with 24,000+ prompts across 12 hazard categories~\cite{ghosh2024ailuminate}. HELM offers a foundational living benchmark framework with 7 metrics across 16 scenarios~\cite{liang2023helm}. WildTeaming mines 5,700 unique jailbreak tactic clusters from in-the-wild interactions~\cite{jiang2024wildteaming}.
+
+\emph{What remains unsolved:} Contamination-proof evaluation remains an open problem. Unified cross-modal safety evaluation is nascent. Long-horizon agentic safety evaluation lacks principled methods. Most benchmarks are English-centric. Most fundamentally, benchmark performance does not reliably predict real-world safety---MLCommons explicitly notes ``negative predictive power'' where passing benchmarks does not ensure deployment safety. Research paths include contamination-resistant evaluation via procedural generation, agentic evaluation with verified sandboxes, culturally diverse adversarial corpora, and formal relationships between benchmark and deployment-time safety.
