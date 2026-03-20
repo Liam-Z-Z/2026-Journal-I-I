@@ -1,0 +1,19 @@
+---
+name: deep-research-prompt
+description: Generate a structured deep research prompt for Claude/Gemini/ChatGPT deep research features
+user-invocable: true
+argument-hint: [topic] [target-section]
+---
+
+Generate a comprehensive deep research prompt for the topic "$0" targeting paper section "$1".
+
+The prompt should:
+1. Define the exact scope and boundaries of the research
+2. Specify what data to collect (statistics, case studies, benchmarks, dates)
+3. List 5-10 seed papers/sources to start from
+4. Define the output format (structured markdown with inline citations)
+5. Include quality gates: "Every claim must have a source URL or arXiv ID"
+6. Specify word count target and depth level
+7. List what NOT to include (to avoid overlap with other sections)
+
+Output the prompt in a copyable format ready to paste into a deep research tool.

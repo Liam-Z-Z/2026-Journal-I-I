@@ -1,0 +1,20 @@
+---
+name: experiment-check
+description: Check GPU status, running experiments, and suggest next experiments based on current results
+user-invocable: true
+argument-hint: [experiment-log-dir]
+---
+
+Perform an experiment status check:
+
+1. Run `nvidia-smi` to check GPU availability and current utilization
+2. Check if any training processes are running: `ps aux | grep python.*train`
+3. If $ARGUMENTS is provided, read the experiment logs at that path:
+   - Parse training logs for latest metrics (loss, accuracy, etc.)
+   - Compare with previous runs if available
+   - Identify trends (overfitting, convergence, etc.)
+4. Suggest:
+   - Which experiments to run next based on results
+   - What hyperparameters to try
+   - Whether any runs should be stopped early
+5. Output a summary table of all completed and running experiments

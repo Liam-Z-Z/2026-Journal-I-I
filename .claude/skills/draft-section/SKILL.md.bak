@@ -1,0 +1,18 @@
+---
+name: draft-section
+description: Draft a paper section from experiment results and research notes
+user-invocable: true
+argument-hint: [section-name] [source-data-path]
+---
+
+You are helping draft a section of an academic paper.
+
+1. Read the experiment results or research notes at the path: $1
+2. Read the paper outline to understand where section "$0" fits
+3. Draft the section in LaTeX format following these rules:
+   - Academic survey tone, concise and evidence-driven
+   - Every claim must have a \cite{} placeholder
+   - Include \label{} for all sections/subsections
+   - Flag any claims that need additional experiments with %% TODO: NEED EXPERIMENT
+4. Save to the project's paragraph directory
+5. List all references that need to be verified
