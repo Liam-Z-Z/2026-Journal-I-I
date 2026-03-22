@@ -1,0 +1,211 @@
+%% ============================================================
+%% Section 3: Threat Landscape of AIGC (V0.2)
+%% Target: ~3,600 words
+%% Changes from V0.1: §3.1 compressed (-200), §3.2 compressed (-150),
+%%   §3.3 PRESERVED (blue ocean), §3.4 compressed (-300),
+%%   §3.5 compressed (-150), cross-refs updated for §4/§5 swap,
+%%   duplicates removed (OWASP #1 kept here, Arup canonical here)
+%% ============================================================
+
+\section{Threat Landscape of AIGC}
+\label{sec:threats}
+
+The capabilities described in Section~\ref{sec:capabilities} have given rise to a threat landscape spanning content fabrication, model compromise, adversarial manipulation, large-scale disinformation, and systemic societal harms. This section presents a structured taxonomy of these threats---the paper's core academic contribution. Defense solutions are presented in Section~\ref{sec:countermeasures} and governance mechanisms in Section~\ref{sec:governance}.
+
+
+%% ------------------------------------------------------------
+\subsection{Content Weaponization}
+\label{sec:threat-weapon}
+%% ------------------------------------------------------------
+
+\subsubsection{Malicious Content Generation}
+\label{sec:threat-phishing}
+
+Generative AI has eliminated the traditional trade-off between attack volume and personalization quality.
+
+\paragraph{AI-generated phishing.}
+An estimated 82.6\% of phishing emails in 2025 were AI-generated, a 53.5\% year-over-year increase~\cite{knowbe4_2025}. AI reduces campaign costs by approximately 95\% while achieving click-through rates more than four times higher than manually crafted lures~\cite{slashnext2025}. A longitudinal study deploying 70,000 AI-generated phishing simulations found that by March 2025, AI agents surpassed elite human red teams across all user skill levels~\cite{hoxhunt2025}.
+
+\paragraph{AI-assisted malware.}
+LLMs enable evasive malware with dramatically lowered barriers. Censored-model evasion through ``micro-behavior'' decomposition achieved a 20\% success rate for functional payloads registering \textbf{0\% detection rate} across 55--70 commercial antivirus engines~\cite{mdpi2025malware}. Polymorphic malware leveraging LLMs for continuous self-rewriting has further undermined signature-based detection~\cite{crowdstrike2025ransomware}.
+
+\paragraph{Weaponized LLMs.}
+An underground Cybercrime-as-a-Service ecosystem---WormGPT (\euro60--100/month), FraudGPT (\$90--200/month), GhostGPT (Telegram-based)---provides frictionless malicious content generation, democratizing cybercrime by eliminating the need for programming or linguistic expertise~\cite{levelblue2023wormgpt,elpaccto2026}.
+
+
+\subsubsection{Non-Consensual Synthetic Content}
+\label{sec:threat-ncii}
+
+The most severe sociological consequence of generative AI is the exponential rise in Non-Consensual Intimate Imagery (NCII). NCMEC documented a 1,325\% increase in generative-AI-related reports during 2024, escalating to 440,419 reports in H1~2025---compared to 6,835 in the same period of 2024~\cite{ncmec2025}. The harm is profoundly gendered: synthetic NCII affects an estimated 1.42\% of the UK adult female population annually~\cite{swgfl2025}. For minors, at least 36 teenage boys have died by suicide as a direct result of AI-driven sextortion since 2021~\cite{ncmec2025}. Legislative responses include the U.S.\ ``Take It Down Act'' (May 2025)~\cite{takeitdown2025} and strengthened California deepfake laws~\cite{calmatters2026deepfake}.
+
+
+%% ------------------------------------------------------------
+\subsection{Model-Level Attacks}
+\label{sec:threat-model}
+%% ------------------------------------------------------------
+
+Model-level attacks target the training pipeline, model artifacts, or inference interface to compromise the model itself.
+
+\paragraph{Data poisoning.}
+A critical finding is that poisoning efficacy depends on the \emph{absolute number} of poison samples, not the poisoning rate: as few as \textbf{250 malicious documents} suffice to backdoor models from 600M to 13B parameters~\cite{souly2025poisoning}---highlighted in the 2025 International AI Safety Report~\cite{aisafetyreport2025} as undermining the intuition that scaling datasets dilutes poisoning risk. Web-scale poisoning is practical: split-view and frontrunning attacks can poison 0.01\% of LAION-400M for approximately \$60~\cite{carlini2024poisoning}. PoisonedRAG achieves $>$90\% ASR by injecting five malicious documents into a RAG knowledge base~\cite{zou2025poisonedrag}.
+
+\paragraph{Backdoor attacks.}
+Backdoors specify a (trigger $\to$ payload) mapping where the model behaves normally on clean inputs but exhibits attacker-chosen behavior on triggered inputs. Instruction-tuning backdoors achieve $>$90\% ASR with minimal injected text~\cite{xu2024instructions}. RLHF poisoning creates universal jailbreak backdoors~\cite{rando2024rlhfbackdoor}. ``Sleeper agents'' persist through safety training via conditional deception~\cite{hubinger2024sleeper}. For diffusion models, BadDiffusion implants training-time backdoors preserving normal generation quality~\cite{chou2023baddiffusion}.
+
+\paragraph{Model extraction and supply chain.}
+Model stealing produces surrogates matching target behavior through API queries~\cite{tramer2016stealing}, threatening proprietary deployment economics. On the supply chain, malicious model weights on public hubs exploit pickle serialization for RCE~\cite{reversinglabs2025nullifai}. Safety fine-tuning removal costs $<$\$200 (BadLlama~\cite{gade2023badllama}); 100 malicious examples and $\sim$1 GPU hour subvert safety-aligned models (Shadow Alignment~\cite{yang2023shadow}); even 10 adversarial fine-tuning examples jailbreak GPT-3.5 Turbo~\cite{qi2024finetuning}.
+
+
+%% ------------------------------------------------------------
+\subsection{Adversarial Manipulation: From Prompt Injection to Agentic Exploitation}
+\label{sec:threat-adversarial}
+%% ------------------------------------------------------------
+
+%% *** BLUE OCEAN — PRESERVED IN FULL ***
+
+This subsection presents an \emph{attack surface evolution ladder}---an original contribution of this paper---tracing the escalation from direct prompt attacks on chatbots to ecosystem-level exploitation of autonomous agents.
+
+\subsubsection{Prompt Injection}
+\label{sec:threat-pi}
+
+Direct prompt injection embeds malicious instructions in user-controlled input to override system instructions~\cite{perez2022ignore}. Two canonical subtypes are \emph{goal hijacking} (redirecting the application's task) and \emph{prompt leaking} (exfiltrating hidden instructions)~\cite{perez2022ignore}. The attack exploits a fundamental architectural property: LLM applications intermix instructions and data in a single context window with no cryptographically enforced separation---a ``confused deputy'' problem where the model resolves conflicting instructions via learned heuristics rather than hard constraints~\cite{greshake2023ipi}.
+
+The critical distinction from jailbreaking is in the \emph{objective}: prompt injection hijacks system behavior (task/goal compromise), while jailbreaking bypasses safety guardrails (policy-violating content generation)~\cite{perez2022ignore,chao2024jailbreakbench}. In practice, the two compound: an injection that hijacks an agent may induce downstream unsafe tool use.
+
+
+\subsubsection{Jailbreak Attacks---A Taxonomy}
+\label{sec:threat-jailbreak}
+
+Existing benchmark-driven categorizations such as HarmBench~\cite{mazeika2024harmbench} and JailbreakBench~\cite{chao2024jailbreakbench} organize attacks by target-model effectiveness. We complement these with a five-category \emph{mechanism-based} taxonomy that emphasizes the underlying exploitation strategy, enabling analysis of why attacks transfer and where defenses structurally fail:
+
+\paragraph{(a) Template-based.}
+Predefined narrative frames---role-play (``DAN''), developer mode, fictional sandboxes---re-contextualize the interaction so that prohibited responses appear consistent with an alternative ``role.'' In-the-wild measurement shows some templates achieving $\geq$0.95 ASR on GPT-3.5/4, persisting online for over 240 days~\cite{zhang2024dananything}. AutoDAN uses templates as a conceptual baseline and surpasses them via genetic optimization~\cite{liu2024autodan}.
+
+\paragraph{(b) Optimization-based.}
+Jailbreaking is treated as a search problem over prompt space. \textbf{GCG}~\cite{zou2023gcg} uses greedy coordinate gradient descent to identify adversarial suffixes, achieving 88\% ASR on Vicuna-7B with cross-model transferability. \textbf{PAIR}~\cite{chao2024pair} iteratively refines prompts via an attacker LLM in under twenty queries (71\% on GPT-3.5, 34\% on GPT-4 per JailbreakBench~\cite{chao2024jailbreakbench}). GPTFuzzer~\cite{yu2023gptfuzzer} automates template mutation, reporting $>$90\% ASR on some targets.
+
+\paragraph{(c) Multi-turn conversational.}
+Gradual boundary erosion across dialogue turns exploits the model's tendency to maintain coherence with prior responses. Crescendo~\cite{russinovich2025crescendo} achieves 29--61\% higher performance than single-turn methods on GPT-4. Many-shot jailbreaking~\cite{anil2024manyshot} uses hundreds of in-context demonstrations, with effectiveness following predictable scaling laws. Multi-turn human jailbreaks achieve $>$70\% ASR on HarmBench against defenses showing single-digit ASR under automated attacks~\cite{mazeika2024harmbench}.
+
+\paragraph{(d) Multi-modal.}
+Vision and audio channels bypass text-centric safety filters. FigStep~\cite{gong2025figstep} converts prohibited instructions into typographic images, achieving 82.5\% average ASR on six open-source LVLMs. HADES~\cite{li2024hades} reports 90.26\% ASR on LLaVA-1.5. AudioJailbreak~\cite{chen2025audiojailbreak} achieves $\geq$87\% ASR in universal strong-adversary settings.
+
+\paragraph{(e) Encoding-based.}
+Transforming requests into non-standard representations exploits weaker safety coverage outside typical natural language. CipherChat~\cite{yuan2024cipherchat} reports near-100\% bypass of GPT-4 safety via cipher encoding. Translation to low-resource languages increases bypass rates from $<$1\% to 79\%~\cite{yong2023lowresource,deng2024multilingual}. ArtPrompt~\cite{jiang2024artprompt} uses ASCII art, and composable string obfuscations (Base64, ROT13, Morse code) remain active bypass surfaces~\cite{huang2024plentiful}.
+
+A cross-cutting finding from HarmBench is that robustness is shaped more by training data and algorithms than model size, with ASR highly stable within model families but highly variable across families~\cite{mazeika2024harmbench}.
+
+
+\subsubsection{Indirect Prompt Injection and Agentic Exploitation}
+\label{sec:threat-ipi}
+
+\paragraph{IPI in RAG systems.}
+Indirect prompt injection (IPI) embeds adversarial instructions in external data sources (web pages, documents, emails) that the model retrieves during normal operation---requiring no direct attacker--model interaction~\cite{greshake2023ipi}. PoisonedRAG achieves $>$90\% ASR by injecting five malicious documents~\cite{zou2025poisonedrag}. The BIPIA benchmark found a positive correlation ($r$=0.64) between model capability and IPI vulnerability---more capable models are paradoxically more susceptible~\cite{yi2025bipia}. Real-world exploitation includes data exfiltration from Slack AI's private channels~\cite{promptarmor2024slack} and manipulation of ChatGPT search results via hidden web page text.
+
+\paragraph{IPI in agentic systems---the escalation.}
+In agentic settings, IPI consequences escalate from generating incorrect output to \emph{executing malicious actions}. Agents possess tool permissions (file R/W, API calls, shell commands, email), frequently operate under auto-approve settings, and engage in multi-step execution where a single injected instruction cascades through a planning loop~\cite{schneider2025promptware}. InjecAgent found ReAct-prompted GPT-4 vulnerable 24\% of the time, rising to $\sim$47\% with enhanced attacks~\cite{zhan2024injecagent}. Real-world incidents include: CVE-2025-59944 (zero-click RCE in Cursor IDE via MCP injection)~\cite{lakera2025cursor}; the ``IDEsaster'' disclosure identifying 30+ vulnerabilities across \emph{all} major AI IDEs~\cite{idesaster2025}; EchoLeak (CVE-2025-32711, CVSS 9.3) enabling zero-click exfiltration from Microsoft 365 Copilot~\cite{echoleak2025}; and Perplexity Comet exploited for full account takeover via hidden Reddit text~\cite{brave2025comet}. Unit 42 confirmed active IPI weaponization in the wild, documenting 22 distinct attacker techniques~\cite{unit42ipi2026}.
+
+\paragraph{MCP ecosystem vulnerabilities.}
+The MCP ecosystem (Section~\ref{sec:cap-mcp}) introduces systemic vulnerabilities. An audit found 43\% of implementations contain command injection flaws, 30\% permit SSRF, and 22\% allow path traversal~\cite{equixly2025mcp}. Critical CVEs include CVE-2025-6514 (CVSS 9.6, RCE in mcp-remote affecting 437,000+ environments)~\cite{jfrog2025mcpremote} and CVE-2025-49596 (CVSS 9.4, RCE in MCP Inspector)~\cite{oligo2025inspector}. Tool poisoning attacks embed malicious instructions in tool descriptions invisible to users but visible to models~\cite{invariant2025toolpoisoning}. Cross-server composition attacks exploit shared agent context: individually safe servers become vulnerable in combination~\cite{invariant2025whatsapp,croce2025trivial}. MCPTox found o1-mini exhibits 72.8\% ASR through tool poisoning, with more capable models being \emph{more} susceptible~\cite{wang2025mcptox}.
+
+
+\subsubsection{Current Attack--Defense Landscape}
+\label{sec:threat-landscape}
+
+The empirical evidence converges on a sobering assessment. The 2025 International AI Safety Report states: ``when given ten tries, attackers can still successfully execute such attacks about half the time''~\cite{aisafetyreport2025}. Cisco found DeepSeek R1 achieved 100\% ASR on HarmBench prompts~\cite{cisco2025deepseek}. The structural root is formally quantified by Zverev et al., who show that \emph{all tested models fail to achieve high instruction-data separation}---GPT-4 scores only 0.225 on their separation metric~\cite{zverev2025separation}. OpenAI acknowledges prompt injection ``is unlikely to ever be fully `solved'\,''~\cite{openai2025atlas}, and the UK NCSC warns it ``may be worse'' than SQL injection~\cite{ncsc2025promptinjection}. OWASP ranks prompt injection as the \#1 LLM vulnerability for the second consecutive edition~\cite{owasp2025}. The emerging consensus is that defense-in-depth with continuous adversarial hardening---a perpetual arms race---represents the only viable strategy.
+
+
+%% ------------------------------------------------------------
+\subsection{Misinformation, Disinformation, and Deepfakes}
+\label{sec:threat-misinfo}
+%% ------------------------------------------------------------
+
+\subsubsection{Deepfakes}
+\label{sec:threat-deepfake}
+
+The shift from GANs to diffusion models has resolved the training instability and temporal artifacts that previously served as forensic indicators, enabling one-shot face animation and real-time voice cloning on consumer hardware~\cite{pei2024deepfakesurvey}. Key 2024--2025 incidents demonstrate catastrophic impact: the Arup deepfake fraud (January 2024) used AI-generated video-conference participants to authorize \$25M in transfers~\cite{wef2025arup}; AI voice cloning enabled a \$499,000 fraud in Singapore~\cite{brightside2025phishing}; and the Sumsub Identity Fraud Report documented a 2,137\% year-over-year surge in deepfake attacks~\cite{sumsub2024}. Generation cost approaches zero while detection remains unreliable, creating a fundamental offense-defense asymmetry.
+
+
+\subsubsection{AI-Powered Information Operations}
+\label{sec:threat-infoop}
+
+AI-generated disinformation is at least as effective as human-written content at changing beliefs: GPT-3-generated content was recognized as ``accurate'' more frequently than human-authored disinformation~\cite{spitale2023gpt3}, and a 27-country study ($N$=27,000) confirmed higher perceived veracity and sharing intent for AI-generated fake news~\cite{stefkovics2026fakenews}. The 2024 ``super election year'' saw documented AI interference across multiple nations~\cite{restofworld2024tracker}, and AI-generated academic fraud has surged---the 2026 AI Safety Report estimates up to 8\% of peer-reviewed submissions may contain substantial AI-generated content~\cite{aisafetyreport2026}.
+
+
+\subsubsection{Information Ecosystem Degradation}
+\label{sec:threat-ecosystem}
+
+Three dynamics compound to erode epistemic trust. ``AI slop''---the proliferation of low-quality AI content---floods the internet~\cite{graphite2025aicontent}. \emph{Model collapse} occurs when AI content recursively enters training data, causing progressive quality degradation~\cite{shumailov2024collapse}. The \emph{liar's dividend} means the mere existence of deepfakes casts doubt on authentic content, providing plausible deniability to those accused of genuine misconduct~\cite{chesney2019deepfakes}.
+
+
+%% ------------------------------------------------------------
+\subsection{Ethical and Societal Risks}
+\label{sec:threat-ethics}
+%% ------------------------------------------------------------
+
+\subsubsection{Bias Amplification}
+\label{sec:threat-bias}
+
+Generative models actively amplify training data biases rather than merely reflecting them. Wang et al.\ formally proved that bias amplification persists independently of model collapse~\cite{wang2024biasamplification}. In image generation, males represent 90\% of generated images in 16 high-status professions~\cite{sdxl2024bias}. In text generation, LLMs evaluating 361,000 synthetic resumes systematically downgraded Black male candidates by 1--3 percentage points~\cite{pnas2024llmbias}. Audio systems show significantly higher error rates for non-standard accents~\cite{michel2025accentbias}. Evaluation benchmarks---WinoBias~\cite{zhao2018winobias}, BBQ~\cite{parrish2022bbq}, BOLD~\cite{dhamala2021bold}, RealToxicityPrompts~\cite{gehman2020toxicity}---provide systematic measurement frameworks.
+
+
+\subsubsection{Psychological and Social Impact}
+\label{sec:threat-psych}
+
+AI companions raise concerns about emotional dependency, particularly among adolescents---Character.ai faced legal action after incidents involving minors~\cite{characterai2024}. Generative models that expert judges prefer over human-created works~\cite{chi2026creative} create creator displacement anxiety across artistic professions, with significant economic impact on freelance and entry-level positions~\cite{aisafetyreport2026}.
+
+
+\subsubsection{Copyright, Authenticity, and Accountability}
+\label{sec:threat-copyright}
+
+Training data copyright litigation is reshaping the legal landscape: \emph{New York Times v.\ OpenAI} and \emph{Getty Images v.\ Stability AI} challenge the use of copyrighted material for model training~\cite{nytvopenai2023,gettyvstability2023}. The U.S.\ Copyright Office maintains that AI-generated content without human authorship cannot receive copyright protection~\cite{usco2023}. The accountability dilemma---distributing responsibility among developers, deployers, and end-users---remains unresolved across jurisdictions (see Section~\ref{sec:governance}).
+
+\begin{figure}[htbp]
+\centering
+\fcolorbox{green!50}{green!5}{\parbox{0.95\linewidth}{\centering\textbf{Figure~2: AIGC Threat Taxonomy Tree (hierarchical diagram)}\\[3pt]
+\small Content Weaponization $\mid$ Model-Level Attacks $\mid$ Adversarial Manipulation $\mid$ Misinformation \& Deepfakes $\mid$ Ethical \& Societal Risks}}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Threat landscape summary: type, affected modalities, severity, and defense maturity.}
+\label{tab:threat-summary}
+\small
+\begin{tabular}{p{2.8cm}p{2.2cm}p{1.2cm}p{1.5cm}p{4.8cm}}
+\toprule
+\textbf{Threat Type} & \textbf{Modalities} & \textbf{Severity} & \textbf{Defense Maturity} & \textbf{Key Evidence} \\
+\midrule
+AI-generated phishing & Text, audio & Critical & Low &
+82.6\% of phishing is AI-generated; surpasses human red teams \\
+\addlinespace
+Non-consensual synthetic content & Image, video & Critical & Very low &
+1,325\% increase in NCMEC reports; 440K reports in H1 2025 \\
+\addlinespace
+Data poisoning / backdoors & All & High & Low &
+250 documents suffice; $>$90\% ASR for instruction backdoors \\
+\addlinespace
+Model extraction & All & High & Medium &
+Practical for \$60; industrial-scale distillation alleged \\
+\addlinespace
+Prompt injection & Text & Critical & Very low &
+Structural problem; ``may never be fully solved'' \\
+\addlinespace
+Jailbreaks & Text, image, audio & High & Low &
+$\sim$50\% success in 10 attempts; no defense uniformly effective \\
+\addlinespace
+Agentic exploitation & Multi-modal & Critical & Very low &
+100\% of AI IDEs vulnerable; 72.8\% tool poisoning ASR \\
+\addlinespace
+Deepfakes & Image, audio, video & Critical & Low &
+\$25M Arup fraud; 2,137\% surge in deepfake attacks \\
+\addlinespace
+Information operations & Text, image, video & High & Low &
+AI disinformation perceived as more credible than human-written \\
+\addlinespace
+Bias amplification & Text, image, audio & Medium & Low &
+1--3 pp hiring discrimination; 90\% male in 16 professions \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\par\noindent{\footnotesize\emph{Note:} Defense maturity ratings reflect a composite assessment of deployment coverage, academic literature volume, and empirically demonstrated effectiveness as of March 2026. ``Very low'' indicates emerging research with no widely deployed countermeasure; ``Low'' indicates active research with limited deployment; ``Medium'' indicates established methods with known limitations.}
+\end{table}

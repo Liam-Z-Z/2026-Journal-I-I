@@ -1,0 +1,173 @@
+%% ============================================================
+%% Section 4: Technical Countermeasures (V0.3)
+%% Source: V0.2 section4.tex
+%% Changes from V0.2: §4.1/§4.2 rewritten from enumeration to
+%%   analytical discussion (M1+M2), §4.3.1 Alignment expanded +150 (m8),
+%%   §4.3.3(d) slimmed + forward ref to §6.1 (m9),
+%%   Table 2 footnote added (m7)
+%% ============================================================
+
+\section{Technical Countermeasures}
+\label{sec:countermeasures}
+
+To counter the threats identified in Section~\ref{sec:threats}, a multi-layered technical defense ecosystem has emerged spanning detection, watermarking, alignment, and agentic security. No single technique is sufficient; resilient AI requires composing all layers into an integrated security posture.
+
+
+%% ------------------------------------------------------------
+\subsection{AIGC Detection}
+\label{sec:detect}
+%% ------------------------------------------------------------
+
+\subsubsection{Text Detection}
+\label{sec:detect-text}
+
+Text detection involves fundamentally distinct tasks---binary classification, proportion estimation, localization, and source attribution---that are routinely conflated in deployment, producing expectation mismatches~\cite{dugan2024raid}. Two paradigms structure the field. \emph{Zero-shot statistical methods} (DetectGPT~\cite{mitchell2023detectgpt}, Binoculars~\cite{hans2024binoculars}) exploit the probability geometry of generated text without labeled data, offering immediate deployment against novel generators but relying on crude assumptions about log-probability curvature that break under low-entropy content (factual answers, code). \emph{Trained classifiers} (GPTZero~\cite{adam2026gptzero}, RADAR~\cite{hu2023radar}) achieve higher in-distribution accuracy but overfit to training-era generators: 95\%+ in-distribution performance drops to $<$60\% cross-generator~\cite{macko2023multitude}. Table~\ref{tab:detection} compares representative methods.
+
+The structural condition governing this trade-off is \emph{distributional shift}: zero-shot methods degrade gracefully across generators but cannot distinguish human editing from generation artifacts, while trained classifiers are brittle to architectural changes but can handle hybrid text. Neither paradigm addresses the adaptive adversary: paraphrase attacks cause 18.4-point accuracy drops~\cite{dugan2024raid}, and benchmark evaluations systematically overestimate real-world performance because detectors learn dataset-specific artifacts rather than generalizable properties of generation~\cite{macko2023multitude}. Multilingual performance degrades sharply (AUC 0.946 $\to$ 0.537, English to German), and human--AI hybrid text produces the highest false positive rates~\cite{turnitin2024}.
+
+\subsubsection{Multimodal and Cross-Modal Detection}
+\label{sec:detect-multimodal}
+
+Image detection faces a \emph{paradigm transfer gap}: each generator family (GAN, diffusion, autoregressive) leaves distinct artifacts, rendering classifiers trained on one paradigm nearly random on another (ProGAN $\to$ diffusion: 3.05\% accuracy~\cite{ojha2023univfd}). Foundation-model features (UnivFD~\cite{ojha2023univfd} via CLIP, DIRE~\cite{wang2023dire} via diffusion reconstruction) partially bridge this gap by encoding transferable ``realness'' properties, but remain fragile under benign post-processing---accuracy drops from 96.2\% to $\sim$51\% under JPEG compression~\cite{zhu2023genimage}. Audio (ASVspoof series~\cite{asvspoof2019,asvspoof2021}) and video (FaceForensics++~\cite{rossler2019faceforensics}) detection face the additional challenge that Sora-class generators produce entirely synthetic frames where face-swap artifact detectors are structurally inapplicable~\cite{cai2024beyonddeepfake}. State-of-the-art detectors suffer AUC drops of 45--50\% on in-the-wild content compared to laboratory benchmarks~\cite{chandra2025deepfakeeval}.
+
+Three bottlenecks converge across modalities: \emph{generalization} failure on unseen architectures, \emph{robustness} collapse under benign processing, and \emph{adversarial adaptivity}---generators cheaply change parameters while detectors must remain robust across all perturbations. No unified cross-modal framework exists, and benchmark evaluations systematically overestimate deployment performance.
+
+\begin{table}[htbp]
+\centering
+\caption{Representative AIGC detection methods across modalities.}
+\label{tab:detection}
+\small
+\begin{tabular}{p{1.3cm}p{2.0cm}p{2.8cm}p{2.5cm}p{3.5cm}}
+\toprule
+\textbf{Modality} & \textbf{Paradigm} & \textbf{Methods} & \textbf{Mechanism} & \textbf{Key Limitation} \\
+\midrule
+Text & Zero-shot & DetectGPT, Binoculars, DNA-GPT & Probability curvature / cross-model agreement & Requires generator access or proxy; paraphrase fragile \\
+\addlinespace
+Text & Supervised & GPTZero, RADAR, Turnitin & Encoder fine-tuning; adversarial training & Overfits to training generators; staleness \\
+\addlinespace
+Image & Frequency & Spectral analysis & GAN upsampling artifacts & Mitigated by post-processing \\
+\addlinespace
+Image & Representation & UnivFD (CLIP), LASTED & Feature-space classification & GAN$\to$diffusion transfer fails (3.05\%) \\
+\addlinespace
+Image & Reconstruction & DIRE, AEROBLADE & Diffusion reconstruction error & Computationally expensive; format-bias risk \\
+\addlinespace
+Audio & Challenge-based & ASVspoof series & Spectral/prosodic/codec features & Codec artifacts confound interpretation \\
+\addlinespace
+Video & Temporal & FaceForensics++, rPPG & Frame artifacts; physiological signals & Sora-class generators: no face-swap artifacts \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+%% ------------------------------------------------------------
+\subsection{Watermarking and Content Provenance}
+\label{sec:watermark}
+%% ------------------------------------------------------------
+
+\subsubsection{Text Watermarking}
+\label{sec:wm-text}
+
+Text watermarking is governed by an information-theoretic iron triangle: \emph{quality}, \emph{strength}, and \emph{robustness} cannot be simultaneously maximized~\cite{christ2024undetectable}. Robustness is fundamentally determined by the \emph{abstraction level} at which the signal is embedded. Token-level schemes (KGW~\cite{kirchenbauer2023kgw}, Unigram~\cite{zhao2023unigram}) bias token selection and are easily detectable but fragile---paraphrasing via SIRA achieves $\sim$100\% removal~\cite{cheng2025sira}, because synonymous tokens destroy the signal. Semantic-level schemes (SemStamp~\cite{hou2023semstamp}) embed in meaning representations and survive paraphrase but incur sampling overhead. Distribution-level schemes (Christ et al.~\cite{christ2024undetectable}) achieve provably zero quality loss via cryptographic sampling but require secret keys and are vulnerable to key compromise. Google DeepMind's SynthID~\cite{synthidtext2024}, the first production deployment, operates at the token-probability level.
+
+Watermarks face a dual threat: \emph{removal attacks} (paraphrase, translation, truncation) and \emph{spoofing attacks} that forge watermark signals in human text to produce false attributions~\cite{sadasivan2023spoofing}. Pang et al.\ identify a fundamental robustness-spoofing tradeoff: robust watermarks are inherently vulnerable to spoofing~\cite{pang2024nofree}. Low-entropy text (factual answers, code) is fundamentally unwatermarkable. Cross-provider standardization remains absent---verifiers must implement multiple detectors while attackers need only defeat one. Table~\ref{tab:watermark} compares representative schemes.
+
+\subsubsection{Image Watermarking}
+\label{sec:wm-image}
+
+Image watermarking exhibits a robustness--flexibility trade-off governed by \emph{when} the signal is embedded. \emph{Generation-time methods} (Stable Signature~\cite{fernandez2023stablesig}, Tree-Ring~\cite{wen2023treering}, Gaussian Shading~\cite{yang2024gaussianshading}) integrate watermarks during the diffusion process, achieving extreme robustness ($>$90\% accuracy after 90\% pixel cropping) with zero or negligible quality loss, but require model access and are specific to diffusion architectures. \emph{Post-hoc methods} (HiDDeN~\cite{zhu2018hidden}, StegaStamp~\cite{tancik2020stegastamp}) apply to any image but are vulnerable to regeneration attacks---diffusion-based ``washing'' that resamples with noise to remove imperceptible signals~\cite{zhao2023regeneration}. Google's SynthID-Image ($>$10 billion images watermarked~\cite{gowal2024synthidimage}) bridges both paradigms at production scale. Open-source model watermarks face an additional threat: weight merging (50:50 watermarked + unwatermarked) reduces detection AUC to $\sim$0.5~\cite{xu2025removal}.
+
+\subsubsection{Content Provenance}
+\label{sec:provenance}
+
+The C2PA standard (v2.2, May 2025) embeds cryptographically signed ``Content Credentials'' with hardware adoption (Leica, Nikon, Google Pixel~10) and platform detection (Meta, Google, TikTok)~\cite{c2pa2025}. CISA endorsed Content Credentials in January 2025~\cite{cisa2025cc}. Limitations include metadata stripping on social media upload and the chicken-and-egg adoption problem. The emerging direction combines credentials with invisible watermarks to survive metadata loss.
+
+\subsubsection{Challenges}
+\label{sec:wm-challenges}
+
+Christ et al.\ prove perfectly undetectable watermarks require cryptographic secrecy~\cite{christ2024undetectable}. Open-source model watermarks can be removed by weight merging (AUC $\to$ 0.5)~\cite{xu2025removal}. Cross-provider standardization is absent. No watermark is secure against a dedicated white-box adversary.
+
+\begin{table}[htbp]
+\centering
+\caption{Representative watermarking schemes for AI-generated content.}
+\label{tab:watermark}
+\small
+\begin{tabular}{p{1.2cm}p{2.2cm}p{2.0cm}p{1.5cm}p{1.5cm}p{3.5cm}}
+\toprule
+\textbf{Modality} & \textbf{Method} & \textbf{Embedding} & \textbf{Capacity} & \textbf{Quality Loss} & \textbf{Robustness} \\
+\midrule
+Text & KGW & Sampling bias & 1 bit & Moderate & Fragile to paraphrase \\
+\addlinespace
+Text & Christ et al. & Cryptographic sampling & 1 bit & Zero & Survives $\sim$40\% edits \\
+\addlinespace
+Text & SynthID & Token probability & Multi-bit & Low & Moderate (long text) \\
+\addlinespace
+Image & Stable Signature & Decoder fine-tuning & Multi-bit & Low & $>$90\% at 90\% crop \\
+\addlinespace
+Image & Tree-Ring & Initial noise & 1 bit & Zero & JPEG, rotation, crop \\
+\addlinespace
+Image & SynthID-Image & DNN-based & Multi-bit & Low & $>$99\% common edits \\
+\addlinespace
+Image & StegaStamp & Encoder-decoder & $\sim$100 bit & Low & Print-and-capture \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+%% ------------------------------------------------------------
+\subsection{Alignment, Defense, and Agentic Security}
+\label{sec:alignment}
+%% ------------------------------------------------------------
+
+\subsubsection{Alignment Techniques}
+\label{sec:alignment-tech}
+
+Modern alignment begins with RLHF~\cite{ouyang2022rlhf}---supervised fine-tuning, reward model training, and PPO optimization---demonstrating that alignment can substitute for scale (1.3B InstructGPT preferred over 175B GPT-3). Direct Preference Optimization (DPO)~\cite{rafailov2023dpo} eliminates the separate reward model via closed-form Bradley-Terry reparameterization, becoming the dominant method by 2024. Subsequent variants address practical deployment constraints: KTO~\cite{ethayarajh2024kto} requires only binary (good/bad) feedback rather than pairwise comparisons, matching DPO performance across 1B--30B scales while dramatically reducing data requirements; SimPO~\cite{meng2024simpo} eliminates the reference model entirely via average log-probability scoring. Constitutional AI~\cite{bai2022constitutionalai} replaces human labelers with AI feedback guided by a written constitution (RLAIF), reducing annotator dependence.
+
+These advances are substantial but alignment remains fundamentally fragile. \emph{Reward hacking} is theoretically inevitable~\cite{skalse2022rewardhacking} with quantified scaling laws~\cite{gao2023scalinglaws}. Safety training is \emph{superficial}: 10 adversarial fine-tuning examples at \$0.20 remove GPT-3.5 Turbo's guardrails~\cite{qi2024finetuning}; 100 malicious examples achieve 100\% violation rate while preserving benign capabilities (``shadow alignment''); refusal is mediated by a single direction in activation space, ablatable via activation engineering~\cite{arditi2024refusal}. The \emph{alignment tax}---measurable reasoning degradation from safety training---persists in o-series models~\cite{huang2025safetytax}. The \emph{over-refusal} problem compounds this: XSTest~\cite{rottger2024xstest} reveals models refuse benign requests via superficial keyword matching, quantifying the helpfulness--harmlessness trade-off that all alignment methods must navigate.
+
+
+\subsubsection{Defense Against Adversarial Manipulation}
+\label{sec:defense}
+
+To counter the strategies categorized in Section~\ref{sec:threat-adversarial}, researchers have developed multi-layered defenses.
+
+\paragraph{Input layer.}
+Perplexity filtering detects $\sim$90\% of GCG-style adversarial suffixes but cannot catch human-crafted jailbreaks~\cite{alon2023perplexity}. SmoothLLM~\cite{robey2023smoothllm} applies randomized perturbations and majority voting, reducing ASR below 1\% across five model families.
+
+\paragraph{System layer.}
+The instruction hierarchy~\cite{wallace2024hierarchy} trains LLMs to prioritize system $>$ user $>$ tool instructions, drastically improving robustness even for unseen attacks. Instructional Segment Embeddings~\cite{wu2025ise} achieve 18.68\% improvement in robust accuracy. StruQ~\cite{chen2025struq} enforces formal prompt/data separation.
+
+\paragraph{Output layer.}
+Llama Guard~\cite{inan2023llamaguard} classifies against customizable safety taxonomies; ShieldGemma~\cite{zeng2024shieldgemma} provides +10.8\% AU-PRC improvement.
+
+\paragraph{Model layer.}
+Representation engineering~\cite{zou2023repe} extracts concept vectors for mechanistic steering. Circuit breakers~\cite{zou2024circuitbreakers} interrupt harmful generation at the representation level (ASR $\sim$3.8\% on HarmBench), though multi-turn attacks still achieve $\sim$54\%. Adversarial training via R2D2~\cite{mazeika2024harmbench} and latent adversarial training~\cite{sheshadri2024lat} (700$\times$ fewer passes) incorporate attacks during training.
+
+\paragraph{The defense gap.}
+HarmBench~\cite{mazeika2024harmbench} (510 behaviors, 18 attacks, 33 LLMs) finds no single attack/defense universally effective. StrongREJECT~\cite{souly2024strongreject} reveals jailbreaks reduce capabilities---best attack scores only 0.37/1.0 on GPT-4o. Yet Nasr et al.\ showed \textbf{all 12 recently proposed defenses bypassed} with ASR $>$90\% under adaptive attacks~\cite{nasr2025attacker}. Defense-in-depth reduces ASR from 46.5\% to 5.6\%~\cite{dong2024hierarchical}, but cannot resist simultaneous adaptive attacks.
+
+
+\subsubsection{Securing Agentic AI Systems}
+\label{sec:agentic-security}
+
+%% *** BLUE OCEAN — EXPANDED (+300 words) ***
+
+To secure against the agentic threats identified in Sections~\ref{sec:threat-adversarial} and~\ref{sec:cap-autonomy}, a new class of defenses targeting the agent--tool interaction layer is emerging.
+
+\paragraph{(a) Architecture-level defenses.}
+Classical security principles---trust boundaries, context isolation, least privilege, privilege separation---must be adapted for LLM agents. Google's multi-layer defense for Gemini operationalizes these with Agent Origin Sets (constraining browseable domains), prompt injection classifiers, User Alignment Critics (a second isolated model verifying intended actions), acknowledgment gates, and continuous red teaming~\cite{google2025geminidefense}. OpenAI's governance principles include evaluating suitability, constraining action-space, maintaining legibility (audit trails), and ensuring interruptibility~\cite{shavit2024agenticgovernance}. The emerging discipline of \emph{harness engineering}---designing constraints, feedback loops, and lifecycle management around AI agents---addresses reliability but intersects critically with security: its core components (permission boundaries, human-in-the-loop gates, tool access scoping) directly instantiate defense-in-depth principles for agentic systems.
+
+\paragraph{(b) MCP-specific security.}
+Input validation must enforce parameterized queries to prevent SQLi$\to$stored prompt injection chains. Tool call validation verifies authorized scope before each invocation. The MCP specification has evolved rapidly: no authentication (November 2024), OAuth 2.1 with PKCE (March 2025), Resource Server classification with RFC 8707 Resource Indicators (June 2025), and URL-based client registration with enhanced authorization flows (November 2025)~\cite{mcpspec2025}. CVE-2025-49596 in MCP Inspector (CVSS 9.4) demonstrated that elementary session tokens and origin verification were initially absent~\cite{oligo2025inspector}. Errico et al.\ propose five control categories: per-user authentication, provenance tracking, containerized sandboxing, inline policy enforcement, and centralized governance via private registries~\cite{errico2025mcpsecurity}. Enhanced Tool Definition Integrity (ETDI)~\cite{bhatt2025etdi} addresses tool poisoning specifically through cryptographic identity verification and immutable versioned tool definitions, ensuring descriptions cannot be silently redefined post-approval.
+
+\paragraph{(c) Monitoring and runtime verification.}
+Agent behavior audit trails logging all tool calls, decisions, and reasoning are essential for forensics and risk management. Anomaly detection must identify tool-call patterns deviating from expected behavior. AgentSpec~\cite{wang2025agentspec} introduces a lightweight DSL for specifying runtime constraints, preventing $>$90\% of unsafe code executions. Pro2Guard~\cite{pro2guard2025} extends this with probabilistic model checking via DTMC learning to anticipate unsafe states before violations occur. Human-in-the-loop confirmation remains critical for high-risk operations, yet only \textbf{47\% of organizations} have implemented GenAI-specific security controls~\cite{microsoft2026cyberpulse}.
+
+\paragraph{(d) Open challenges.}
+Despite these advances, fundamental gaps persist. Tool poisoning achieves $>$70\% ASR~\cite{invariant2025toolpoisoning}; cross-agent trust chains face $\sim$1,700 identified threats across twelve risk domains~\cite{multiagent2026threats}; and Simon Willison's ``lethal trifecta''---access to sensitive data, exposure to untrusted content, and ability to communicate externally---defines an inherent tension that most useful agentic applications cannot avoid. OpenAI frames prompt injection defense as ``a long-term AI security challenge''~\cite{openai2025atlas}. Section~\ref{sec:future-agents} details the research agenda these challenges define.
+
+\begin{figure}[htbp]
+\centering
+\fcolorbox{green!50}{green!5}{\parbox{0.95\linewidth}{\centering\textbf{Figure~3: Layered Defense Architecture for AIGC Security}\\[3pt]
+\small Detection $\leftrightarrow$ Watermarking $\leftrightarrow$ Alignment $\leftrightarrow$ Agentic Security $\leftrightarrow$ Governance}}
+\end{figure}
