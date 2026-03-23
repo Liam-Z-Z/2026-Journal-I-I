@@ -1,0 +1,108 @@
+%% ============================================================
+%% Section 5: Governance and Regulation (V0.2)
+%% Source: V0.1 section4.tex (was §4, now §5 after swap)
+%% Target: ~2,200 words
+%% Changes: §5.1 Government Policies compressed (-700),
+%%   §5.2 Industry light trim (-100), Agentic gap PRESERVED (blue ocean),
+%%   cross-refs updated for §4/§5 swap, MCP servers cross-ref to §2.4.4
+%% ============================================================
+
+\section{Governance and Regulation}
+\label{sec:governance}
+
+The threats and countermeasures analyzed in Sections~\ref{sec:threats} and~\ref{sec:countermeasures} have prompted a global governance response characterized by divergent jurisdictional philosophies and a persistent gap between regulatory frameworks and deployment velocity. \emph{Note:} The governance landscape described in this section reflects the state of affairs as of March 2026; given the rapid pace of AI policy development, readers should verify the current status of referenced legislation and frameworks. This section examines government policies, international cooperation, and industry self-regulation.
+
+
+%% ------------------------------------------------------------
+\subsection{Government Policies}
+\label{sec:gov-policy}
+%% ------------------------------------------------------------
+
+\subsubsection{European Union}
+\label{sec:gov-eu}
+
+The EU AI Act (Regulation 2024/1689), in force since August 2024, establishes a risk-tiered framework---\emph{unacceptable} (banned), \emph{high} (conformity assessments), \emph{limited} (transparency obligations for chatbots and deepfake generators), and \emph{minimal} (unregulated)~\cite{euaiact2024}. For AIGC, Article~50 mandates that AI-generated outputs be marked in machine-readable format and that deepfakes be disclosed even when lawful, with obligations enforceable from August 2025 and full application by August 2026~\cite{euaiact_art50}. Penalties reach \euro35M or 7\% of global turnover. A Code of Practice on Transparency operationalizes these requirements through multi-layered marking (C2PA metadata, watermarks, visible labels) and a proposed ``EU Icon''~\cite{eucode2025}. The DSA complements the AI Act by requiring platforms to assess systemic risks from AI-generated disinformation~\cite{dsa2024}, while GDPR constrains training data use---models built with unlawfully processed personal data may face destruction orders~\cite{cnil2025,edpb2024}.
+
+
+\subsubsection{United States}
+\label{sec:gov-us}
+
+The US landscape is defined by federal executive volatility and state-level gap-filling. Executive Order 14110 (October 2023) imposed safety reporting requirements on frontier developers~\cite{eo14110}, but was revoked by EO 14179 (January 2025), which prioritized deregulation and ``ideological neutrality'' in LLMs~\cite{eo14179}. The subsequent ``America's AI Action Plan'' (July 2025) shifted focus entirely toward infrastructure expansion~\cite{aiactionplan2025}. NIST provides voluntary technical governance through the AI RMF and its Generative AI Profile~\cite{nistrmf,nistgenai600}.
+
+In the absence of comprehensive federal legislation, states have assumed regulatory leadership. California's SB~53 (effective January 2026) is the first US law targeting frontier model \emph{developers}, requiring catastrophic risk disclosure and incident reporting~\cite{casb53}. Texas's TRAIGA prohibits AIGC for behavioral manipulation and non-consensual deepfakes~\cite{texastraiga}. Targeted federal bills address specific harms: the Take It Down Act (May 2025) criminalizes digital forgeries with 48-hour takedown mandates~\cite{takeitdown2025}; the DEFIANCE Act establishes civil remedies for deepfake NCII~\cite{defianceact}.
+
+
+\subsubsection{China}
+\label{sec:gov-china}
+
+China has engineered the world's most rapid AIGC governance framework through a phased, application-specific approach. The Deep Synthesis Provisions (January 2023) mandate real-name verification and content labeling~\cite{chinadeepsynthesis}. The Interim Measures for Generative AI Services (August 2023) require training data legality, output monitoring, and adherence to ``core socialist values,'' with providers bearing legal responsibility for outputs~\cite{chinainterim2023}. The CAC's algorithm filing system operates as a mandatory ex-ante licensing regime: any service with ``social mobilization capabilities'' must file before deployment~\cite{chinaalgorithm}. TC260's ``Basic Security Requirements'' (TC260-003, 2024) define 31 security risks with emphasis on corpus safety and political compliance~\cite{tc260}. Active enforcement includes the ``Sword Pujiang'' action delisting 54 non-compliant applications~\cite{chinaenforcement2025}.
+
+
+\subsubsection{International Cooperation}
+\label{sec:gov-intl}
+
+The UK AI Security Institute (rebranded from AI Safety Institute, 2025) evaluates frontier models, finding AI performance doubling every eight months in sensitive domains~\cite{aisi2025trends}. The International AI Safety Reports (2025, 2026), chaired by Bengio with 100+ experts from 30 nations, document a 92.7\% increase in AI-assisted data exfiltration; the US declined to endorse the 2026 edition~\cite{aisafetyreport2025,aisafetyreport2026,time2026usretreat}. The AI Safety Summit series---Bletchley Park (2023), Seoul (2024), Paris (2025), New Delhi (2026)---reveals fracturing priorities, with the US and UK declining the Paris declaration~\cite{bletchley2023,seoul2024,paris2025}. The G7 Hiroshima Process produced an International Code of Conduct~\cite{hiroshima2023}; the OECD AI Principles (updated 2024) are adhered to by 47 governments~\cite{oecdai2024}.
+
+\paragraph{Comparative analysis.}
+The landscape has fractured into three paradigms: the \textbf{EU model} (prescriptive, rights-centric---strong protection but high compliance friction), the \textbf{US model} (voluntary, market-driven---innovation-facilitating but creating regulatory vacuum), and the \textbf{China model} (centrally administered, ideology-entwined---agile but constraining model capability). International efforts attempt to bridge these irreconcilable philosophies.
+
+
+%% ------------------------------------------------------------
+\subsection{Industry Practices}
+\label{sec:gov-industry}
+%% ------------------------------------------------------------
+
+\subsubsection{Model Provider and Platform Governance}
+\label{sec:gov-frameworks}
+
+Twelve frontier companies published safety frameworks by December 2025~\cite{metr2025frameworks}, sharing a common architecture of capability thresholds triggering escalating safeguards. All remain \textbf{voluntary, self-enforced, and without independent verification}. The FLI AI Safety Index (Winter 2025) quantifies the gap: the highest-scoring company (Anthropic) received only C+, and \textbf{no company scored above D in Existential Safety}~\cite{fli2025winter}.
+
+Platforms have converged on labeling rather than removal, with Google's SynthID deployed across $>$10B items~\cite{synthid2025}. However, a one-year assessment of industry voluntary commitments found companies ``nowhere near where we need them to be''~\cite{mitreview2024assessment}.
+
+
+\subsubsection{Agentic AI Governance Gap}
+\label{sec:gov-agentic}
+
+%% *** BLUE OCEAN — PRESERVED IN FULL ***
+
+The governance gap for agentic AI is structural, not merely temporal. Current frontier safety frameworks, the NIST AI RMF, ISO/IEC 42001, and the EU AI Act contain \textbf{zero references to ``agent,'' ``agentic,'' or autonomous AI systems}~\cite{zenity2025blindspot}. AI agents introduce qualitatively different risks: autonomous real-world action, dynamic tool access, multi-step planning with cascading failures, persistent memory vulnerable to manipulation, and multi-agent delegation fragmenting accountability.
+
+The deployment timeline is stark. Anthropic launched Computer Use (October 2024), OpenAI's Operator followed (January 2025), Claude Code reached GA (May 2025, \$1B annualized revenue by November)~\cite{anthropic2024computeruse,openaicopilot}. \textbf{None launched under any agent-specific governance standard.} Consequences materialized when Anthropic disclosed that a Chinese state-sponsored actor used Claude Code for what it described as the first AI-orchestrated cyber espionage campaign, with AI executing 80--90\% of operations autonomously~\cite{anthropic2025gtg1002}.
+
+The MCP ecosystem (Section~\ref{sec:cap-mcp}) exemplifies the ``deploy first, retrofit security later'' pattern: over 13,000 servers launched in 2025, many without authentication~\cite{zenity2025mcp}. Emerging standards are chasing a moving target: the OWASP Top~10 for Agentic Applications (December 2025)~\cite{owasp2025agentic}, Singapore's IMDA framework (January 2026, the world's first government agentic AI governance framework)~\cite{imda2026agentic}, and NIST's AI Agent Standards Initiative (February 2026)~\cite{nist2026agentstandards}. Yet standardization remains 16+ months behind deployment.
+
+\begin{table}[htbp]
+\centering
+\caption{Cross-jurisdiction AIGC governance comparison.}
+\label{tab:governance}
+\small
+\begin{tabular}{p{1.8cm}p{3.2cm}p{2.8cm}p{2.0cm}p{2.8cm}}
+\toprule
+\textbf{Jurisdiction} & \textbf{Key Legislation} & \textbf{Core Mechanism} & \textbf{Stage} & \textbf{Maximum Penalty} \\
+\midrule
+EU &
+AI Act (2024/1689); DSA; GDPR; Code of Practice &
+Risk-tiered regulation; mandatory deepfake labeling; ex-ante conformity &
+Phased (full by Aug 2026) &
+\euro35M or 7\% global turnover \\
+\addlinespace
+US &
+EO 14179; NIST AI RMF; SB~53 (CA); TRAIGA (TX); Take It Down Act &
+Voluntary federal standards; state patchwork; targeted federal bills &
+Fragmented &
+Varies by state/bill \\
+\addlinespace
+China &
+Deep Synthesis Provisions; Interim Measures; TC260-003 &
+Algorithm filing; corpus safety; real-name verification; political compliance &
+Fully operational &
+Service suspension; delisting \\
+\addlinespace
+International &
+AI Safety Reports; Hiroshima Code; OECD Principles; Summit declarations &
+Soft law; voluntary commitments; scientific consensus &
+Evolving &
+Non-binding \\
+\bottomrule
+\end{tabular}
+\end{table}

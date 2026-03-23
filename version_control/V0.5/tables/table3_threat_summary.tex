@@ -1,0 +1,47 @@
+%% Table 3: Threat Landscape Summary (from §3, end)
+%% Label: tab:threat-summary
+%% Placement: Section 3, after §3.5
+
+\begin{table}[htbp]
+\centering
+\caption{Threat landscape summary: type, affected modalities, severity, and defense maturity.}
+\label{tab:threat-summary}
+\small
+\begin{tabular}{p{2.8cm}p{2.2cm}p{1.2cm}p{1.5cm}p{4.8cm}}
+\toprule
+\textbf{Threat Type} & \textbf{Modalities} & \textbf{Severity} & \textbf{Defense Maturity} & \textbf{Key Evidence} \\
+\midrule
+AI-generated phishing & Text, audio & Critical & Low &
+82.6\% of phishing is AI-generated; surpasses human red teams \\
+\addlinespace
+Non-consensual synthetic content & Image, video & Critical & Very low &
+1,325\% increase in NCMEC reports; 440K reports in H1 2025 \\
+\addlinespace
+Data poisoning / backdoors & All & High & Low &
+250 documents suffice; $>$90\% ASR for instruction backdoors \\
+\addlinespace
+Model extraction & All & High & Medium &
+Practical for \$60; industrial-scale distillation alleged \\
+\addlinespace
+Prompt injection & Text & Critical & Very low &
+Structural problem; ``may never be fully solved'' \\
+\addlinespace
+Jailbreaks & Text, image, audio & High & Low &
+$\sim$50\% success in 10 attempts; no defense uniformly effective \\
+\addlinespace
+Agentic exploitation & Multi-modal & Critical & Very low &
+100\% of AI IDEs vulnerable; 72.8\% tool poisoning ASR \\
+\addlinespace
+Deepfakes & Image, audio, video & Critical & Low &
+\$25M Arup fraud; 2,137\% surge in deepfake attacks \\
+\addlinespace
+Information operations & Text, image, video & High & Low &
+AI disinformation perceived as more credible than human-written \\
+\addlinespace
+Bias amplification & Text, image, audio & Medium & Low &
+1--3 pp hiring discrimination; 90\% male in 16 professions \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\par\noindent{\footnotesize\emph{Note:} Defense maturity ratings reflect a composite assessment of deployment coverage, academic literature volume, and empirically demonstrated effectiveness as of March 2026. ``Very low'' indicates emerging research with no widely deployed countermeasure; ``Low'' indicates active research with limited deployment; ``Medium'' indicates established methods with known limitations.}
+\end{table}

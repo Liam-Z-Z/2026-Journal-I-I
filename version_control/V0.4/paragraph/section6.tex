@@ -1,0 +1,59 @@
+%% ============================================================
+%% Section 6: Future Research Directions (V0.4)
+%% Changes from V0.3.5: consolidated from 6 to 4 directions (R#13),
+%%   inverse scaling nuance added (R#14), governance direction merged
+%%   into §5, watermarking + privacy merged into robustness guarantees
+%% ============================================================
+
+\section{Future Research Directions}
+\label{sec:future}
+
+The preceding sections reveal a persistent gap between AI capabilities and the protective infrastructure designed to manage them. We prioritize four research frontiers with the highest urgency and the largest gap between current capability and need.
+
+
+%% ------------------------------------------------------------
+\subsection{Securing Autonomous AI Agents}
+\label{sec:future-agents}
+%% ------------------------------------------------------------
+
+%% *** BLUE OCEAN — HIGHEST PRIORITY ***
+
+\emph{Gap:} As documented in Section~\ref{sec:agentic-security}, existing agentic defenses address individual attack vectors but lack compositional guarantees. The open challenges identified there---tool poisoning, cross-agent trust chains, and the lethal trifecta---define the research agenda for this frontier. Inter-agent trust exploitation achieves 82.4\% ASR---far exceeding direct prompt injection at 41.2\%~\cite{darkside2025agents}. NIST launched a dedicated AI Agent Standards Initiative in February 2026~\cite{nist2026agentstandards}.
+
+\emph{Priority research questions:}
+\begin{enumerate}[nosep,leftmargin=1.5em]
+    \item \textbf{Formal agent trust models.} No mathematically complete trust calculus exists for composing trust across delegation chains. \emph{Open problem:} dynamic trust revocation with provable guarantees under adversarial conditions~\cite{trustparadox2025,rodriguez2025did}.
+    \item \textbf{Instruction-data separation.} As established in Section~\ref{sec:threat-landscape}, all tested models fail to achieve high instruction-data separation. \emph{Open question:} Can alternative computational paradigms---structured query separation~\cite{chen2025struq} or non-autoregressive architectures---achieve principled separation without sacrificing instruction-following capability?
+    \item \textbf{Inverse scaling and the capability--security tension.} More capable models exhibit higher susceptibility to tool poisoning and indirect prompt injection, where instruction-following capability amplifies susceptibility to embedded malicious instructions~\cite{wang2025mcptox,yi2025bipia}. This pattern is context-dependent: in standard safety benchmarks (e.g., ToxiGen, XSTest), more capable models generally exhibit \emph{improved} safety compliance~\cite{rottger2024xstest}. \emph{Open question:} Under what conditions does capability--security inversion hold, and can alignment techniques decouple instruction-following robustness from harmful-instruction obedience?
+    \item \textbf{Composable runtime verification.} Current monitors (AgentSpec~\cite{wang2025agentspec}, Pro2Guard~\cite{pro2guard2025}) operate on single agents. \emph{Open problem:} composable runtime monitors across multi-agent boundaries; formal bounds on achievable robustness against $k$-adaptive adversaries. Progent reduces ASR to 0\% via privilege control~\cite{shi2025progent}, but mandatory access control assumes deterministic behavior incompatible with LLM non-determinism---\emph{probabilistic capability tokens} that attenuate permissions based on alignment confidence represent a promising unexplored direction.
+\end{enumerate}
+
+
+%% ------------------------------------------------------------
+\subsection{Unified Multi-Modal Detection Frameworks}
+\label{sec:future-detection}
+%% ------------------------------------------------------------
+
+\emph{Gap:} No single framework detects AI-generated content across text, image, audio, and video. As analyzed in Section~\ref{sec:detect-multimodal}, detection remains siloed by modality with distinct artifact mechanisms that resist theoretical unification. State-of-the-art detectors suffer AUC drops of 45--50\% on in-the-wild content~\cite{chandra2025deepfakeeval}.
+
+\emph{Priority research questions:} (1)~Can foundation-model features (e.g., CLIP~\cite{ojha2023univfd}) encode modality-agnostic ``realness'' properties? (2)~Is cross-modal transfer learning for detection feasible---can knowledge from text detection improve image detection? (3)~Can shared artifact representations be grounded in the common mathematical structure of diffusion and autoregressive generation?
+
+
+%% ------------------------------------------------------------
+\subsection{Robustness and Privacy Guarantees}
+\label{sec:future-robustness}
+%% ------------------------------------------------------------
+
+\emph{Watermarking gap:} Zhang et al.\ prove that \textbf{strong watermarking is fundamentally impossible} under natural assumptions~\cite{zhang2024impossibility}. Pang et al.\ identify a robustness-spoofing tradeoff~\cite{pang2024nofree}. Low-entropy text is fundamentally unwatermarkable, and no cross-provider standard exists. \emph{Priority questions:} tightening information-theoretic bounds for realistic generation; semantic watermarks robust to paraphrase; cross-provider standards complementary to C2PA.
+
+\emph{Privacy gap:} Generative models memorize and regurgitate training data (extraction at 150$\times$ normal rate~\cite{nasr2025extraction}; memorization grows log-linearly with capacity~\cite{carlini2023quantifying}). Differential privacy at frontier scale remains infeasible~\cite{tramer2024dpposition}, and machine unlearning is unreliable (TOFU benchmark~\cite{maini2024tofu}). \emph{Priority questions:} memorization-aware training without full DP overhead; inference-time privacy mechanisms; tight privacy auditing closing theoretical-empirical $\varepsilon$ gaps.
+
+
+%% ------------------------------------------------------------
+\subsection{Dynamic Evaluation Frameworks}
+\label{sec:future-eval}
+%% ------------------------------------------------------------
+
+\emph{Gap:} Static benchmarks become obsolete through saturation (LLMs exceed 90\% on MMLU) and contamination. LiveBench~\cite{white2024livebench} and Humanity's Last Exam~\cite{phan2025humanitylastexam} introduce dynamic updates, but contamination-resistant rewrites distort evaluation tasks~\cite{sun2025contamination}. For agentic systems, no tested agent achieves a safety score above 60\%~\cite{zhang2024agentsafetybench}, and MLCommons AILuminate (24,000+ prompts) explicitly notes ``negative predictive power''~\cite{ghosh2024ailuminate}.
+
+\emph{Priority research questions:} (1)~Contamination-proof evaluation via procedural generation. (2)~Long-horizon agentic safety evaluation with cost-controlled tool execution in verified sandboxes. (3)~Formal relationships between benchmark performance and deployment-time safety guarantees. (4)~Culturally diverse evaluation beyond English-language benchmarks.

@@ -1,0 +1,29 @@
+%% Table 5: Watermarking Schemes (from §4.2)
+%% Label: tab:watermark
+%% Placement: Section 4.2 (Watermarking), after text discussion
+
+\begin{table}[htbp]
+\centering
+\caption{Representative watermarking schemes for AI-generated content.}
+\label{tab:watermark}
+\small
+\begin{tabular}{p{1.2cm}p{2.2cm}p{2.0cm}p{1.5cm}p{1.5cm}p{3.5cm}}
+\toprule
+\textbf{Modality} & \textbf{Method} & \textbf{Embedding} & \textbf{Capacity} & \textbf{Quality Loss} & \textbf{Robustness} \\
+\midrule
+Text & KGW & Sampling bias & 1 bit & Moderate & Fragile to paraphrase \\
+\addlinespace
+Text & Christ et al. & Cryptographic sampling & 1 bit & Zero & Survives $\sim$40\% edits \\
+\addlinespace
+Text & SynthID & Token probability & Multi-bit & Low & Moderate (long text) \\
+\addlinespace
+Image & Stable Signature & Decoder fine-tuning & Multi-bit & Low & $>$90\% at 90\% crop \\
+\addlinespace
+Image & Tree-Ring & Initial noise & 1 bit & Zero & JPEG, rotation, crop \\
+\addlinespace
+Image & SynthID-Image & DNN-based & Multi-bit & Low & $>$99\% common edits \\
+\addlinespace
+Image & StegaStamp & Encoder-decoder & $\sim$100 bit & Low & Print-and-capture \\
+\bottomrule
+\end{tabular}
+\end{table}

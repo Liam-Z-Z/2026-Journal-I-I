@@ -1,0 +1,39 @@
+%% Table 1: Capability--Threat Mapping (from §2)
+%% Label: tab:cap-threat
+%% Placement: Section 2 (Capabilities), after §2.4
+
+\begin{table}[htbp]
+\centering
+\caption{Capability--threat mapping: how generative AI properties create security risks.}
+\label{tab:cap-threat}
+\small
+\begin{tabular}{p{3.2cm}p{4.2cm}p{5.5cm}}
+\toprule
+\textbf{Capability} & \textbf{Representative Systems} & \textbf{Threat Implications} \\
+\midrule
+High-fidelity multi-modal generation &
+GPT-4/5, Claude, Gemini; SD3, DALL-E~3, Flux; VALL-E~2, F5-TTS; Sora, Veo~2, Kling &
+Detection difficulty: human accuracy $\sim$53--61\%; enables deepfake fraud, synthetic media at scale \\
+\addlinespace
+Low-cost scalable production &
+Llama~4 (open-weight); consumer GPUs; API pricing $<$\$0.30/M tokens &
+Attacker cost collapses; large-scale personalized attacks become economically trivial \\
+\addlinespace
+Controllability \& personalization &
+LoRA, ControlNet, IP-Adapter; voice cloning (3-sec samples); stylometric mimicry &
+Targeted identity cloning; multi-channel deception (email + voice + video) \\
+\addlinespace
+Advanced reasoning \& extended context &
+o1/o3, DeepSeek-R1; Gemini 1.5 Pro (1M), Llama~4 Scout (10M) &
+Multi-step attack planning; entire codebase comprehension; extended attack persistence \\
+\addlinespace
+Autonomous agency &
+Claude Code, Codex, Devin; Computer Use, Operator &
+Autonomous action execution: file R/W, shell commands, API calls, database access \\
+\addlinespace
+Standardized tool integration (MCP) &
+10,000+ MCP servers; adopted by Anthropic, OpenAI, Google, Microsoft &
+Universal attack surface via tool poisoning; supply chain vulnerabilities; cross-server composition attacks \\
+\bottomrule
+\end{tabular}
+\end{table}
