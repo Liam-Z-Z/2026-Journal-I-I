@@ -1,29 +1,24 @@
 %% Table 4: Detection Methods (from §4.1)
-%% Label: tab:detection
-%% Placement: Section 4.1 (AIGC Detection), after text discussion
+%% Requires: \usepackage{tabularx}
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
 \centering
 \caption{Representative AIGC detection methods across modalities.}
 \label{tab:detection}
-\small
-\begin{tabular}{p{1.3cm}p{2.0cm}p{2.8cm}p{2.5cm}p{3.5cm}}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.92}
+\begin{tabularx}{\textwidth}{l l l l X}
 \toprule
 \textbf{Modality} & \textbf{Paradigm} & \textbf{Methods} & \textbf{Mechanism} & \textbf{Key Limitation} \\
 \midrule
-Text & Zero-shot & DetectGPT, Binoculars, DNA-GPT & Probability curvature / cross-model agreement & Requires generator access or proxy; paraphrase fragile \\
-\addlinespace
-Text & Supervised & GPTZero, RADAR, Turnitin & Encoder fine-tuning; adversarial training & Overfits to training generators; staleness \\
-\addlinespace
+Text & Zero-shot & DetectGPT, Binoculars, DNA-GPT & Probability curvature & Requires generator access or proxy; paraphrase fragile \\
+Text & Supervised & GPTZero, RADAR, Turnitin & Encoder fine-tuning & Overfits to training generators; staleness \\
 Image & Frequency & Spectral analysis & GAN upsampling artifacts & Mitigated by post-processing \\
-\addlinespace
 Image & Representation & UnivFD (CLIP), LASTED & Feature-space classification & GAN$\to$diffusion transfer fails (3.05\%) \\
-\addlinespace
-Image & Reconstruction & DIRE, AEROBLADE & Diffusion reconstruction error & Computationally expensive; format-bias risk \\
-\addlinespace
-Audio & Challenge-based & ASVspoof series & Spectral/prosodic/codec features & Codec artifacts confound interpretation \\
-\addlinespace
-Video & Temporal & FaceForensics++, rPPG & Frame artifacts; physiological signals & Sora-class generators: no face-swap artifacts \\
+Image & Reconstruction & DIRE, AEROBLADE & Diffusion recon.\ error & Computationally expensive; format-bias risk \\
+Audio & Challenge-based & ASVspoof series & Spectral/prosodic/codec & Codec artifacts confound interpretation \\
+Video & Temporal & FaceForensics++, rPPG & Frame artifacts; physiological & Sora-class: no face-swap artifacts \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{tabularx}
+\end{table*}

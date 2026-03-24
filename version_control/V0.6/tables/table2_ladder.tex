@@ -1,0 +1,63 @@
+%% Table: Attack Surface Evolution Ladder
+%% Requires: \usepackage{booktabs, tabularx, xcolor}
+%% Preamble: \definecolor{rowgray}{gray}{0.93}
+
+\begin{table*}[htbp]
+\centering
+\caption{Attack surface evolution ladder.}
+\label{tab:ladder}
+
+\fontsize{7}{7}\selectfont
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabularx}{\textwidth}{
+  c
+  >{\raggedright\arraybackslash}p{2.2cm}
+  >{\raggedright\arraybackslash}X
+  >{\raggedright\arraybackslash}X
+  >{\raggedright\arraybackslash}X
+}
+\toprule
+\textbf{Year} & \textbf{Attack Class} & \textbf{Attacker Access} & \textbf{Victim Agency} & \textbf{Impact Scope} \\
+\midrule
+
+\rowcolor{rowgray}
+2022 & Direct PI
+  & Direct model input
+  & Passive output
+  & Single output \\
+
+\addlinespace[2pt]
+
+2023 & Jailbreaking
+  & Crafted adversarial input
+  & Active instruction following
+  & Session-level state \\
+
+\addlinespace[2pt]
+
+\rowcolor{rowgray}
+2023 & Indirect PI
+  & Third-party content
+  & Retrieval + execution
+  & Persistent state changes \\
+
+\addlinespace[2pt]
+
+2024 & Agentic exploitation
+  & Tool chains / MCP servers
+  & Autonomous multi-step
+  & Cross-system cascade \\
+
+\addlinespace[2pt]
+
+\rowcolor{rowgray}
+\emph{2025} & \emph{Multi-agent}
+  & \emph{Inter-agent messages}
+  & \emph{Delegated autonomy}
+  & \emph{Cross-org cascade} \\
+
+\bottomrule
+\end{tabularx}
+\end{table*}

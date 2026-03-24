@@ -1,25 +1,22 @@
 %% Table 2: Attack Surface Evolution Ladder (from §3.3)
-%% Label: tab:ladder
-%% Placement: Section 3.3 (Adversarial Manipulation), opening framework
+%% Requires: \usepackage{tabularx}
 
-\begin{table}[htbp]
+\begin{table*}[htbp]
 \centering
 \caption{Attack surface evolution ladder: formal characterization across three escalation dimensions.}
 \label{tab:ladder}
-\small
-\begin{tabular}{p{0.6cm}p{2.0cm}p{2.5cm}p{2.0cm}p{2.2cm}p{1.8cm}p{1.5cm}}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.92}
+\begin{tabularx}{\textwidth}{c l l l l c c}
 \toprule
-\textbf{Level} & \textbf{Attack Class} & \textbf{Attacker Access} & \textbf{Victim Agency} & \textbf{Impact Scope} & \textbf{First Documented} & \textbf{Defense Maturity} \\
+\textbf{Lvl} & \textbf{Attack Class} & \textbf{Attacker Access} & \textbf{Victim Agency} & \textbf{Impact Scope} & \textbf{Year} & \textbf{Defense} \\
 \midrule
 1 & Direct PI & Direct input & Passive output & Single output & 2022 & Low \\
-\addlinespace
 2 & Jailbreaking & Crafted input & Active instruction following & Session state & 2023 & Low \\
-\addlinespace
 3 & Indirect PI & Third-party content & Retrieval + execution & Persistent state & 2023 & Very low \\
-\addlinespace
-4 & Agentic exploit. & Tool chains, MCP servers & Autonomous multi-step & Cross-system cascade & 2024 & Very low \\
-\addlinespace
-\emph{5} & \emph{Multi-agent} & \emph{Inter-agent msgs} & \emph{Delegated autonomy} & \emph{Cross-org cascade} & \emph{2025 (emerging)} & \emph{None} \\
+4 & Agentic exploit. & Tool chains / MCP & Autonomous multi-step & Cross-system cascade & 2024 & Very low \\
+\emph{5} & \emph{Multi-agent} & \emph{Inter-agent msgs} & \emph{Delegated autonomy} & \emph{Cross-org cascade} & \emph{2025} & \emph{None} \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{tabularx}
+\end{table*}

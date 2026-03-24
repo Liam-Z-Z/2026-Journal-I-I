@@ -1,39 +1,23 @@
 %% Table 1: Capability--Threat Mapping (from §2)
-%% Label: tab:cap-threat
-%% Placement: Section 2 (Capabilities), after §2.4
+%% Requires: \usepackage{tabularx}
 
 \begin{table}[htbp]
 \centering
-\caption{Capability--threat mapping: how generative AI properties create security risks.}
+\caption{Mapping generative AI capabilities to security threats.}
 \label{tab:cap-threat}
-\small
-\begin{tabular}{p{3.2cm}p{4.2cm}p{5.5cm}}
+\tiny
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabularx}{\columnwidth}{l l X c}
 \toprule
-\textbf{Capability} & \textbf{Representative Systems} & \textbf{Threat Implications} \\
+\textbf{Capability} & \textbf{Enabling Property} & \textbf{Threat Vectors Enabled} & \textbf{\S} \\
 \midrule
-High-fidelity multi-modal generation &
-GPT-4/5, Claude, Gemini; SD3, DALL-E~3, Flux; VALL-E~2, F5-TTS; Sora, Veo~2, Kling &
-Detection difficulty: human accuracy $\sim$53--61\%; enables deepfake fraud, synthetic media at scale \\
-\addlinespace
-Low-cost scalable production &
-Llama~4 (open-weight); consumer GPUs; API pricing $<$\$0.30/M tokens &
-Attacker cost collapses; large-scale personalized attacks become economically trivial \\
-\addlinespace
-Controllability \& personalization &
-LoRA, ControlNet, IP-Adapter; voice cloning (3-sec samples); stylometric mimicry &
-Targeted identity cloning; multi-channel deception (email + voice + video) \\
-\addlinespace
-Advanced reasoning \& extended context &
-o1/o3, DeepSeek-R1; Gemini 1.5 Pro (1M), Llama~4 Scout (10M) &
-Multi-step attack planning; entire codebase comprehension; extended attack persistence \\
-\addlinespace
-Autonomous agency &
-Claude Code, Codex, Devin; Computer Use, Operator &
-Autonomous action execution: file R/W, shell commands, API calls, database access \\
-\addlinespace
-Standardized tool integration (MCP) &
-10,000+ MCP servers; adopted by Anthropic, OpenAI, Google, Microsoft &
-Universal attack surface via tool poisoning; supply chain vulnerabilities; cross-server composition attacks \\
+High-fidelity generation & Cross-modal human parity & Undetectable synthetic media; deepfake impersonation; evidence fabrication & \ref{sec:threat-deepfake} \\
+Low-cost production & Open weights; sub-\$0.30/M-token APIs & Automated phishing at scale; commodity malware generation & \ref{sec:threat-phishing} \\
+Controllability & Fine-tuning (LoRA); few-shot adaptation & Targeted identity cloning; stylometric forgery; personalized social engineering & \ref{sec:threat-ncii} \\
+Reasoning \& long context & Chain-of-thought; 1M+ token windows & Multi-step attack planning; codebase-aware exploitation & \ref{sec:threat-model} \\
+Autonomous agency & Tool invocation; multi-step execution & Autonomous system compromise; persistent unauthorized actions & \ref{sec:threat-ipi} \\
+Tool ecosystem (MCP) & Standardized agent--tool interface & Tool poisoning; cross-server composition attacks; supply chain exploitation & \ref{sec:threat-adversarial} \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}

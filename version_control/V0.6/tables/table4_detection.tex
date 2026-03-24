@@ -1,0 +1,85 @@
+%% Table 4: Representative AIGC Detection Methods
+%% Requires: \usepackage{booktabs, tabularx, multirow, xcolor}
+%% Preamble: \definecolor{rowgray}{gray}{0.93}
+
+\begin{table*}[htbp]
+\centering
+\caption{Representative AIGC detection methods across modalities.}
+\label{tab:detection}
+
+\fontsize{7}{7}\selectfont
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash}p{1.2cm}
+  >{\raggedright\arraybackslash}p{2.0cm}
+  >{\raggedright\arraybackslash}p{3.4cm}
+  >{\raggedright\arraybackslash}p{3.8cm}
+  >{\raggedright\arraybackslash}X
+}
+\toprule
+\textbf{Modality} & \textbf{Paradigm} & \textbf{Methods} & \textbf{Mechanism} & \textbf{Key Limitation} \\
+\midrule
+
+%% ---- Text: 2 rows (gray) ----
+\rowcolor{rowgray}
+\multirow{2}{*}{Text}
+  & Zero-shot
+  & DetectGPT~\cite{mitchell2023detectgpt}, Binoculars~\cite{hans2024binoculars}
+  & Probability curvature
+  & Requires generator access; paraphrase fragile \\[6pt]
+
+\rowcolor{rowgray}
+  & Supervised
+  & GPTZero~\cite{adam2026gptzero}, RADAR~\cite{hu2023radar}
+  & Encoder fine-tuning
+  & Cross-generator drop to $<$60\%~\cite{macko2023multitude} \\
+
+\addlinespace[2pt]
+\cmidrule(lr){1-5}
+\addlinespace[2pt]
+
+%% ---- Image: 3 rows (white) ----
+\multirow{3}{*}{Image}
+  & Frequency
+  & Spectral analysis
+  & GAN upsampling artifacts
+  & Mitigated by post-processing \\[6pt]
+
+  & Representation
+  & UnivFD~\cite{ojha2023univfd}, DIRE~\cite{wang2023dire}
+  & Feature-space classification
+  & GAN$\to$diffusion: 3.05\% accuracy \\[6pt]
+
+  & Reconstruction
+  & AEROBLADE~\cite{ricker2024aeroblade}
+  & Diffusion reconstruction error
+  & Computationally expensive \\
+
+\addlinespace[2pt]
+\cmidrule(lr){1-5}
+\addlinespace[2pt]
+
+%% ---- Audio: 1 row (gray) ----
+\rowcolor{rowgray}
+Audio
+  & Challenge-based
+  & ASVspoof~\cite{asvspoof2019,asvspoof2021}
+  & Spectral/prosodic features
+  & Codec artifacts confound detection \\
+
+\addlinespace[2pt]
+\cmidrule(lr){1-5}
+\addlinespace[2pt]
+
+%% ---- Video: 1 row (white) ----
+Video
+  & Temporal
+  & FaceForensics++~\cite{rossler2019faceforensics}
+  & Frame artifacts; physiological
+  & Sora-class: no face-swap artifacts \\
+
+\bottomrule
+\end{tabularx}
+\end{table*}
