@@ -36,7 +36,7 @@ The net effect is a dramatic worsening of cybersecurity's asymmetric economics: 
 \label{sec:cap-control}
 %% ------------------------------------------------------------
 
-Fine-grained control enables targeted rather than generic attacks. Lightweight adapters (LoRA~\cite{hu2022lora}) achieve identity consistency from 10--20 reference images, and voice cloning requires only 3--10 seconds of audio. Stylometric cloning is equally potent: MFA-trained experts \emph{preferred} AI-generated writing 62\% of the time over original authors~\cite{chi2026creative}. In 2025, over 57\% of detected phishing emails were sent from compromised accounts using AI-generated replies to ongoing threads, evading detection with correct cryptographic signatures and zero stylistic anomalies.
+Fine-grained control enables targeted rather than generic attacks. Lightweight adapters (LoRA~\cite{hu2022lora}) achieve identity consistency from 10--20 reference images, and voice cloning requires only 3--10 seconds of audio. Stylometric cloning is equally potent: MFA-trained experts \emph{preferred} AI-generated writing 62\% of the time over original authors. In 2025, over 57\% of detected phishing emails were sent from compromised accounts using AI-generated replies to ongoing threads, evading detection with correct cryptographic signatures and zero stylistic anomalies.
 
 
 %% ------------------------------------------------------------
@@ -49,7 +49,7 @@ The preceding subsections examined AI as a content producer. This subsection mar
 \subsubsection{Reasoning Models and Multi-Step Planning}
 \label{sec:cap-reasoning}
 
-Autonomous action presupposes multi-step reasoning. In September 2024, OpenAI released o1~\cite{openai2024o1}, scoring 74.4\% on the 2024 AIME versus GPT-4o's 12\%. The pace accelerated dramatically: o3 (April 2025) achieved 96.7\% on AIME and 71.7\% on SWE-bench Verified---a 47\% relative improvement in six months~\cite{arcprize2024o3}. Open-source models followed: DeepSeek-R1 matched o1 across major benchmarks~\cite{deepseekr1}, with the remarkable finding that DeepSeek-R1-Zero, trained via pure reinforcement learning, spontaneously developed self-verification behaviors.
+Autonomous action presupposes multi-step reasoning. In September 2024, OpenAI released o1, scoring 74.4\% on the 2024 AIME versus GPT-4o's 12\%. The pace accelerated dramatically: o3 (April 2025) achieved 96.7\% on AIME and 71.7\% on SWE-bench Verified---a 47\% relative improvement in six months. Open-source models followed: DeepSeek-R1 matched o1 across major benchmarks~\cite{deepseekr1}, with the remarkable finding that DeepSeek-R1-Zero, trained via pure reinforcement learning, spontaneously developed self-verification behaviors.
 
 The security implications are direct: a model that can decompose ``exfiltrate database credentials from this codebase'' into a sequence of file searches, pattern matching, and network requests---and execute that plan step by step---poses qualitatively different risks---content-generation risks produce outputs that can be deleted or corrected, while action-execution risks produce potentially irreversible real-world state changes (financial transactions, credential exfiltration, code execution).
 
@@ -57,15 +57,15 @@ The security implications are direct: a model that can decompose ``exfiltrate da
 \subsubsection{AI Agents: From Text Generators to Autonomous Actors}
 \label{sec:cap-agents}
 
-The research prototypes of 2023 have become production systems at scale. \textbf{Coding agents}---Claude Code (\$1B annualized revenue within six months), OpenAI Codex, Google Jules, and Devin~\cite{cognition2024devin}---autonomously read codebases, edit files, execute shell commands, and create pull requests. \textbf{Browser and computer-use agents}---Computer Use~\cite{anthropic2024computeruse}, Operator (58.1\% on WebArena~\cite{zhou2023webarena})---interact with GUIs via simulated mouse and keyboard. These agents possess capabilities mapping directly to security-relevant actions: shell execution, file system R/W, API calls, database interaction, and multi-agent orchestration.
+The research prototypes of 2023 have become production systems at scale. \textbf{Coding agents}---Claude Code (\$1B annualized revenue within six months), OpenAI Codex, Google Jules, and Devin---autonomously read codebases, edit files, execute shell commands, and create pull requests. \textbf{Browser and computer-use agents}---Computer Use~\cite{anthropic2024computeruse}, Operator (58.1\% on WebArena)---interact with GUIs via simulated mouse and keyboard. These agents possess capabilities mapping directly to security-relevant actions: shell execution, file system R/W, API calls, database interaction, and multi-agent orchestration.
 
-Agent benchmarks quantify both capability and vulnerability. SWE-bench Verified scores have risen from under 5\% in early 2024 to over 70\% by early 2026~\cite{jimenez2024swebench}. OSWorld~\cite{xie2024osworld} reports best models at 12.24\% versus human 72.36\%, while AgentBench~\cite{liu2024agentbench} evaluates across eight environments.
+Agent benchmarks quantify both capability and vulnerability. SWE-bench Verified scores have risen from under 5\% in early 2024 to over 70\% by early 2026. OSWorld reports best models at 12.24\% versus human 72.36\%, while AgentBench evaluates across eight environments.
 
 
 \subsubsection{Long Context as an Enabler of Agency}
 \label{sec:cap-context}
 
-Context windows have expanded by two orders of magnitude in under two years: from GPT-4's 8,192 tokens (March 2023) to Gemini~1.5 Pro's 1M tokens with $>$99.7\% recall~\cite{gemini15} and Llama~4 Scout's 10M tokens. For agentic systems, long context serves as expanded working memory---coding agents load entire codebases, browser agents maintain extended interaction histories---making agents far more capable of executing sophisticated, multi-step attack sequences~\cite{anthropic2024effective}.
+Context windows have expanded by two orders of magnitude in under two years: from GPT-4's 8,192 tokens (March 2023) to Gemini~1.5 Pro's 1M tokens with $>$99.7\% recall and Llama~4 Scout's 10M tokens. For agentic systems, long context serves as expanded working memory---coding agents load entire codebases, browser agents maintain extended interaction histories---making agents far more capable of executing sophisticated, multi-step attack sequences~\cite{anthropic2024effective}.
 
 
 \subsubsection{The MCP Ecosystem: Standardizing the Agent--Tool Interface}
@@ -85,7 +85,7 @@ The convergence of reasoning, agency, long context, and standardized tool access
 
 Indirect prompt injection~\cite{greshake2023ipi}---originally demonstrated in chatbot contexts---becomes qualitatively more dangerous in agentic settings, where adversarial instructions in retrieved documents trigger autonomous actions rather than merely producing misleading text (Section~\ref{sec:threat-adversarial}).
 
-Real-world incidents confirm the threat. CVE-2025-32711 (``EchoLeak''), a zero-click CVSS~9.3 vulnerability in Microsoft~365 Copilot, enabled silent exfiltration of API keys. CVE-2025-53773 (CVSS~9.6) demonstrated RCE in GitHub Copilot. The Gray Swan Arena challenge produced 62,000 breaches across 1.8~million attempts---\emph{every model was jailbroken}~\cite{grayswan2025arena}. Industry surveys indicate that the majority of organizations plan to deploy agentic AI despite low confidence in their ability to secure it~\cite{cisco2026aisecurity}.
+Real-world incidents confirm the threat. CVE-2025-32711 (``EchoLeak''), a zero-click CVSS~9.3 vulnerability in Microsoft~365 Copilot, enabled silent exfiltration of API keys. CVE-2025-53773 (CVSS~9.6) demonstrated RCE in GitHub Copilot. The Gray Swan Arena challenge produced 62,000 breaches across 1.8~million attempts---\emph{every model was jailbroken}. Industry surveys indicate that the majority of organizations plan to deploy agentic AI despite low confidence in their ability to secure it~\cite{cisco2026aisecurity}.
 
 Three observations merit emphasis. First, the attack surface is no longer the model but the \emph{environment}. Second, the inverse scaling problem~\cite{wang2025mcptox} suggests capability improvements may actively exacerbate security risks. Third, decades of access control research may be applicable (Section~\ref{sec:threat-pi}), but LLM non-determinism introduces fundamental new challenges for traditional authorization frameworks. This subsection has introduced the capability foundations that enable agentic threats; the specific attack vectors, empirical success rates, and the MCP vulnerability landscape are analyzed in detail in Section~\ref{sec:threat-adversarial}.
 

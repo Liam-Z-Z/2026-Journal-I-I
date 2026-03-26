@@ -89,7 +89,7 @@
 视觉结构（从下到上）：
 
                                     ┌──────────────────┐
-                                    │  2025 (emerging)  │
+                                    │  2025   │
                                     │  Multi-agent      │
                                     │  ▪ Inter-agent    │
                               ┌─────┤    trust exploit  │

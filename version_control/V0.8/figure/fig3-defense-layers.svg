@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 500"
+     font-family="Inter, Helvetica Neue, Arial, sans-serif">
+
+  <!--
+    Color strategy: 4 distinct cool hues on color wheel arc (blue→cyan→indigo→purple)
+    Each defense domain gets its own hue for instant identification.
+    All cool-toned to contrast with warm attack colors in Fig 1/2.
+  -->
+
+  <rect width="1080" height="500" fill="#FFFFFF"/>
+  <text x="490" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="#1A1A1A">Layered Defense Architecture</text>
+
+  <!-- Maturity axis -->
+  <g transform="translate(1050, 48)">
+    <line x1="0" y1="0" x2="0" y2="410" stroke="#E0E0E0" stroke-width="2"/>
+    <polygon points="-5,0 5,0 0,-8" fill="#BDBDBD"/>
+    <text x="0" y="-12" text-anchor="middle" font-size="11" fill="#9E9E9E">Mature</text>
+    <polygon points="-5,410 5,410 0,418" fill="#BDBDBD"/>
+    <text x="0" y="432" text-anchor="middle" font-size="11" fill="#9E9E9E">Nascent</text>
+  </g>
+
+  <!-- ── Layer 1: Detection [Established] — BLUE ── -->
+  <g transform="translate(20, 44)">
+    <rect width="960" height="80" rx="8" fill="#BBDEFB" stroke="#1565C0" stroke-width="2"/>
+    <text x="14" y="22" font-size="15" font-weight="700" fill="#0D47A1">Layer 1: Detection &amp; Provenance</text>
+    <rect x="838" y="4" width="110" height="22" rx="11" fill="#4CAF50"/>
+    <text x="893" y="19" text-anchor="middle" font-size="11" font-weight="600" fill="#FFF">Established</text>
+    <g transform="translate(14, 34)">
+      <rect width="120" height="36" rx="6" fill="#FFF" stroke="#90CAF9" stroke-width="1.5"/>
+      <text x="60" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#0D47A1">DetectGPT</text>
+      <rect x="128" width="120" height="36" rx="6" fill="#FFF" stroke="#90CAF9" stroke-width="1.5"/>
+      <text x="188" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#0D47A1">Binoculars</text>
+      <rect x="256" width="120" height="36" rx="6" fill="#FFF" stroke="#90CAF9" stroke-width="1.5"/>
+      <text x="316" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#0D47A1">UnivFD</text>
+      <rect x="384" width="120" height="36" rx="6" fill="#FFF" stroke="#90CAF9" stroke-width="1.5"/>
+      <text x="444" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#0D47A1">DIRE</text>
+      <rect x="512" width="120" height="36" rx="6" fill="#FFF" stroke="#90CAF9" stroke-width="1.5"/>
+      <text x="572" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#0D47A1">ASVspoof</text>
+      <rect x="640" width="120" height="36" rx="6" fill="#FFF" stroke="#90CAF9" stroke-width="1.5"/>
+      <text x="700" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#0D47A1">C2PA v2.2</text>
+      <rect x="768" width="120" height="36" rx="6" fill="#FFF" stroke="#90CAF9" stroke-width="1.5"/>
+      <text x="828" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#0D47A1">SynthID</text>
+    </g>
+  </g>
+
+  <!-- ── Layer 2: Watermarking [Developing] — TEAL/CYAN ── -->
+  <g transform="translate(20, 132)">
+    <rect width="960" height="80" rx="8" fill="#B2EBF2" stroke="#00838F" stroke-width="2"/>
+    <text x="14" y="22" font-size="15" font-weight="700" fill="#004D40">Layer 2: Watermarking</text>
+    <rect x="838" y="4" width="110" height="22" rx="11" fill="#FF9800"/>
+    <text x="893" y="19" text-anchor="middle" font-size="11" font-weight="600" fill="#FFF">Developing</text>
+    <g transform="translate(14, 34)">
+      <rect width="120" height="36" rx="6" fill="#FFF" stroke="#80CBC4" stroke-width="1.5"/>
+      <text x="60" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#004D40">KGW</text>
+      <rect x="128" width="120" height="36" rx="6" fill="#FFF" stroke="#80CBC4" stroke-width="1.5"/>
+      <text x="188" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#004D40">SemStamp</text>
+      <rect x="256" width="120" height="36" rx="6" fill="#FFF" stroke="#80CBC4" stroke-width="1.5"/>
+      <text x="316" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#004D40">Tree-Ring</text>
+      <rect x="384" width="120" height="36" rx="6" fill="#FFF" stroke="#80CBC4" stroke-width="1.5"/>
+      <text x="444" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#004D40">StegaStamp</text>
+      <rect x="512" width="150" height="36" rx="6" fill="#FFF" stroke="#80CBC4" stroke-width="1.5"/>
+      <text x="587" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#004D40">SynthID-Image</text>
+    </g>
+  </g>
+
+  <!-- ── Layer 3: Alignment [Developing] — INDIGO ── -->
+  <g transform="translate(20, 220)">
+    <rect width="960" height="80" rx="8" fill="#C5CAE9" stroke="#283593" stroke-width="2"/>
+    <text x="14" y="22" font-size="15" font-weight="700" fill="#1A237E">Layer 3: Alignment &amp; Adversarial Defense</text>
+    <rect x="838" y="4" width="110" height="22" rx="11" fill="#FF9800"/>
+    <text x="893" y="19" text-anchor="middle" font-size="11" font-weight="600" fill="#FFF">Developing</text>
+    <g transform="translate(14, 34)">
+      <rect width="120" height="36" rx="6" fill="#FFF" stroke="#9FA8DA" stroke-width="1.5"/>
+      <text x="60" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#1A237E">RLHF/DPO</text>
+      <rect x="128" width="120" height="36" rx="6" fill="#FFF" stroke="#9FA8DA" stroke-width="1.5"/>
+      <text x="188" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#1A237E">KTO/SimPO</text>
+      <rect x="256" width="145" height="36" rx="6" fill="#FFF" stroke="#9FA8DA" stroke-width="1.5"/>
+      <text x="328" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#1A237E">Circuit Breakers</text>
+      <rect x="409" width="130" height="36" rx="6" fill="#FFF" stroke="#9FA8DA" stroke-width="1.5"/>
+      <text x="474" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#1A237E">Llama Guard</text>
+      <rect x="547" width="130" height="36" rx="6" fill="#FFF" stroke="#9FA8DA" stroke-width="1.5"/>
+      <text x="612" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#1A237E">SmoothLLM</text>
+      <rect x="685" width="120" height="36" rx="6" fill="#FFF" stroke="#9FA8DA" stroke-width="1.5"/>
+      <text x="745" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#1A237E">StruQ</text>
+    </g>
+  </g>
+
+  <!-- ── Layer 4: Agentic Security [Nascent] — DEEP PURPLE, highlighted ── -->
+  <g transform="translate(20, 308)">
+    <rect width="960" height="80" rx="8" fill="#D1C4E9" stroke="#4527A0" stroke-width="3"/>
+    <text x="14" y="22" font-size="15" font-weight="800" fill="#311B92">Layer 4: Agentic Security</text>
+    <rect x="848" y="4" width="100" height="22" rx="11" fill="#F44336"/>
+    <text x="898" y="19" text-anchor="middle" font-size="11" font-weight="600" fill="#FFF">Nascent</text>
+    <g transform="translate(14, 34)">
+      <rect width="120" height="36" rx="6" fill="#FFF" stroke="#B39DDB" stroke-width="1.8"/>
+      <text x="60" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#311B92">ETDI</text>
+      <rect x="128" width="120" height="36" rx="6" fill="#FFF" stroke="#B39DDB" stroke-width="1.8"/>
+      <text x="188" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#311B92">OAuth 2.1</text>
+      <rect x="256" width="120" height="36" rx="6" fill="#FFF" stroke="#B39DDB" stroke-width="1.8"/>
+      <text x="316" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#311B92">AgentSpec</text>
+      <rect x="384" width="120" height="36" rx="6" fill="#FFF" stroke="#B39DDB" stroke-width="1.8"/>
+      <text x="444" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#311B92">Pro2Guard</text>
+      <rect x="512" width="120" height="36" rx="6" fill="#FFF" stroke="#B39DDB" stroke-width="1.8"/>
+      <text x="572" y="23" text-anchor="middle" font-size="13" font-weight="500" fill="#311B92">Progent</text>
+    </g>
+  </g>
+
+  <!-- Dashed separator -->
+  <line x1="20" y1="398" x2="980" y2="398" stroke="#9E9E9E" stroke-width="2" stroke-dasharray="8 4"/>
+
+  <!-- ── Governance [Fragmented] — GRAY ── -->
+  <g transform="translate(20, 408)">
+    <rect width="960" height="64" rx="8" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="2" stroke-dasharray="8 4"/>
+    <text x="14" y="22" font-size="15" font-weight="700" fill="#616161">Cross-cutting: Governance &amp; Standards</text>
+    <rect x="838" y="4" width="110" height="22" rx="11" fill="#9E9E9E"/>
+    <text x="893" y="19" text-anchor="middle" font-size="11" font-weight="600" fill="#FFF">Fragmented</text>
+    <g transform="translate(14, 32)">
+      <rect width="120" height="26" rx="6" fill="#FFF" stroke="#BDBDBD" stroke-width="1.5"/>
+      <text x="60" y="19" text-anchor="middle" font-size="13" font-weight="500" fill="#616161">EU AI Act</text>
+      <rect x="128" width="130" height="26" rx="6" fill="#FFF" stroke="#BDBDBD" stroke-width="1.5"/>
+      <text x="193" y="19" text-anchor="middle" font-size="13" font-weight="500" fill="#616161">NIST AI RMF</text>
+      <rect x="266" width="120" height="26" rx="6" fill="#FFF" stroke="#BDBDBD" stroke-width="1.5"/>
+      <text x="326" y="19" text-anchor="middle" font-size="13" font-weight="500" fill="#616161">IMDA</text>
+    </g>
+  </g>
+
+</svg>
