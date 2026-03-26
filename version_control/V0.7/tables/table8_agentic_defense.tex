@@ -1,0 +1,73 @@
+%% Table 8: Agentic AI Defense Landscape (§4.3.3)
+%% Requires: \usepackage{booktabs, xcolor}
+%% Preamble: \definecolor{rowgray}{gray}{0.93}
+
+\begin{table*}[htbp]
+\centering
+\caption{Emerging defenses for agentic AI systems.}
+\label{tab:agentic-defense}
+
+\fontsize{7}{9}\selectfont
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{l l l l l}
+\toprule
+\textbf{Category} & \textbf{Defense} & \textbf{Mechanism} & \textbf{Target Threat} & \textbf{Status} \\
+\midrule
+
+\rowcolor{rowgray}
+Architecture
+  & Gemini multi-layer~\cite{google2025geminidefense}
+  & Origin sets + alignment critics
+  & IPI, tool abuse
+  & Production \\
+
+Architecture
+  & Instruction hierarchy~\cite{wallace2024hierarchy}
+  & System $>$ user $>$ tool priority
+  & Privilege confusion
+  & Research \\
+
+\rowcolor{rowgray}
+Protocol
+  & OAuth 2.1 + PKCE~\cite{mcpspec2025}
+  & Authentication retrofit
+  & Unauthorized access
+  & Deployed (MCP) \\
+
+Protocol
+  & ETDI~\cite{bhatt2025etdi}
+  & Cryptographic tool signing
+  & Tool poisoning
+  & Proposed \\
+
+\rowcolor{rowgray}
+Runtime
+  & AgentSpec~\cite{wang2025agentspec}
+  & DSL constraint enforcement
+  & Unsafe code execution
+  & Research \\
+
+Runtime
+  & Pro2Guard~\cite{pro2guard2025}
+  & Probabilistic model checking
+  & Pre-violation detection
+  & Research \\
+
+\rowcolor{rowgray}
+Runtime
+  & Progent~\cite{shi2025progent}
+  & Programmable privilege control
+  & Excessive permissions
+  & Research \\
+
+Governance
+  & IMDA framework~\cite{imda2026agentic}
+  & Agent-specific risk tiers
+  & Regulatory gap
+  & Published \\
+
+\bottomrule
+\end{tabular}
+\end{table*}

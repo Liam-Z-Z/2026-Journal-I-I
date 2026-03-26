@@ -1,0 +1,49 @@
+%% Table 7: Jailbreak Attack Mechanism Comparison (§3.3.2)
+%% Requires: \usepackage{booktabs, xcolor}
+%% Preamble: \definecolor{rowgray}{gray}{0.93}
+
+\begin{table*}[htbp]
+\centering
+\caption{Jailbreak attack mechanisms compared.}
+\label{tab:jailbreak}
+
+\fontsize{7}{9}\selectfont
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{l l l l}
+\toprule
+\textbf{Category} & \textbf{Representative Methods} & \textbf{Peak ASR} & \textbf{Cross-overlap} \\
+\midrule
+
+\rowcolor{rowgray}
+Template-based
+  & DAN~\cite{zhang2024dananything}, AutoDAN~\cite{liu2024autodan}
+  & $\geq$0.95 on GPT-3.5/4
+  & Optimization (AutoDAN) \\
+
+Multi-turn
+  & Crescendo~\cite{russinovich2025crescendo}, many-shot~\cite{anil2024manyshot}
+  & $>$70\% on HarmBench
+  & Template (role escalation) \\
+
+\rowcolor{rowgray}
+Optimization-based
+  & GCG~\cite{zou2023gcg}, PAIR~\cite{chao2024pair}, GPTFuzzer~\cite{yu2023gptfuzzer}
+  & 88\% (GCG, Vicuna-7B)
+  & Template (seed mutation) \\
+
+Multi-modal
+  & FigStep~\cite{gong2025figstep}, HADES~\cite{li2024hades}, AudioJailbreak~\cite{chen2025audiojailbreak}
+  & 90.3\% (HADES, LLaVA)
+  & Encoding (modality shift) \\
+
+\rowcolor{rowgray}
+Encoding-based
+  & CipherChat~\cite{yuan2024cipherchat}, ArtPrompt~\cite{jiang2024artprompt}
+  & $\sim$100\% (cipher, GPT-4)
+  & Multi-modal (representation) \\
+
+\bottomrule
+\end{tabular}
+\end{table*}

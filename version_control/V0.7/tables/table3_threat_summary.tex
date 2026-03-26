@@ -1,0 +1,56 @@
+%% Table 3: Threat Landscape Summary
+%% Requires: \usepackage{booktabs, multirow, xcolor}
+%% Preamble: \definecolor{rowgray}{gray}{0.93}
+
+\begin{table*}[htbp]
+\centering
+\caption{Threat landscape summary.}
+\label{tab:threat-summary}
+\fontsize{7}{9}\selectfont
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{l  l l c}          % <-- 加竖线
+\toprule
+\textbf{Category} & \textbf{Threat} & \textbf{Key Metric} & \textbf{\S} \\
+\midrule
+%% ---- Content weaponization: 2 rows ----
+\multirow{2}{*}{Content weaponization}
+  & \cellcolor{rowgray}Phishing \& malware
+  & \cellcolor{rowgray}82.6\% AI-generated~\cite{knowbe4_2025}
+  & \cellcolor{rowgray}\ref{sec:threat-phishing} \\
+  & Non-consensual imagery
+  & 440K reports in H1 2025~\cite{ncmec2025}
+  & \ref{sec:threat-ncii} \\
+\midrule                              % <-- 分类横线
+%% ---- Model-level attacks: 3 rows ----
+\multirow{3}{*}{Model-level attacks}
+  & \cellcolor{rowgray}Data poisoning
+  & \cellcolor{rowgray}250 samples suffice~\cite{souly2025poisoning}
+  & \cellcolor{rowgray}\ref{sec:threat-poisoning} \\
+  & Backdoors
+  & $>$90\% ASR~\cite{xu2024instructions}
+  & \ref{sec:threat-backdoor} \\
+  & \cellcolor{rowgray}Supply chain
+  & \cellcolor{rowgray}$<$\$200 to remove safety~\cite{gade2023badllama}
+  & \cellcolor{rowgray}\ref{sec:threat-supplychain} \\
+\midrule                              % <-- 分类横线
+%% ---- Adversarial manipulation: 2 rows ----
+\multirow{2}{*}{Adversarial manipulation}
+  & PI \& jailbreaks
+  & $\sim$50\% ASR in 10 tries~\cite{aisafetyreport2025}
+  & \ref{sec:threat-pi} \\
+  & \cellcolor{rowgray}Agentic exploitation
+  & \cellcolor{rowgray}72.8\% tool poisoning ASR~\cite{wang2025mcptox}
+  & \cellcolor{rowgray}\ref{sec:threat-ipi} \\
+\midrule                              % <-- 分类横线
+%% ---- Misinfo & deepfakes: 2 rows ----
+\multirow{2}{*}{Misinfo \& deepfakes}
+  & Deepfake fraud
+  & \$25M single incident~\cite{wef2025arup}
+  & \ref{sec:threat-deepfake} \\
+  & \cellcolor{rowgray}Info operations
+  & \cellcolor{rowgray}Higher credibility than human~\cite{spitale2023gpt3}
+  & \cellcolor{rowgray}\ref{sec:threat-infoop} \\
+\bottomrule
+\end{tabular}
+\end{table*}

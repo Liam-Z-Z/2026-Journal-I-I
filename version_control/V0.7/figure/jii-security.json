@@ -1,0 +1,76 @@
+{
+  "name": "JII AIGC Security Survey",
+  "description": "Semantic palette for AIGC security figures: threat escalation levels, taxonomy categories, defense layers, timeline tracks, and maturity badges.",
+
+  "background": "#FFFFFF",
+
+  "typography": {
+    "primary": "#1A1A1A",
+    "secondary": "#4A4A4A",
+    "caption": "#8C8C8C",
+    "title_size": 14,
+    "title_weight": 500,
+    "body_size": 12,
+    "body_weight": 400,
+    "caption_size": 10
+  },
+
+  "levels": {
+    "_comment": "Attack surface escalation levels (Fig1). Green→Orange→Red→Purple→DarkGray = increasing severity.",
+    "L1_direct_pi":   { "fill": "#E3F2FD", "stroke": "#1E88E5", "text": "#0D47A1" },
+    "L2_jailbreak":   { "fill": "#E8F5E9", "stroke": "#43A047", "text": "#1B5E20" },
+    "L3_indirect_pi": { "fill": "#FFFDE7", "stroke": "#F9A825", "text": "#F57F17" },
+    "L4_agentic":     { "fill": "#FFF3E0", "stroke": "#EF6C00", "text": "#E65100" },
+    "L5_multiagent":  { "fill": "#FFCDD2", "stroke": "#C62828", "text": "#B71C1C" }
+  },
+
+  "taxonomy": {
+    "_comment": "Threat taxonomy categories (Fig2). Four major branches.",
+    "content_weaponization": { "fill": "#E3F2FD", "stroke": "#1E88E5", "text": "#0D47A1" },
+    "model_attacks":         { "fill": "#E8F5E9", "stroke": "#43A047", "text": "#1B5E20" },
+    "adversarial":           { "fill": "#FFF3E0", "stroke": "#EF6C00", "text": "#BF360C" },
+    "misinfo_deepfakes":     { "fill": "#FFEBEE", "stroke": "#E53935", "text": "#B71C1C" },
+    "root":                  { "fill": "#F5F5F5", "stroke": "#9E9E9E", "text": "#424242" }
+  },
+
+  "defense": {
+    "_comment": "Defense layer colors (Fig3). Top=most mature, bottom=nascent.",
+    "detection":   { "fill": "#BBDEFB", "stroke": "#1565C0", "text": "#0D47A1" },
+    "watermark":   { "fill": "#B2EBF2", "stroke": "#00838F", "text": "#004D40" },
+    "alignment":   { "fill": "#C5CAE9", "stroke": "#283593", "text": "#1A237E" },
+    "agentic_sec": { "fill": "#D1C4E9", "stroke": "#4527A0", "text": "#311B92" },
+    "governance":  { "fill": "#F5F5F5", "stroke": "#9E9E9E", "text": "#616161" }
+  },
+
+  "badges": {
+    "_comment": "Maturity badge colors (Fig3).",
+    "established": { "fill": "#4CAF50", "text": "#FFFFFF" },
+    "developing":  { "fill": "#FF9800", "text": "#FFFFFF" },
+    "nascent":     { "fill": "#F44336", "text": "#FFFFFF" },
+    "fragmented":  { "fill": "#9E9E9E", "text": "#FFFFFF" }
+  },
+
+  "timeline": {
+    "_comment": "Three-track timeline colors (Fig4).",
+    "capability": { "stroke": "#2196F3", "fill": "#BBDEFB", "text": "#0D47A1" },
+    "defense":    { "stroke": "#4CAF50", "fill": "#C8E6C9", "text": "#1B5E20" },
+    "governance": { "stroke": "#FF9800", "fill": "#FFE0B2", "text": "#E65100" }
+  },
+
+  "accents": {
+    "gap_arc":        "#E53935",
+    "star_highlight":  "#AB47BC",
+    "gap_arc_text":    "#B71C1C"
+  },
+
+  "connectors": {
+    "forward":    { "stroke": "#616161", "width": 1.5 },
+    "tree_line":  { "stroke": "#BDBDBD", "width": 1.2 },
+    "cross_track": { "stroke": "#9E9E9E", "width": 1.0, "dasharray": "4 3" },
+    "dashed":     { "stroke": "#BDBDBD", "width": 0.5, "dasharray": "8 4" }
+  },
+
+  "containers": {
+    "region": { "fill": "none", "stroke": "#BDBDBD", "dasharray": "8 4", "rx": 6 }
+  }
+}

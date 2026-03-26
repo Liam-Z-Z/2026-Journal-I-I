@@ -1,0 +1,154 @@
+%% ============================================================
+%% Section 3: Threat Landscape of AIGC (V0.2)
+%% Target: ~3,600 words
+%% Changes from V0.1: §3.1 compressed (-200), §3.2 compressed (-150),
+%%   §3.3 PRESERVED (blue ocean), §3.4 compressed (-300),
+%%   §3.5 compressed (-150), cross-refs updated for §4/§5 swap,
+%%   duplicates removed (OWASP #1 kept here, Arup canonical here)
+%% ============================================================
+
+\section{Threat Landscape of AIGC}
+\label{sec:threats}
+
+The capabilities described in Section~\ref{sec:capabilities} have given rise to a threat landscape spanning content fabrication, model compromise, adversarial manipulation, large-scale disinformation, and systemic societal harms. This section presents a structured taxonomy of these threats. Defense solutions are presented in Section~\ref{sec:countermeasures} and governance mechanisms in Section~\ref{sec:governance}.
+
+\emph{A note on data sources.} Several quantitative claims in this section originate from industry reports (KnowBe4, Equixly, Sumsub, CrowdStrike) whose methodologies are not publicly disclosed. We report these figures as industry estimates, note methodological caveats at each citation, and encourage readers to interpret them as indicative of trends rather than precise measurements. Where peer-reviewed sources are available, they are preferred.
+
+
+%% ------------------------------------------------------------
+\subsection{Content Weaponization}
+\label{sec:threat-weapon}
+%% ------------------------------------------------------------
+
+\subsubsection{Malicious Content Generation}
+\label{sec:threat-phishing}
+
+Generative AI has eliminated the traditional trade-off between attack volume and personalization quality. An estimated 82.6\% of phishing emails in 2025 were AI-generated according to industry analysis (KnowBe4; methodological details not publicly available), a 53.5\% year-over-year increase~\cite{knowbe4_2025}. AI reduces campaign costs by approximately 95\% while achieving click-through rates more than four times higher than manually crafted lures~\cite{slashnext2025}. A longitudinal study deploying 70,000 AI-generated phishing simulations found that by March 2025, AI agents surpassed elite human red teams across all user skill levels~\cite{hoxhunt2025}.
+
+Beyond phishing, LLMs enable evasive malware with dramatically lowered barriers. Censored-model evasion through ``micro-behavior'' decomposition achieved a 20\% success rate for functional payloads registering \textbf{0\% detection rate} across 55--70 commercial antivirus engines~\cite{mdpi2025malware}. Polymorphic malware leveraging LLMs for continuous self-rewriting has further undermined signature-based detection~\cite{crowdstrike2025ransomware}. An underground Cybercrime-as-a-Service ecosystem---WormGPT (\euro60--100/month), FraudGPT (\$90--200/month), GhostGPT (Telegram-based)---provides frictionless malicious content generation, democratizing cybercrime by eliminating the need for programming or linguistic expertise~\cite{levelblue2023wormgpt,elpaccto2026}.
+
+
+\subsubsection{Non-Consensual Synthetic Content}
+\label{sec:threat-ncii}
+
+The most severe sociological consequence of generative AI is the exponential rise in Non-Consensual Intimate Imagery (NCII). NCMEC documented a 1,325\% increase in generative-AI-related reports during 2024, escalating to 440,419 reports in H1~2025---compared to 6,835 in the same period of 2024~\cite{ncmec2025}. The harm is profoundly gendered: synthetic NCII affects an estimated 1.42\% of the UK adult female population annually~\cite{swgfl2025}. For minors, at least 36 teenage boys have died by suicide as a direct result of AI-driven sextortion since 2021~\cite{ncmec2025}. Legislative responses include the U.S.\ ``Take It Down Act'' (May 2025)~\cite{takeitdown2025} and strengthened California deepfake laws~\cite{calmatters2026deepfake}.
+
+
+%% ------------------------------------------------------------
+\subsection{Model-Level Attacks}
+\label{sec:threat-model}
+%% ------------------------------------------------------------
+
+Model-level attacks target the training pipeline, model artifacts, or inference interface to compromise the model itself.
+
+\subsubsection{Data Poisoning}
+\label{sec:threat-poisoning}
+
+A critical finding is that poisoning efficacy depends on the \emph{absolute number} of poison samples, not the poisoning rate: as few as \textbf{250 malicious documents} suffice to backdoor models from 600M to 13B parameters~\cite{souly2025poisoning}---highlighted in the 2025 International AI Safety Report~\cite{aisafetyreport2025} as undermining the intuition that scaling datasets dilutes poisoning risk. Web-scale poisoning is practical: split-view and frontrunning attacks can poison 0.01\% of LAION-400M for approximately \$60~\cite{carlini2024poisoning}. PoisonedRAG achieves $>$90\% ASR by injecting five malicious documents into a RAG knowledge base~\cite{zou2025poisonedrag}.
+
+\subsubsection{Backdoor Attacks}
+\label{sec:threat-backdoor}
+
+Backdoors specify a (trigger $\to$ payload) mapping where the model behaves normally on clean inputs but exhibits attacker-chosen behavior on triggered inputs. Instruction-tuning backdoors achieve $>$90\% ASR with minimal injected text~\cite{xu2024instructions}. RLHF poisoning creates universal jailbreak backdoors~\cite{rando2024rlhfbackdoor}. ``Sleeper agents'' persist through safety training via conditional deception~\cite{hubinger2024sleeper}. For diffusion models, BadDiffusion implants training-time backdoors preserving normal generation quality~\cite{chou2023baddiffusion}.
+
+\subsubsection{Model Extraction and Supply Chain}
+\label{sec:threat-supplychain}
+
+Model stealing produces surrogates matching target behavior through API queries~\cite{tramer2016stealing}, threatening proprietary deployment economics. The open-weight model supply chain presents a distinct and growing attack surface. Malicious model weights on public hubs exploit pickle serialization for RCE---the ``nullifAI'' incident demonstrated this on Hugging Face~\cite{reversinglabs2025nullifai}. The SafeTensors format~\cite{safetensors2023} mitigates serialization attacks but does not address malicious model behavior. Safety fine-tuning removal costs $<$\$200 (BadLlama~\cite{gade2023badllama}); 100 malicious examples and $\sim$1 GPU hour subvert safety-aligned models (Shadow Alignment~\cite{yang2023shadow}); even 10 adversarial fine-tuning examples jailbreak GPT-3.5 Turbo~\cite{qi2024finetuning}. Hugging Face has introduced model signing and automated vulnerability scanning~\cite{hf2024security}, but adoption remains limited and no standardized model integrity verification protocol exists across platforms.
+
+
+%% ------------------------------------------------------------
+\subsection{Adversarial Manipulation: From Prompt Injection  to Agentic Exploitation}
+\label{sec:threat-adversarial}
+%% ------------------------------------------------------------
+
+%% *** BLUE OCEAN — PRESERVED IN FULL ***
+
+This subsection presents an \emph{attack surface evolution ladder} that characterizes the escalation from direct prompt attacks on chatbots to ecosystem-level exploitation of autonomous agents. We organize this evolution as a chronological progression defined by three escalation dimensions (Table~\ref{tab:ladder}):
+\begin{itemize}[nosep,leftmargin=1.5em]
+    \item \textbf{Attacker access requirements:} direct model input $\to$ crafted adversarial input $\to$ third-party content (documents, web pages) $\to$ cross-system tool chains and server descriptions.
+    \item \textbf{Victim agency:} passive content consumption $\to$ active instruction following $\to$ autonomous multi-step execution with tool permissions.
+    \item \textbf{Impact scope:} single output manipulation $\to$ session-level state corruption $\to$ persistent system state changes (file writes, API calls) $\to$ cross-system cascading effects.
+\end{itemize}
+Each level \emph{subsumes} the attack capabilities of all lower levels while introducing qualitatively new threat vectors that existing defenses at lower levels cannot address. The most recent escalation---multi-agent exploitation across organizational trust boundaries---is documented in 2025--2026 literature, with inter-agent trust exploitation achieving 82.4\% ASR~\cite{darkside2025agents} and $\sim$1,700 threats identified across twelve risk domains~\cite{multiagent2026threats}.
+
+\input{tables/table2_ladder}
+
+\subsubsection{Prompt Injection}
+\label{sec:threat-pi}
+
+Direct prompt injection embeds malicious instructions in user-controlled input to override system instructions~\cite{perez2022ignore}. Two canonical subtypes are \emph{goal hijacking} (redirecting the application's task) and \emph{prompt leaking} (exfiltrating hidden instructions)~\cite{perez2022ignore}. The attack exploits a fundamental architectural property: LLM applications intermix instructions and data in a single context window with no cryptographically enforced separation---a ``confused deputy'' problem where the model resolves conflicting instructions via learned heuristics rather than hard constraints~\cite{greshake2023ipi}.
+
+The critical distinction from jailbreaking is in the \emph{objective}: prompt injection hijacks system behavior (task/goal compromise), while jailbreaking bypasses safety guardrails (policy-violating content generation)~\cite{perez2022ignore,chao2024jailbreakbench}. In practice, the two compound: an injection that hijacks an agent may induce downstream unsafe tool use.
+
+
+\subsubsection{Jailbreak Attacks---A Taxonomy}
+\label{sec:threat-jailbreak}
+
+Existing benchmark-driven categorizations such as HarmBench~\cite{mazeika2024harmbench} and JailbreakBench~\cite{chao2024jailbreakbench} organize attacks by target-model effectiveness. We complement these with a five-category \emph{mechanism-based} taxonomy that emphasizes the underlying exploitation strategy, enabling analysis of why attacks transfer and where defenses structurally fail. These categories are not mutually exclusive; practical attacks frequently combine multiple mechanisms (e.g., AutoDAN employs both template and optimization strategies). Our categorization emphasizes the \emph{dominant} strategy to facilitate structural analysis:
+
+\begin{description}[style=unboxed,leftmargin=0.5em,labelindent=0em,nosep]
+\item[Template-based.] Predefined narrative frames---role-play (``DAN''), developer mode, fictional sandboxes---re-contextualize the interaction so that prohibited responses appear consistent with an alternative ``role.'' In-the-wild measurement shows some templates achieving $\geq$0.95 ASR on GPT-3.5/4, persisting online for over 240 days~\cite{zhang2024dananything}. AutoDAN uses templates as a conceptual baseline and surpasses them via genetic optimization~\cite{liu2024autodan}.
+
+\item[Optimization-based.] Jailbreaking is treated as a search problem over prompt space. \textbf{GCG}~\cite{zou2023gcg} uses greedy coordinate gradient descent to identify adversarial suffixes, achieving 88\% ASR on Vicuna-7B with cross-model transferability. \textbf{PAIR}~\cite{chao2024pair} iteratively refines prompts via an attacker LLM in under twenty queries (71\% on GPT-3.5, 34\% on GPT-4 per JailbreakBench~\cite{chao2024jailbreakbench}). GPTFuzzer~\cite{yu2023gptfuzzer} automates template mutation, reporting $>$90\% ASR on some targets.
+
+\item[Multi-turn conversational.] Gradual boundary erosion across dialogue turns exploits the model's tendency to maintain coherence with prior responses. Crescendo~\cite{russinovich2025crescendo} achieves 29--61\% higher performance than single-turn methods on GPT-4. Many-shot jailbreaking~\cite{anil2024manyshot} uses hundreds of in-context demonstrations, with effectiveness following predictable scaling laws. Multi-turn human jailbreaks achieve $>$70\% ASR on HarmBench against defenses showing single-digit ASR under automated attacks~\cite{mazeika2024harmbench}.
+
+\item[Multi-modal.] Vision and audio channels bypass text-centric safety filters. FigStep~\cite{gong2025figstep} converts prohibited instructions into typographic images, achieving 82.5\% average ASR on six open-source LVLMs. HADES~\cite{li2024hades} reports 90.26\% ASR on LLaVA-1.5. AudioJailbreak~\cite{chen2025audiojailbreak} achieves $\geq$87\% ASR in universal strong-adversary settings.
+
+\item[Encoding-based.] Transforming requests into non-standard representations exploits weaker safety coverage outside typical natural language. CipherChat~\cite{yuan2024cipherchat} reports near-100\% bypass of GPT-4 safety via cipher encoding. Translation to low-resource languages increases bypass rates from $<$1\% to 79\%~\cite{yong2023lowresource,deng2024multilingual}. ArtPrompt~\cite{jiang2024artprompt} uses ASCII art, and composable string obfuscations (Base64, ROT13, Morse code) remain active bypass surfaces~\cite{huang2024plentiful}.
+\end{description}
+
+A cross-cutting finding from HarmBench is that robustness is shaped more by training data and algorithms than model size, with ASR highly stable within model families but highly variable across families~\cite{mazeika2024harmbench}. Table~\ref{tab:jailbreak} summarizes these mechanisms and their cross-category overlaps.
+
+\input{tables/table7_jailbreak}
+
+
+\subsubsection{Indirect Prompt Injection and Agentic Exploitation}
+\label{sec:threat-ipi}
+
+Indirect prompt injection (IPI) embeds adversarial instructions in external data sources (web pages, documents, emails) that the model retrieves during normal operation---requiring no direct attacker--model interaction~\cite{greshake2023ipi}. PoisonedRAG achieves $>$90\% ASR by injecting five malicious documents~\cite{zou2025poisonedrag}. The BIPIA benchmark found a positive correlation ($r$=0.64) between model capability and IPI vulnerability---more capable models are paradoxically more susceptible~\cite{yi2025bipia}. This inverse relationship is context-dependent: it holds for indirect prompt injection and tool poisoning scenarios where instruction-following capability amplifies susceptibility, but does not generalize to standard safety benchmarks where more capable models generally exhibit improved compliance~\cite{rottger2024xstest} (see Section~\ref{sec:future-agents}). Real-world exploitation includes data exfiltration from Slack AI's private channels~\cite{promptarmor2024slack} and manipulation of ChatGPT search results via hidden web page text.
+
+In agentic settings, IPI consequences escalate from generating incorrect output to \emph{executing malicious actions}. Agents possess tool permissions (file R/W, API calls, shell commands, email), frequently operate under auto-approve settings, and engage in multi-step execution where a single injected instruction cascades through a planning loop~\cite{schneider2025promptware}. InjecAgent found ReAct-prompted GPT-4 vulnerable 24\% of the time, rising to $\sim$47\% with enhanced attacks~\cite{zhan2024injecagent}. Real-world incidents include: CVE-2025-59944 (zero-click RCE in Cursor IDE via MCP injection)~\cite{lakera2025cursor}; the ``IDEsaster'' disclosure identifying 30+ vulnerabilities across \emph{all} major AI IDEs~\cite{idesaster2025}; EchoLeak (CVE-2025-32711, introduced in Section~\ref{sec:cap-autonomy}) enabling zero-click exfiltration from Microsoft 365 Copilot; and Perplexity Comet exploited for full account takeover via hidden Reddit text~\cite{brave2025comet}. Unit 42 confirmed active IPI weaponization in the wild, documenting 22 distinct attacker techniques~\cite{unit42ipi2026}.
+
+The MCP ecosystem (Section~\ref{sec:cap-mcp}) introduces systemic vulnerabilities at the protocol level. An industry security audit found 43\% of sampled implementations contain command injection flaws, 30\% permit SSRF, and 22\% allow path traversal (Equixly; sample size and selection criteria undisclosed)~\cite{equixly2025mcp}. Critical CVEs include CVE-2025-6514 (CVSS 9.6, RCE in mcp-remote affecting 437,000+ environments)~\cite{jfrog2025mcpremote} and CVE-2025-49596 (CVSS 9.4, RCE in MCP Inspector)~\cite{oligo2025inspector}. Tool poisoning attacks embed malicious instructions in tool descriptions invisible to users but visible to models~\cite{invariant2025toolpoisoning}. Cross-server composition attacks exploit shared agent context: individually safe servers become vulnerable in combination~\cite{invariant2025whatsapp,croce2025trivial}. MCPTox found o1-mini exhibits 72.8\% ASR through tool poisoning, with more capable models being \emph{more} susceptible~\cite{wang2025mcptox}. Table~\ref{tab:mcp-timeline} documents the MCP security event timeline.
+
+\input{tables/table6_mcp_timeline}
+
+
+\subsubsection{Current Attack--Defense Landscape}
+\label{sec:threat-landscape}
+
+The empirical evidence converges on a sobering assessment. The 2025 International AI Safety Report states: ``when given ten tries, attackers can still successfully execute such attacks about half the time''~\cite{aisafetyreport2025}. Cisco found DeepSeek R1 achieved 100\% ASR on HarmBench prompts~\cite{cisco2025deepseek}. The structural root is formally quantified by Zverev et al., who show that \emph{all tested models fail to achieve high instruction-data separation}---GPT-4 scores only 0.225 on their separation metric~\cite{zverev2025separation}. OpenAI acknowledges prompt injection ``is unlikely to ever be fully `solved'\,''~\cite{openai2025atlas}, and the UK NCSC warns it ``may be worse'' than SQL injection~\cite{ncsc2025promptinjection}. OWASP ranks prompt injection as the \#1 LLM vulnerability for the second consecutive edition~\cite{owasp2025}. This weakness is not a bug amenable to patching but may be an inherent property of autoregressive instruction-following: the same in-context learning mechanism that makes models useful also makes them manipulable~\cite{zverev2025separation}.
+
+This structural vulnerability is compounded by a \emph{temporal gap} between capability deployment and defensive response. MCP shipped without authentication (November 2024); the first tool-poisoning study appeared five months later (April 2025)~\cite{invariant2025toolpoisoning}; OAuth 2.1 was retrofitted in March 2025~\cite{mcpspec2025}; the first cryptographic defense (ETDI) was proposed in June 2025~\cite{bhatt2025etdi}; and the first government-level agentic governance framework appeared in January 2026~\cite{imda2026agentic}---a 14-month gap from deployment to governance. This pattern is not unique to AI but is accelerating. Historical comparisons are instructive: SQL injection was first documented in 1998 but the OWASP Top~10 did not appear until 2004 (6~years); mobile app security lagged smartphone deployment by $\sim$7~years (iPhone 2007, OWASP Mobile Top~10 2014); IoT governance followed the Mirai botnet by $\sim$4~years (2016--2020).\footnote{These gap measurements involve different endpoint definitions (industry best-practice guide, OWASP checklist, governance framework). The comparison illustrates a general acceleration pattern rather than providing strictly comparable benchmarks.} The AI deployment-to-governance gap is shorter in absolute terms (14~months) but occurs against a backdrop of far more rapid capability growth---the attack surface expands faster than historical precedents, making the relative gap more consequential. Section~\ref{sec:conclusions} discusses this as the \emph{temporal misalignment} meta-pattern.
+
+The emerging consensus is that defense-in-depth with continuous adversarial hardening---a perpetual arms race---represents the only viable strategy.
+
+
+%% ------------------------------------------------------------
+\subsection{Misinformation, Disinformation, and Deepfakes}
+\label{sec:threat-misinfo}
+%% ------------------------------------------------------------
+
+\subsubsection{Deepfakes}
+\label{sec:threat-deepfake}
+
+The shift from GANs to diffusion models has resolved the training instability and temporal artifacts that previously served as forensic indicators, enabling one-shot face animation and real-time voice cloning on consumer hardware~\cite{pei2024deepfakesurvey}. Key 2024--2025 incidents demonstrate catastrophic impact: the Arup deepfake fraud (January 2024) used AI-generated video-conference participants to authorize \$25M in transfers~\cite{wef2025arup}; AI voice cloning enabled a \$499,000 fraud in Singapore~\cite{brightside2025phishing}; and the Sumsub Identity Fraud Report documented a 2,137\% year-over-year surge in deepfake attacks~\cite{sumsub2024}. Generation cost approaches zero while detection remains unreliable, creating a fundamental offense-defense asymmetry. The mere existence of increasingly convincing deepfakes creates a \emph{liar's dividend}: authentic evidence can be dismissed as AI-generated, providing plausible deniability to those accused of genuine misconduct~\cite{chesney2019deepfakes}.
+
+
+\subsubsection{AI-Powered Information Operations}
+\label{sec:threat-infoop}
+
+AI-generated disinformation is at least as effective as human-written content at changing beliefs: GPT-3-generated content was recognized as ``accurate'' more frequently than human-authored disinformation~\cite{spitale2023gpt3}, and a 27-country study ($N$=27,000) confirmed higher perceived veracity and sharing intent for AI-generated fake news~\cite{stefkovics2026fakenews}. The 2024 ``super election year'' saw documented AI interference across multiple nations~\cite{restofworld2024tracker}, and AI-generated academic fraud has surged---the 2026 AI Safety Report estimates up to 8\% of peer-reviewed submissions may contain substantial AI-generated content~\cite{aisafetyreport2026}.
+
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{figure/fig2-threat-taxonomy.pdf}
+\caption{AIGC threat taxonomy. The attack surface evolution ladder (highlighted) traces the chronological progression from direct prompt injection through jailbreaking and indirect prompt injection to agentic exploitation.}
+\label{fig:threat-taxonomy}
+\end{figure}
+
+\input{tables/table3_threat_summary}

@@ -1,0 +1,37 @@
+%% Table 6: MCP Security Event Timeline
+%% Requires: \usepackage{booktabs, xcolor}
+%% Preamble: \definecolor{rowgray}{gray}{0.93}
+
+\begin{table}[htbp]
+\centering
+\caption{MCP ecosystem security timeline: deployment preceded security by months and governance by over a year.}
+\label{tab:mcp-timeline}
+
+\fontsize{7}{9}\selectfont
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{l l l l}
+\toprule
+\textbf{Date} & \textbf{Event} & \textbf{Type} & \textbf{Ref} \\
+\midrule
+
+\rowcolor{rowgray}
+2024-11 & MCP launched (no authentication) & Protocol & \cite{anthropic2024mcp} \\
+2025-03 & OAuth 2.1 with PKCE retrofitted & Defense & \cite{mcpspec2025} \\
+\rowcolor{rowgray}
+2025-04 & Tool poisoning attacks disclosed & Attack & \cite{invariant2025toolpoisoning} \\
+2025-06 & ETDI cryptographic signing proposed & Defense & \cite{bhatt2025etdi} \\
+\rowcolor{rowgray}
+2025-06 & CVE-2025-49596 (MCP Inspector, CVSS 9.4) & Vulnerability & \cite{oligo2025inspector} \\
+2025-07 & CVE-2025-6514 (mcp-remote, CVSS 9.6) & Vulnerability & \cite{jfrog2025mcpremote} \\
+\rowcolor{rowgray}
+2025-08 & MCPTox benchmark (72.8\% ASR) & Evaluation & \cite{wang2025mcptox} \\
+2025-12 & OWASP Top 10 for Agentic Applications & Standard & \cite{owasp2025agentic} \\
+\rowcolor{rowgray}
+2026-01 & IMDA agentic governance framework & Governance & \cite{imda2026agentic} \\
+2026-02 & NIST AI Agent Standards Initiative & Governance & \cite{nist2026agentstandards} \\
+
+\bottomrule
+\end{tabular}
+\end{table}

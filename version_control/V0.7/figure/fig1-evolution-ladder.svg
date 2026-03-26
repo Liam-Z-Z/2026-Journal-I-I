@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700"
+     font-family="Inter, Helvetica Neue, Arial, sans-serif">
+
+  <defs>
+    <marker id="arrow-up" viewBox="0 0 10 10" refX="5" refY="10"
+            markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 1 10 L 5 2 L 9 10" fill="none" stroke="#78909C" stroke-width="2" stroke-linejoin="round"/>
+    </marker>
+    <linearGradient id="gr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#EF5350"/><stop offset="100%" stop-color="#E53935"/>
+    </linearGradient>
+    <linearGradient id="go" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFA726"/><stop offset="100%" stop-color="#FB8C00"/>
+    </linearGradient>
+    <linearGradient id="gb" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#42A5F5"/><stop offset="100%" stop-color="#1E88E5"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="700" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#1A1A1A">Attack Surface Evolution Ladder</text>
+
+  <!-- Legend -->
+  <g transform="translate(860, 14)">
+    <rect width="14" height="10" rx="2" fill="url(#gr)"/><text x="18" y="10" font-size="12" fill="#424242">Attacker Access</text>
+    <rect x="130" width="14" height="10" rx="2" fill="url(#go)"/><text x="148" y="10" font-size="12" fill="#424242">Victim Agency</text>
+    <rect x="248" width="14" height="10" rx="2" fill="url(#gb)"/><text x="266" y="10" font-size="12" fill="#424242">Impact Scope</text>
+  </g>
+
+  <!-- Diagonal guide -->
+  <line x1="30" y1="680" x2="1170" y2="40" stroke="#EEEEEE" stroke-width="1.5" stroke-dasharray="8 5"/>
+  <text x="20" y="695" font-size="12" fill="#BDBDBD" font-style="italic">Low severity</text>
+  <text x="1100" y="50" font-size="12" fill="#BDBDBD" font-style="italic">High severity</text>
+
+  <!-- ====== Transition arrows (behind blocks) ====== -->
+  <g id="connectors">
+    <line x1="270" y1="530" x2="310" y2="485" stroke="#90A4AE" stroke-width="2" marker-end="url(#arrow-up)"/>
+    <line x1="480" y1="400" x2="520" y2="355" stroke="#90A4AE" stroke-width="2" marker-end="url(#arrow-up)"/>
+    <line x1="690" y1="270" x2="730" y2="225" stroke="#90A4AE" stroke-width="2" marker-end="url(#arrow-up)"/>
+    <line x1="900" y1="140" x2="940" y2="95" stroke="#90A4AE" stroke-width="2" marker-end="url(#arrow-up)"/>
+  </g>
+
+  <!-- ====== Stair-step blocks ====== -->
+
+  <!-- L1: Direct PI (blue — cold/safe) -->
+  <g transform="translate(20, 540)">
+    <rect width="260" height="140" rx="8" fill="#E3F2FD" stroke="#1E88E5" stroke-width="2"/>
+    <text x="14" y="26" font-size="24" font-weight="800" fill="#1565C0">2022</text>
+    <text x="100" y="26" font-size="13" font-weight="600" fill="#1E88E5">Level 1</text>
+    <text x="14" y="48" font-size="16" font-weight="700" fill="#0D47A1">Direct Prompt Injection</text>
+    <!-- Bars -->
+    <g transform="translate(14, 58)">
+      <rect width="232" height="10" rx="4" fill="#E0E0E0"/><rect width="46" height="10" rx="4" fill="url(#gr)"/>
+      <rect y="15" width="232" height="10" rx="4" fill="#E0E0E0"/><rect y="15" width="37" height="10" rx="4" fill="url(#go)"/>
+      <rect y="30" width="232" height="10" rx="4" fill="#E0E0E0"/><rect y="30" width="30" height="10" rx="4" fill="url(#gb)"/>
+    </g>
+    <text x="14" y="114" font-size="12" font-style="italic" fill="#757575">Goal hijacking, prompt leaking</text>
+    <text x="14" y="130" font-size="12" font-style="italic" fill="#757575">Payload injection</text>
+  </g>
+
+  <!-- L2: Jailbreaking (green — warming up) -->
+  <g transform="translate(230, 410)">
+    <rect width="260" height="140" rx="8" fill="#E8F5E9" stroke="#43A047" stroke-width="2"/>
+    <text x="14" y="26" font-size="24" font-weight="800" fill="#2E7D32">2023</text>
+    <text x="100" y="26" font-size="13" font-weight="600" fill="#43A047">Level 2</text>
+    <text x="14" y="48" font-size="16" font-weight="700" fill="#1B5E20">Jailbreaking</text>
+    <g transform="translate(14, 58)">
+      <rect width="232" height="10" rx="4" fill="#E0E0E0"/><rect width="90" height="10" rx="4" fill="url(#gr)"/>
+      <rect y="15" width="232" height="10" rx="4" fill="#E0E0E0"/><rect y="15" width="75" height="10" rx="4" fill="url(#go)"/>
+      <rect y="30" width="232" height="10" rx="4" fill="#E0E0E0"/><rect y="30" width="65" height="10" rx="4" fill="url(#gb)"/>
+    </g>
+    <text x="14" y="114" font-size="12" font-style="italic" fill="#757575">GCG, PAIR, AutoDAN</text>
+    <text x="14" y="130" font-size="12" font-style="italic" fill="#757575">Crescendo, many-shot jailbreaking</text>
+  </g>
+
+  <!-- L3: Indirect PI (amber-yellow) -->
+  <g transform="translate(440, 280)">
+    <rect width="260" height="140" rx="8" fill="#FFFDE7" stroke="#F9A825" stroke-width="2"/>
+    <text x="14" y="26" font-size="24" font-weight="800" fill="#F57F17">2023</text>
+    <text x="100" y="26" font-size="13" font-weight="600" fill="#F9A825">Level 3</text>
+    <text x="14" y="48" font-size="16" font-weight="700" fill="#E65100">Indirect Prompt Injection</text>
+    <g transform="translate(14, 58)">
+      <rect width="232" height="10" rx="4" fill="#E0E0E0"/><rect width="140" height="10" rx="4" fill="url(#gr)"/>
+      <rect y="15" width="232" height="10" rx="4" fill="#E0E0E0"/><rect y="15" width="125" height="10" rx="4" fill="url(#go)"/>
+      <rect y="30" width="232" height="10" rx="4" fill="#E0E0E0"/><rect y="30" width="115" height="10" rx="4" fill="url(#gb)"/>
+    </g>
+    <text x="14" y="114" font-size="12" font-style="italic" fill="#757575">PoisonedRAG, Slack AI exfiltration</text>
+    <text x="14" y="130" font-size="12" font-style="italic" fill="#757575">Data exfil via tool calls</text>
+  </g>
+
+  <!-- L4: Agentic (orange) -->
+  <g transform="translate(650, 150)">
+    <rect width="260" height="140" rx="8" fill="#FFF3E0" stroke="#EF6C00" stroke-width="2"/>
+    <text x="14" y="26" font-size="24" font-weight="800" fill="#E65100">2024</text>
+    <text x="100" y="26" font-size="13" font-weight="600" fill="#EF6C00">Level 4</text>
+    <text x="14" y="48" font-size="16" font-weight="700" fill="#BF360C">Agentic Exploitation</text>
+    <g transform="translate(14, 58)">
+      <rect width="232" height="10" rx="4" fill="#E0E0E0"/><rect width="190" height="10" rx="4" fill="url(#gr)"/>
+      <rect y="15" width="232" height="10" rx="4" fill="#E0E0E0"/><rect y="15" width="175" height="10" rx="4" fill="url(#go)"/>
+      <rect y="30" width="232" height="10" rx="4" fill="#E0E0E0"/><rect y="30" width="170" height="10" rx="4" fill="url(#gb)"/>
+    </g>
+    <text x="14" y="114" font-size="12" font-style="italic" fill="#757575">Tool poisoning, EchoLeak</text>
+    <text x="14" y="130" font-size="12" font-style="italic" fill="#757575">Cursor RCE, MCP exploit chains</text>
+  </g>
+
+  <!-- L5: Multi-Agent (deep red — highest severity) -->
+  <g transform="translate(860, 45)">
+    <rect width="310" height="140" rx="8" fill="#FFCDD2" stroke="#C62828" stroke-width="2.5"/>
+    <text x="14" y="26" font-size="24" font-weight="800" fill="#B71C1C">2025</text>
+    <text x="100" y="26" font-size="13" font-weight="600" fill="#C62828">Level 5</text>
+    <text x="14" y="48" font-size="16" font-weight="700" fill="#7F0000">Multi-Agent Exploitation</text>
+    <g transform="translate(14, 58)">
+      <rect width="282" height="10" rx="4" fill="#E0E0E0"/><rect width="268" height="10" rx="4" fill="url(#gr)"/>
+      <rect y="15" width="282" height="10" rx="4" fill="#E0E0E0"/><rect y="15" width="260" height="10" rx="4" fill="url(#go)"/>
+      <rect y="30" width="282" height="10" rx="4" fill="#E0E0E0"/><rect y="30" width="270" height="10" rx="4" fill="url(#gb)"/>
+    </g>
+    <text x="14" y="114" font-size="12" font-style="italic" fill="#757575">Inter-agent trust exploitation</text>
+    <text x="14" y="130" font-size="12" font-style="italic" fill="#757575">Cross-system propagation, cascading compromise</text>
+  </g>
+
+</svg>

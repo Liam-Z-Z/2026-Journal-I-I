@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 610"
+     font-family="Inter, Helvetica Neue, Arial, sans-serif">
+
+  <!--
+    Proportional vertical space:
+    Cat1 (2 leaves): y=50-128,  center=89,   leaves at y=50,92
+    Cat2 (3 leaves): y=152-272, center=212,   leaves at y=152,194,236
+    Cat3 (4 leaves): y=296-458, center=377,   leaves at y=296,338,380,422
+    Cat4 (2 leaves): y=482-560, center=521,   leaves at y=482,524
+    Inter-group gap: 24px
+    Leaf: h=36, gap=6, step=42
+    Connector y = leaf_y + 18
+    Root center: (89+521)/2 = 305
+  -->
+
+  <rect width="1100" height="610" fill="#FFFFFF"/>
+  <text x="550" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#1A1A1A">AIGC Threat Taxonomy</text>
+
+  <!-- ====== Connectors ====== -->
+  <g id="connectors" fill="none" stroke="#BDBDBD" stroke-width="1.8">
+    <!-- Root → trunk -->
+    <path d="M 205 305 L 260 305"/>
+    <!-- Vertical trunk spans all groups -->
+    <line x1="260" y1="89" x2="260" y2="521"/>
+    <!-- Arms to categories -->
+    <line x1="260" y1="89"  x2="290" y2="89"/>
+    <line x1="260" y1="212" x2="290" y2="212"/>
+    <line x1="260" y1="377" x2="290" y2="377"/>
+    <line x1="260" y1="521" x2="290" y2="521"/>
+
+    <!-- Cat1 → 2 leaves. Connector y: 68, 110 -->
+    <line x1="535" y1="89" x2="575" y2="89"/>
+    <line x1="575" y1="68"  x2="575" y2="110"/>
+    <line x1="575" y1="68"  x2="610" y2="68"/>
+    <line x1="575" y1="110" x2="610" y2="110"/>
+
+    <!-- Cat2 → 3 leaves. Connector y: 170, 212, 254 -->
+    <line x1="535" y1="212" x2="575" y2="212"/>
+    <line x1="575" y1="170" x2="575" y2="254"/>
+    <line x1="575" y1="170" x2="610" y2="170"/>
+    <line x1="575" y1="212" x2="610" y2="212"/>
+    <line x1="575" y1="254" x2="610" y2="254"/>
+
+    <!-- Cat3 → 4 leaves (highlighted, orange). Connector y: 314, 356, 398, 440 -->
+    <line x1="535" y1="377" x2="575" y2="377" stroke="#EF6C00" stroke-width="2.5"/>
+    <line x1="575" y1="314" x2="575" y2="440" stroke="#EF6C00" stroke-width="2.5"/>
+    <line x1="575" y1="314" x2="610" y2="314" stroke="#EF6C00" stroke-width="2"/>
+    <line x1="575" y1="356" x2="610" y2="356" stroke="#EF6C00" stroke-width="2"/>
+    <line x1="575" y1="398" x2="610" y2="398" stroke="#EF6C00" stroke-width="2"/>
+    <line x1="575" y1="440" x2="610" y2="440" stroke="#EF6C00" stroke-width="2"/>
+
+    <!-- Cat4 → 2 leaves. Connector y: 500, 542 -->
+    <line x1="535" y1="521" x2="575" y2="521"/>
+    <line x1="575" y1="500" x2="575" y2="542"/>
+    <line x1="575" y1="500" x2="610" y2="500"/>
+    <line x1="575" y1="542" x2="610" y2="542"/>
+  </g>
+
+  <!-- ====== Nodes ====== -->
+  <g id="modules">
+
+    <!-- Root (center y=305) -->
+    <g transform="translate(15, 273)">
+      <rect width="190" height="64" rx="8" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="2"/>
+      <text x="95" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#424242">AIGC Threat</text>
+      <text x="95" y="48" text-anchor="middle" font-size="16" font-weight="700" fill="#424242">Landscape</text>
+    </g>
+
+    <!-- Cat1 (center y=89): Blue — surface-level, content threats -->
+    <g transform="translate(290, 62)">
+      <rect width="245" height="54" rx="8" fill="#E3F2FD" stroke="#1E88E5" stroke-width="2"/>
+      <text x="122" y="22" text-anchor="middle" font-size="15" font-weight="700" fill="#0D47A1">Content</text>
+      <text x="122" y="42" text-anchor="middle" font-size="15" font-weight="700" fill="#0D47A1">Weaponization</text>
+    </g>
+    <g transform="translate(610, 50)">
+      <rect width="260" height="36" rx="8" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.5"/>
+      <text x="14" y="24" font-size="14" font-weight="500" fill="#0D47A1">Phishing &amp; Malware</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.1.1</text>
+    </g>
+    <g transform="translate(610, 92)">
+      <rect width="260" height="36" rx="8" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.5"/>
+      <text x="14" y="24" font-size="14" font-weight="500" fill="#0D47A1">NCII</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.1.2</text>
+    </g>
+
+    <!-- Cat2 (center y=212): Green — model-level threats -->
+    <g transform="translate(290, 184)">
+      <rect width="245" height="56" rx="8" fill="#E8F5E9" stroke="#43A047" stroke-width="2"/>
+      <text x="122" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#1B5E20">Model-Level</text>
+      <text x="122" y="44" text-anchor="middle" font-size="15" font-weight="700" fill="#1B5E20">Attacks</text>
+    </g>
+    <g transform="translate(610, 152)">
+      <rect width="260" height="36" rx="8" fill="#E8F5E9" stroke="#A5D6A7" stroke-width="1.5"/>
+      <text x="14" y="24" font-size="14" font-weight="500" fill="#1B5E20">Data Poisoning</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.2.1</text>
+    </g>
+    <g transform="translate(610, 194)">
+      <rect width="260" height="36" rx="8" fill="#E8F5E9" stroke="#A5D6A7" stroke-width="1.5"/>
+      <text x="14" y="24" font-size="14" font-weight="500" fill="#1B5E20">Backdoors</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.2.2</text>
+    </g>
+    <g transform="translate(610, 236)">
+      <rect width="260" height="36" rx="8" fill="#E8F5E9" stroke="#A5D6A7" stroke-width="1.5"/>
+      <text x="14" y="24" font-size="14" font-weight="500" fill="#1B5E20">Supply Chain</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.2.3</text>
+    </g>
+
+    <!-- Cat3 (center y=377): Orange — adversarial, links to Fig1 ladder, HIGHLIGHTED -->
+    <g transform="translate(290, 345)">
+      <rect width="245" height="68" rx="8" fill="#FFF3E0" stroke="#EF6C00" stroke-width="3"/>
+      <text x="122" y="24" text-anchor="middle" font-size="15" font-weight="800" fill="#E65100">Adversarial</text>
+      <text x="122" y="44" text-anchor="middle" font-size="15" font-weight="800" fill="#E65100">Manipulation</text>
+      <polygon transform="translate(210, 46) scale(1.2)" points="8,0 10.2,5.8 15.5,6.3 11.5,9.8 12.7,15 8,12.2 3.3,15 4.5,9.8 0.5,6.3 5.8,5.8" fill="#EF6C00"/>
+      <text x="122" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#E65100" font-style="italic">&#9733; Evolution Ladder</text>
+    </g>
+    <g transform="translate(610, 296)">
+      <rect width="260" height="36" rx="8" fill="#FFF3E0" stroke="#FFCC80" stroke-width="1.8"/>
+      <text x="14" y="24" font-size="14" font-weight="600" fill="#E65100">Direct PI</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.3.1</text>
+    </g>
+    <g transform="translate(610, 338)">
+      <rect width="260" height="36" rx="8" fill="#FFF3E0" stroke="#FFCC80" stroke-width="1.8"/>
+      <text x="14" y="24" font-size="14" font-weight="600" fill="#E65100">Jailbreaking</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.3.2</text>
+    </g>
+    <g transform="translate(610, 380)">
+      <rect width="260" height="36" rx="8" fill="#FFF3E0" stroke="#FFCC80" stroke-width="1.8"/>
+      <text x="14" y="24" font-size="14" font-weight="600" fill="#E65100">Indirect PI + Agentic</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.3.3</text>
+    </g>
+    <g transform="translate(610, 422)">
+      <rect width="260" height="36" rx="8" fill="#FFF3E0" stroke="#FFCC80" stroke-width="1.8"/>
+      <text x="14" y="24" font-size="14" font-weight="600" fill="#E65100">Attack-Defense Landscape</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.3.4</text>
+    </g>
+
+    <!-- Cat4 (center y=521): Red — misinfo/deepfakes, societal harm -->
+    <g transform="translate(290, 494)">
+      <rect width="245" height="54" rx="8" fill="#FFEBEE" stroke="#E53935" stroke-width="2"/>
+      <text x="122" y="22" text-anchor="middle" font-size="15" font-weight="700" fill="#B71C1C">Misinfo &amp;</text>
+      <text x="122" y="42" text-anchor="middle" font-size="15" font-weight="700" fill="#B71C1C">Deepfakes</text>
+    </g>
+    <g transform="translate(610, 482)">
+      <rect width="260" height="36" rx="8" fill="#FFEBEE" stroke="#EF9A9A" stroke-width="1.5"/>
+      <text x="14" y="24" font-size="14" font-weight="500" fill="#B71C1C">Deepfakes</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.4.1</text>
+    </g>
+    <g transform="translate(610, 524)">
+      <rect width="260" height="36" rx="8" fill="#FFEBEE" stroke="#EF9A9A" stroke-width="1.5"/>
+      <text x="14" y="24" font-size="14" font-weight="500" fill="#B71C1C">Info Operations</text>
+      <text x="240" y="24" font-size="12" fill="#9E9E9E" text-anchor="end">&#167;3.4.2</text>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g id="annotations">
+    <text x="105" y="348" text-anchor="middle" font-size="13" font-weight="500" fill="#9E9E9E">&#167;3</text>
+    <line x1="900" y1="390" x2="940" y2="390" stroke="#EF6C00" stroke-width="1.5" stroke-dasharray="4 2"/>
+    <text x="948" y="384" font-size="13" font-weight="600" fill="#E65100">Core contribution:</text>
+    <text x="948" y="402" font-size="13" fill="#E65100">Evolution Ladder (Fig. 1)</text>
+  </g>
+
+</svg>
