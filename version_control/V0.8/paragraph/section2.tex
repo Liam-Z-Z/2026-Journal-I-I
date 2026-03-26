@@ -36,7 +36,7 @@ The net effect is a dramatic worsening of cybersecurity's asymmetric economics: 
 \label{sec:cap-control}
 %% ------------------------------------------------------------
 
-Fine-grained control enables targeted rather than generic attacks. Lightweight adapters (LoRA~\cite{hu2022lora}) achieve identity consistency from 10--20 reference images, and voice cloning requires only 3--10 seconds of audio. Stylometric cloning is equally potent: MFA-trained experts \emph{preferred} AI-generated writing 62\% of the time over original authors. In 2025, over 57\% of detected phishing emails were sent from compromised accounts using AI-generated replies to ongoing threads, evading detection with correct cryptographic signatures and zero stylistic anomalies.
+Fine-grained control enables targeted rather than generic attacks. Lightweight adapters (LoRA~\cite{hu2022lora}) achieve identity consistency from 10--20 reference images, and voice cloning requires only 3--10 seconds of audio. Stylometric cloning is equally potent: trained human evaluators preferred AI-generated writing 62\% of the time over original authors. In 2025, over 57\% of detected phishing emails were sent from compromised accounts using AI-generated replies to ongoing threads, evading detection with correct cryptographic signatures and zero stylistic anomalies.
 
 
 %% ------------------------------------------------------------
@@ -57,9 +57,9 @@ The security implications are direct: a model that can decompose ``exfiltrate da
 \subsubsection{AI Agents: From Text Generators to Autonomous Actors}
 \label{sec:cap-agents}
 
-The research prototypes of 2023 have become production systems at scale. \textbf{Coding agents}---Claude Code (\$1B annualized revenue within six months), OpenAI Codex, Google Jules, and Devin---autonomously read codebases, edit files, execute shell commands, and create pull requests. \textbf{Browser and computer-use agents}---Computer Use~\cite{anthropic2024computeruse}, Operator (58.1\% on WebArena)---interact with GUIs via simulated mouse and keyboard. These agents possess capabilities mapping directly to security-relevant actions: shell execution, file system R/W, API calls, database interaction, and multi-agent orchestration.
+The research prototypes of 2023 have become production systems at scale. \textbf{Coding agents}---Claude Code (\$1B annualized revenue within six months), OpenAI Codex, Google Jules, and Devin---autonomously read codebases, edit files, execute shell commands, and create pull requests. \textbf{Browser and computer-use agents}---Computer Use~\cite{anthropic2024computeruse}, Operator---interact with GUIs via simulated mouse and keyboard. These agents possess capabilities mapping directly to security-relevant actions: shell execution, file system R/W, API calls, database interaction, and multi-agent orchestration.
 
-Agent benchmarks quantify both capability and vulnerability. SWE-bench Verified scores have risen from under 5\% in early 2024 to over 70\% by early 2026. OSWorld reports best models at 12.24\% versus human 72.36\%, while AgentBench evaluates across eight environments.
+Agent benchmarks quantify both capability and vulnerability. SWE-bench Verified scores have risen from under 5\% in early 2024 to over 70\% by early 2026, while computer-use benchmarks report best models at 12.24\% versus human 72.36\%.
 
 
 \subsubsection{Long Context as an Enabler of Agency}
@@ -85,7 +85,7 @@ The convergence of reasoning, agency, long context, and standardized tool access
 
 Indirect prompt injection~\cite{greshake2023ipi}---originally demonstrated in chatbot contexts---becomes qualitatively more dangerous in agentic settings, where adversarial instructions in retrieved documents trigger autonomous actions rather than merely producing misleading text (Section~\ref{sec:threat-adversarial}).
 
-Real-world incidents confirm the threat. CVE-2025-32711 (``EchoLeak''), a zero-click CVSS~9.3 vulnerability in Microsoft~365 Copilot, enabled silent exfiltration of API keys. CVE-2025-53773 (CVSS~9.6) demonstrated RCE in GitHub Copilot. The Gray Swan Arena challenge produced 62,000 breaches across 1.8~million attempts---\emph{every model was jailbroken}. Industry surveys indicate that the majority of organizations plan to deploy agentic AI despite low confidence in their ability to secure it~\cite{cisco2026aisecurity}.
+Real-world incidents confirm the threat. CVE-2025-32711 (``EchoLeak''), a zero-click CVSS~9.3 vulnerability in Microsoft~365 Copilot, enabled silent exfiltration of API keys. CVE-2025-53773 (CVSS~9.6) demonstrated RCE in GitHub Copilot. Industry surveys indicate that the majority of organizations plan to deploy agentic AI despite low confidence in their ability to secure it~\cite{cisco2026aisecurity}.
 
 Three observations merit emphasis. First, the attack surface is no longer the model but the \emph{environment}. Second, the inverse scaling problem~\cite{wang2025mcptox} suggests capability improvements may actively exacerbate security risks. Third, decades of access control research may be applicable (Section~\ref{sec:threat-pi}), but LLM non-determinism introduces fundamental new challenges for traditional authorization frameworks. This subsection has introduced the capability foundations that enable agentic threats; the specific attack vectors, empirical success rates, and the MCP vulnerability landscape are analyzed in detail in Section~\ref{sec:threat-adversarial}.
 
